@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css"; // Import the custom CSS file
 
 function App() {
   const [password, setPassword] = useState("");
@@ -48,46 +49,52 @@ function App() {
 
   return (
     <div className="App">
-      <div className="container">
+      <div className="containerlogin">
         <div className="row d-flex justify-content-center">
-          <div className="col-md-4">
-            <form id="loginform" onSubmit={loginSubmit}>
-              <div className="form-group">
-                <label>Email address</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="EmailInput"
-                  name="EmailInput"
-                  aria-describedby="emailHelp"
-                  placeholder="Enter email"
-                  onChange={(event) => setEmail(event.target.value)}
-                />
-                <small id="emailHelp" className="text-danger form-text">
-                  {emailError}
-                </small>
+          <div className="col-md">
+            <div className="card mt-9 login-card">
+              <div className="card-body">
+                <h5 className="card-title text-center">User Login</h5>
+                <form id="loginform" onSubmit={loginSubmit}>
+                  <div className="form-group">
+                    <label>Email address</label>
+                    <input
+                      type="email"
+                      className="form-control mt-2"
+                      id="EmailInput"
+                      name="EmailInput"
+                      aria-describedby="emailHelp"
+                      placeholder="Enter email"
+                      onChange={(event) => setEmail(event.target.value)}
+                    />
+                    <small id="emailHelp" className="text-danger form-text">
+                      {emailError}
+                    </small>
+                  </div>
+                  <div className="form-group">
+                    <label className="mt-2">Password</label>
+                    <input
+                      type="password"
+                      className="form-control mt-2"
+                      id="exampleInputPassword1"
+                      placeholder="Password"
+                      onChange={(event) => setPassword(event.target.value)}
+                    />
+                    <small id="passworderror" className="text-danger form-text">
+                      {passwordError}
+                    </small>
+                  </div>
+                  <button type="submit" className="btn btn-primary btn-block mt-4">
+                    Submit
+                  </button>
+                </form>
               </div>
-              <div className="form-group">
-                <label>Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="exampleInputPassword1"
-                  placeholder="Password"
-                  onChange={(event) => setPassword(event.target.value)}
-                />
-                <small id="passworderror" className="text-danger form-text">
-                  {passwordError}
-                </small>
-              </div>
-              <button type="submit" className="btn btn-primary">
-                Submit
-              </button>
-            </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
 export default App;
