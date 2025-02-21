@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom';
 import './index.css';
 import App from './pages/App';
 import Homepage from './pages/Homepage';
@@ -14,8 +14,8 @@ root.render(
     <Router>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route element={<Header/>}>
-          <Route path="/Homepage" element={<Homepage />}/>
+        <Route element={<HeaderLayout />}>
+          <Route path="/Homepage" element={<Homepage />} />
           <Route path="/Project" element={<Project />} />
         </Route>
       </Routes>
@@ -24,3 +24,12 @@ root.render(
 );
 
 reportWebVitals();
+
+function HeaderLayout() {
+  return (
+    <>
+      <Header />
+      <Outlet />
+    </>
+  );
+}
