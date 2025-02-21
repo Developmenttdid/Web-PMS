@@ -22,7 +22,7 @@ function Header() {
               <Link to="/Homepage" className="nav-link px-3 link-info text-white">Homepage</Link>
             </li>
             <li>
-              <Link to="/map" className="nav-link px-3 link-info link-offset-2 link-underline-opacity-200 link-underline-opacity-100-hover text-white">Map</Link>
+              <Link to="/Map" className="nav-link px-3 link-info link-offset-2 link-underline-opacity-200 link-underline-opacity-100-hover text-white">Map</Link>
             </li>
             <li>
               <Link to="/Project" className="nav-link px-3 link-info text-white">Projects</Link>
