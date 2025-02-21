@@ -44,7 +44,7 @@ function Header() {
               aria-expanded="false"
             >
               <img
-                src={process.env.PUBLIC_URL + '/logo1.svg'}
+                src={process.env.PUBLIC_URL + '/profile1.png'}
                 alt="mdo"
                 width="32"
                 height="32"
