@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-
-function Map() {
+function Flightdb() {
   return (
     <h1>
-      Map
+      Flight database
     </h1>
   );
 }
 
-export default Map;
+export default Flightdb;

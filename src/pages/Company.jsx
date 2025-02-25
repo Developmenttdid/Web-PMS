@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-
-function Map() {
+function Company() {
   return (
     <h1>
-      Map
+      Company
     </h1>
   );
 }
 
-export default Map;
+export default Company;

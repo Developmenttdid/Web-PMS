@@ -6,7 +6,7 @@ import './Header.css';
 
 function Header() {
   return (
-    <header class="p-3 mb-3 border-bottom" style={{backgroundColor: '#0F0F56'}}>
+    <header class="p-3 border-bottom" style={{backgroundColor: '#0F0F56'}}>
       <div class="container-fluid">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <img src={process.env.PUBLIC_URL + '/logo1.svg'} width={150} height={150} className="img-fluid me-5"/> 
@@ -28,10 +28,10 @@ function Header() {
               <Link to="/Project" className="nav-link px-3 link-info text-white">Projects</Link>
             </li>
             <li>
-              <Link to="/company" className="nav-link px-3 link-info text-white">Company</Link>
+              <Link to="/Company" className="nav-link px-3 link-info text-white">Company</Link>
             </li>
             <li>
-              <Link to="/flightdb" className="nav-link px-3 link-info text-white">Flight Database</Link>
+              <Link to="/Flightdb" className="nav-link px-3 link-info text-white">Flight Database</Link>
             </li>
           </ul>
 
@@ -53,19 +53,15 @@ function Header() {
             </a>
             <ul className="dropdown-menu text-small">
               <li>
-                <a className="dropdown-item" href="#">
-                  New project...
-                </a>
+              <Link to="/Project/Addproject" className="dropdown-item">New Project</Link>
               </li>
-              <li>
+              {/* <li>
                 <a className="dropdown-item" href="#">
                   Settings
                 </a>
-              </li>
+              </li> */}
               <li>
-                <a className="dropdown-item" href="#">
-                  Profile
-                </a>
+                <Link to="/Profile/AccountDetails" className="dropdown-item">Profile</Link>
               </li>
               <li>
                 <hr className="dropdown-divider" />

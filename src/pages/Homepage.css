@@ -1,6 +1,76 @@
+html, body {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
 .Homepage {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: 60px;
+  padding-top: 10px;
+  padding-left: 0;
+  height: 100vh;
+}
+
+.card-container-top {
+  display: flex;
+  width: 100%;
+  flex: 1;
+}
+
+.card-container-bottom {
+  display: flex;
+  width: 100%;
+  flex: 1;
+  margin-bottom: 50px;
+}
+
+.card-one, .card-two, .card-three, .card-four, .card-five, .card-six {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-one {
+  flex: 1;
+  min-height: 300px;
+  max-width: 880px;
+}
+
+.card-two, .card-three {
+  min-height: 300px;
+  width: 300px;
+}
+
+.card-five {
+  flex: 1;
+  max-width: 680px;
+  min-height: 300px;
+}
+
+.card-six {
+  flex: 1;
+  max-width: 400px;
+  min-height: 300px;
+}
+
+.card-seven {
+  flex: 1;
+  max-width: 770px;
+  min-height: 300px;
+}
+
+.card-body {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center; 
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
