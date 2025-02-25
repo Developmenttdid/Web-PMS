@@ -6,7 +6,7 @@ const ProfileNav = () => {
 
   return (
     <div
-      className="nav-container d-flex flex-column flex-shrink-0 p-3 text-white"
+      className="nav-container d-flex flex-column flex-shrink-0 p-3 text-white overflow-hidden"
       style={{
         width: "300px",
         height: "100vh",

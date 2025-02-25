@@ -6,7 +6,7 @@ import './Header.css';
 
 function Header() {
   return (
-    <header class="p-3 border-bottom" style={{backgroundColor: '#0F0F56'}}>
+    <header class="p-3 border-bottom" style={{backgroundColor: '#0F0F56', position: 'sticky', top: 0, zIndex: 1000}}>
       <div class="container-fluid">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <img src={process.env.PUBLIC_URL + '/logo1.svg'} width={150} height={150} className="img-fluid me-5"/> 

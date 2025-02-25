@@ -103,7 +103,7 @@ function Homepage() {
       <div className="card-container-bottom">
         <div className="card-five card text-bg-light mb-5 ms-3">
           <div className="card-header">Graph Chart</div>
-          <div className="card-body" style={{ width: "700px", height: "300px" }}>
+          <div className="card-body">
             <Line data={lineData} options={lineOptions} />
           </div>
         </div>

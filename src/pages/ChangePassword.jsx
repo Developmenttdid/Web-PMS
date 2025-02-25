@@ -17,7 +17,7 @@ function ChangePassword() {
             <input type="password" className="form-control" placeholder="Input new password" />
         </div>
         <div className="justify-content-center d-flex">
-            <button type="button" className="button-add btn btn-primary mb-3 me-1 mt-3" style={{ width: "10%" }}>Save Change</button>
+            <button type="button" className="button-add btn btn-primary mb-3 me-1 mt-3" style={{ width: "150px" }}>Save Change</button>
         </div>
     </div>
   );
