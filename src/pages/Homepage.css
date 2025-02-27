@@ -28,11 +28,6 @@ html, body {
   max-height: 400px;
 }
 
-.card-one, .card-two, .card-three, .card-four, .card-five, .card-six {
-  display: flex;
-  flex-direction: column;
-}
-
 .card-one {
   flex: 1;
   max-width: 880px;
