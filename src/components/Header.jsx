@@ -1,40 +1,38 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import {Link} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Header.css';
 
 function Header() {
   return (
-    <header class="p-3 border-bottom" style={{backgroundColor: '#0F0F56', position: 'sticky', top: 0, zIndex: 1000}}>
-      <div class="container-fluid">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <img src={process.env.PUBLIC_URL + '/logo1.svg'} width={150} height={150} className="img-fluid me-5"/> 
+    <header className="p-3 border-bottom" style={{ backgroundColor: '#0F0F56', position: 'sticky', top: 0, zIndex: 1000 }}>
+      <div className="container-fluid">
+        <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+          <img src={process.env.PUBLIC_URL + '/logo1.svg'} width={150} height={150} className="img-fluid me-5" />
           <a
             href="/"
-            class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none"
+            className="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none"
           >
-            
           </a>
 
-          <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
             <li>
-              <Link to="/Homepage" className="nav-link px-3 link-info text-white">Homepage</Link>
+              <NavLink to="/Homepage" className="nav-link px-3 link-info text-white" activeClassName="active">Homepage</NavLink>
             </li>
             <li>
-              <Link to="/Map" className="nav-link px-3 link-info link-offset-2 link-underline-opacity-200 link-underline-opacity-100-hover text-white">Map</Link>
+              <NavLink to="/Map" className="nav-link px-3 link-info link-offset-2 link-underline-opacity-200 link-underline-opacity-100-hover text-white" activeClassName="active">Map</NavLink>
             </li>
             <li>
-              <Link to="/Project" className="nav-link px-3 link-info text-white">Projects</Link>
+              <NavLink to="/Project" className="nav-link px-3 link-info text-white" activeClassName="active">Projects</NavLink>
             </li>
             <li>
-              <Link to="/Company" className="nav-link px-3 link-info text-white">Company</Link>
+              <NavLink to="/Company" className="nav-link px-3 link-info text-white" activeClassName="active">Company</NavLink>
             </li>
             <li>
-              <Link to="/Checklistdb" className="nav-link px-3 link-info text-white">Flight Database</Link>
+              <NavLink to="/FlightDatabase" className="nav-link px-3 link-info text-white" activeClassName="active">Flight Database</NavLink>
             </li>
           </ul>
-
 
           <div className="dropdown text-end text-white">
             <a
@@ -52,22 +50,14 @@ function Header() {
               />
             </a>
             <ul className="dropdown-menu text-small">
-              {/* <li>
-              <Link to="/Project/Addproject" className="dropdown-item">New Project</Link>
-              </li> */}
-              {/* <li>
-                <a className="dropdown-item" href="#">
-                  Settings
-                </a>
-              </li> */}
               <li>
-                <Link to="/Profile/AccountDetails" className="dropdown-item">Profile</Link>
+                <NavLink to="/Profile/AccountDetails" className="dropdown-item">Profile</NavLink>
               </li>
               <li>
                 <hr className="dropdown-divider" />
               </li>
               <li>
-                <Link to="/" className="dropdown-item">Logout</Link>
+                <NavLink to="/" className="dropdown-item">Logout</NavLink>
               </li>
             </ul>
           </div>

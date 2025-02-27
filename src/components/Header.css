@@ -18,3 +18,7 @@
 .nav-link:hover::after{
     opacity: 1;
 }
+
+.nav-link.active {
+    font-weight: bold;
+}

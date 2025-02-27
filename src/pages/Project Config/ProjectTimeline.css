@@ -1,0 +1,15 @@
+
+.gantt-chart-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+  
+@media (max-width: 1200px) {
+.gantt-chart-container {
+    max-width: 100vw;
+    overflow-x: auto;
+}
+}

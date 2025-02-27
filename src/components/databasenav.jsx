@@ -8,7 +8,7 @@ const DatabaseNav = () => {
     <div
       className="nav-container d-flex flex-column flex-shrink-0 p-3 text-white"
       style={{
-        width: "300px",
+        width: "250px",
         height: "100vh",
         backgroundColor: "#f8f9fa",
         boxShadow: "2px 0 5px rgba(0,0,0,0.1)"
@@ -18,9 +18,9 @@ const DatabaseNav = () => {
       <ul className="nav nav-pills flex-column w-100">
         <li className="nav-item">
           <a
-            href="/Checklistdb"
+            href="/FlightDatabase"
             className={`nav-link ${
-              location.pathname === "/Checklistdb" ? "active" : ""
+              location.pathname === "/FlightDatabase" ? "active" : ""
             }`}
           >
             Checklist Database
@@ -28,9 +28,9 @@ const DatabaseNav = () => {
         </li>
         <li className="nav-item">
           <a
-            href="/ProjectLogbook"
+            href="/FlightDatabase/ProjectLogbook"
             className={`nav-link ${
-              location.pathname === "/ProjectLogbook" ? "active" : ""
+              location.pathname === "/FlightDatabase/ProjectLogbook" ? "active" : ""
             }`}
           >
             Project Logbook
@@ -38,9 +38,9 @@ const DatabaseNav = () => {
         </li>
         <li className="nav-item">
           <a
-            href="/UAVLogbook"
+            href="/FlightDatabase/UAVLogbook"
             className={`nav-link ${
-              location.pathname === "/UAVLogbook" ? "active" : ""
+              location.pathname === "/FlightDatabase/UAVLogbook" ? "active" : ""
             }`}
           >
             UAV Logbook
@@ -48,9 +48,9 @@ const DatabaseNav = () => {
         </li>
         <li className="nav-item">
           <a
-            href="/FlightRecord"
+            href="/FlightDatabase/FlightRecord"
             className={`nav-link ${
-              location.pathname === "/FlightRecord" ? "active" : ""
+              location.pathname === "/FlightDatabase/FlightRecord" ? "active" : ""
             }`}
           >
             Flight Record

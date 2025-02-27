@@ -3730,6 +3730,20 @@ css-loader@^6.5.1:
     postcss-value-parser "^4.2.0"
     semver "^7.5.4"
 
+css-loader@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-7.1.2.tgz#64671541c6efe06b0e22e750503106bdd86880f8"
+  integrity sha512-6WvYYn7l/XEGN8Xu2vWFt9nVzrCn39vKyTEFf/ExEyoksJjjSZV/0/35XPlMbpnr6VGhZIUg5yJrL8tGfes/FA==
+  dependencies:
+    icss-utils "^5.1.0"
+    postcss "^8.4.33"
+    postcss-modules-extract-imports "^3.1.0"
+    postcss-modules-local-by-default "^4.0.5"
+    postcss-modules-scope "^3.2.0"
+    postcss-modules-values "^4.0.0"
+    postcss-value-parser "^4.2.0"
+    semver "^7.5.4"
+
 css-minimizer-webpack-plugin@^3.2.0:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/css-minimizer-webpack-plugin/-/css-minimizer-webpack-plugin-3.4.1.tgz#ab78f781ced9181992fe7b6e4f3422e76429878f"
@@ -5084,6 +5098,11 @@ framer-motion@^10.16.4:
     tslib "^2.4.0"
   optionalDependencies:
     "@emotion/is-prop-valid" "^0.8.2"
+
+frappe-gantt@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/frappe-gantt/-/frappe-gantt-1.0.3.tgz#3e261f2a4f93a00066408df91ec2976609a78b4d"
+  integrity sha512-NkwO2MD4JoWJ82ZruK/rQVIAEpI3nXUoo5gG+wQHV18yKXhzZsTehVfCXJ92DLl/foTtut1RVL0dqj7fo6Cfpg==
 
 fresh@0.5.2:
   version "0.5.2"
@@ -6510,6 +6529,11 @@ jiti@^1.21.6:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.21.7.tgz#9dd81043424a3d28458b193d965f0d18a2300ba9"
   integrity sha512-/imKNG4EbWNrVjoNC/1H5/9GFy+tqjGBHCaSsN+P2RnPqjsLmv6UD3Ej+Kj8nBWaRAwyk7kK5ZUc+OEatnTR3A==
 
+jquery@^3.0.0:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.7.1.tgz#083ef98927c9a6a74d05a6af02806566d16274de"
+  integrity sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -6690,6 +6714,14 @@ launch-editor@^2.6.0:
     picocolors "^1.0.0"
     shell-quote "^1.8.1"
 
+leaflet-locationpicker@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/leaflet-locationpicker/-/leaflet-locationpicker-0.3.4.tgz#7e4efa50447dd199d40bc93eea6800cfbd5dbfa2"
+  integrity sha512-6XOG1wCOP7YqD/iPmYDCXX7hKmAVFTv9WATEpx7ggEDQSKylraCl6QNR7M4REM+bbbUIO362C3vKBrLZah6CFg==
+  dependencies:
+    jquery "^3.0.0"
+    leaflet "^0.7.7"
+
 leaflet-search@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/leaflet-search/-/leaflet-search-4.0.0.tgz#7265ab813ea915213027f30729a736cb4234402a"
@@ -6706,6 +6738,11 @@ leaflet@*, leaflet@^1.0.0, leaflet@^1.9.4:
   version "1.9.4"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.9.4.tgz#23fae724e282fa25745aff82ca4d394748db7d8d"
   integrity sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==
+
+leaflet@^0.7.7:
+  version "0.7.7"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-0.7.7.tgz#1e352ba54e63d076451fa363c900890cb2cf75ee"
+  integrity sha512-H1lR7J5VxhvQJQHlW2UywtxO63zilLrnwVsDvjKeyfntffj63Ml94gCk9YPYWBkiQgxisdiA8aJ30Zoou4VhEA==
 
 leven@^3.1.0:
   version "3.1.0"
@@ -8384,6 +8421,16 @@ react-fast-compare@^3.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.2.tgz#929a97a532304ce9fee4bcae44234f1ce2c21d49"
   integrity sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==
 
+react-google-charts@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/react-google-charts/-/react-google-charts-5.2.1.tgz#d9cbe8ed45d7c0fafefea5c7c3361bee76648454"
+  integrity sha512-mCbPiObP8yWM5A9ogej7Qp3/HX4EzOwuEzUYvcfHtL98Xt4V/brD14KgfDzSNNtyD48MNXCpq5oVaYKt0ykQUQ==
+
+react-google-map-picker@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/react-google-map-picker/-/react-google-map-picker-1.2.3.tgz#bfd4efe1e2a1345a66d3250ed05ed37166fc2f33"
+  integrity sha512-XeIj0Eh0vhNToMTebQQrt5O9fdPRDf4KtG8J22xupH7Pu49J1dP5UuhfCM6VmK2nIv5ECyQUpOT6+gZgGaQhJA==
+
 react-is@^16.13.1, react-is@^16.3.2:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -9443,6 +9490,11 @@ style-loader@^3.3.1:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-3.3.4.tgz#f30f786c36db03a45cbd55b6a70d930c479090e7"
   integrity sha512-0WqXzrsMTyb8yjZJHDqwmnwRJvhALK9LfRtRc6B4UTWe8AijYLZYZ9thuJTZc2VfQWINADW/j+LiJnfy2RoC1w==
+
+style-loader@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-4.0.0.tgz#0ea96e468f43c69600011e0589cb05c44f3b17a5"
+  integrity sha512-1V4WqhhZZgjVAVJyt7TdDPZoPBPNHbekX4fWnCJL1yQukhCeZhJySUL+gL9y6sNdN95uEOS83Y55SqHcP7MzLA==
 
 stylehacks@^5.1.1:
   version "5.1.1"

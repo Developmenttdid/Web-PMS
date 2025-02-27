@@ -62,7 +62,7 @@ function FlightRecord() {
   return (
     <div className="flight-record-page me-5">
       <h2 className="checklist-title ms-4 mt-3">Flight Record</h2>
-      <div className="table-container container-fluid">
+      <div className="form-table row d-flex align-items-center column-gap-1 overflow-auto p-0">
         <table className="table-project table border text-center">
           <thead className="table-light">
             <tr>

@@ -11,7 +11,7 @@ const projectData = [
 function Project() {
   return (
     <div className="project-page me-5">
-      <Link to="Addproject">
+      <Link to="ProjectStatus">
         <button type="button" className="button-add btn btn-primary mb-3 me-1 mt-3">Add Project</button>
       </Link>
       <h2 className="project-title ms-4 mt-3">Project List</h2>
