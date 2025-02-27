@@ -1,12 +1,30 @@
-import React from "react";
-import "./Homepage.css";
-import { MapContainer, TileLayer } from "react-leaflet";
+import {
+  ArcElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+} from "chart.js";
 import "leaflet/dist/leaflet.css";
-import { Pie } from "react-chartjs-2";
-import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, ArcElement, Title, Tooltip, Legend } from "chart.js";
+import React from "react";
+import { Line, Pie } from "react-chartjs-2";
+import { MapContainer, TileLayer } from "react-leaflet";
+import "./Homepage.css";
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, ArcElement, Title, Tooltip, Legend);
+ChartJS.register(
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const lineData = {
   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
@@ -72,58 +90,38 @@ const pieOptions = {
 function Homepage() {
   return (
     <div className="Homepage">
-      <div className="card-container-top">
-        <div className="card-one card text-bg-light mb-3 ms-3 me-3">
-          <div className="card-header">Map Graph</div>
-          <div className="card-body">
-            <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "100%", width: "100%" }}>
-              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            </MapContainer>
+      <div className="container-fluid">
+        <div
+          className="row d-flex justify-content-center py-1"
+          style={{ height: "100%" }}
+        >
+          <div className="col-md-5 col-11  card-one card text-bg-light mb-3 mx-lg-3 mx-1">
+            <div className="card-header">Map Graph</div>
+            <div className="card-body">
+              <MapContainer
+                center={[51.505, -0.09]}
+                zoom={13}
+                style={{ height: "300px", width: "100%" }}
+              >
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              </MapContainer>
+            </div>
           </div>
-        </div>
-        <div className="card-two card text-bg-light mb-3 ms-4 me-2">
-          <div className="card-header">Total Coverage</div>
-          <div className="card-body">
-            <p className="card-text">2000 ha</p>
-          </div>
-        </div>
-        <div className="card-three card text-bg-light mb-3 ms-4 me-2">
-          <div className="card-header">Total Flight Time</div>
-          <div className="card-body">
-            <p className="card-text">20.000 hours</p>
-          </div>
-        </div>
-        <div className="card-three card text-bg-light mb-3 ms-4">
-          <div className="card-header">Total Flight Time</div>
-          <div className="card-body">
-            <p className="card-text">20.000 hours</p>
-          </div>
-        </div>
-      </div>
-      <div className="card-container-bottom">
-        <div className="card-five card text-bg-light mb-5 ms-3">
-          <div className="card-header">Graph Chart</div>
-          <div className="card-body">
-            <Line data={lineData} options={lineOptions} />
-          </div>
-        </div>
-        <div className="card-six card text-bg-light mb-5 ms-3">
-          <div className="card-header">Pie Chart</div>
-          <div className="card-body" style={{ width: "400px", height: "400px" }}>
-            <Pie data={pieData} options={pieOptions} />
-          </div>
-        </div>
-        <div className="card-seven card text-bg-light mb-5 ms-3">
-          <div className="card-header">Log Activity</div>
-          <div className="card-body">
-            <table className="table table-bordered table-hover text-center" style={{ width: "100%", height: "100%" }}>
+
+          <div className="col-md-6 col-11  card-seven card text-bg-light mb-3 mx-lg-3 mx-1">
+            <div className="card-header">Log Activity</div>
+            <div className="card-body">
+              <table
+                className="table table-bordered table-hover text-center"
+                style={{ width: "100%", height: "100%" }}
+              >
                 <thead className="table-dark">
-                <tr>
-                  <th style={{ width: "10%" }}>#</th>
-                  <th style={{ width: "30%" }}>User</th>
-                  <th style={{ width: "40%" }}>Action</th>
-                  <th style={{ width: "20%" }}>Time</th>
-              </tr>
+                  <tr>
+                    <th style={{ width: "10%" }}>#</th>
+                    <th style={{ width: "30%" }}>User</th>
+                    <th style={{ width: "40%" }}>Action</th>
+                    <th style={{ width: "20%" }}>Time</th>
+                  </tr>
                 </thead>
                 <tbody>
                   {logs.map((log) => (
@@ -135,7 +133,79 @@ function Homepage() {
                     </tr>
                   ))}
                 </tbody>
-            </table>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container-fluid mt-3">
+        <div className="row px-1 py-1 d-flex justify-content-center">
+          <div className="col-xl-5 col-11 card-five card text-bg-light mb-3 ">
+            <div className="card-header">Graph Chart</div>
+            <div
+              className="card-body"
+              style={{
+                position: "relative",
+                minWidth: "200px",
+                minHeight: "300px",
+                overflowX: "auto",
+              }}
+            >
+              <Line
+                data={lineData}
+                options={{
+                  ...lineOptions,
+                  responsive: true, // Pastikan chart bisa menyesuaikan ukuran parent-nya
+                  maintainAspectRatio: false, // Izinkan chart mengatur tinggi sendiri
+                  aspectRatio: 2, // Memperlebar grafik agar lebih proporsional
+                  plugins: {
+                    legend: {
+                      position: "bottom", // Pindahkan legend ke bawah agar tidak ketutupan
+                      labels: {
+                        boxWidth: 20, // Ukuran kotak warna legend
+                        font: {
+                          size: 14, // Ukuran font legend
+                        },
+                      },
+                    },
+                  },
+                  layout: {
+                    padding: {
+                      // Tambah padding agar legend tidak ketutupan
+                    },
+                  },
+                }}
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+            </div>
+          </div>
+
+          <div className="col-xl-3 col-sm-6 col-sm-5 col-11 card-six card text-bg-light mx-lg-2 mx-md-2  mb-3 d-flex justify-content-center ">
+            <div className="card-header">Pie Chart</div>
+            <div
+              className="card-body d-flex justify-content-center align-items-center w-100 h-100"
+              style={{ width: "400px", height: "400px" }}
+            >
+              <Pie data={pieData} options={pieOptions} />
+            </div>
+          </div>
+
+          <div className="col-xl-3 col-sm-5 col-11 mx-lg-2 ">
+            <div className="row">
+              <div className="col-lg-12 col-12 card-two card text-bg-light mb-3 mx-1">
+                <div className="card-header">Total Coverage</div>
+                <div className="card-body">
+                  <p className="card-text">2000 ha</p>
+                </div>
+              </div>
+              <div className="col-lg-12 col-12 card-three card text-bg-light mx-1 ">
+                <div className="card-header">Total Flight Time</div>
+                <div className="card-body">
+                  <p className="card-text">20.000 hours</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -144,3 +214,4 @@ function Homepage() {
 }
 
 export default Homepage;
+
