@@ -1,0 +1,23 @@
+.flight-record-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: fixed;
+    width: 100%; /* Ensure it takes full width */
+    overflow: hidden;
+}
+
+.table-container {
+    overflow-x: auto;
+    overflow-y: auto;
+    width: 100%;
+    max-width: 82vw;
+    margin-left: 0px;
+}
+
+.table-project {
+    width: 100%;
+    table-layout: auto;
+    min-width: 1500px;
+    white-space: nowrap;
+}

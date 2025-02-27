@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 
-const ProfileNav = () => {
+const DatabaseNav = () => {
   const location = useLocation();
 
   return (
@@ -14,46 +14,46 @@ const ProfileNav = () => {
         boxShadow: "2px 0 5px rgba(0,0,0,0.1)"
       }}
     >
-      <div className="text-center mb-3">
-        <img
-          src="/profile1.png"
-          alt="Profile"
-          className="rounded-circle"
-          width="150"
-          height="150"
-        />
-        <h5
-          className="mt-2"
-          style={{ color: "#0F0F56", fontWeight: "bold", fontSize: "1.5rem" }}
-        >
-          Username
-        </h5>
-      </div>
       <hr className="w-100" />
       <ul className="nav nav-pills flex-column w-100">
         <li className="nav-item">
           <a
-            href="/Profile/AccountDetails"
+            href="/Checklistdb"
             className={`nav-link ${
-              location.pathname === "/Profile/AccountDetails" ? "active" : ""
+              location.pathname === "/Checklistdb" ? "active" : ""
             }`}
           >
-            Account Details
+            Checklist Database
           </a>
         </li>
         <li className="nav-item">
           <a
-            href="/Profile/ChangePassword"
+            href="/ProjectLogbook"
             className={`nav-link ${
-              location.pathname === "/Profile/ChangePassword" ? "active" : ""
+              location.pathname === "/ProjectLogbook" ? "active" : ""
             }`}
           >
-            Change Password
+            Project Logbook
           </a>
         </li>
         <li className="nav-item">
-          <a href="/" className="nav-link text-danger">
-            Logout
+          <a
+            href="/UAVLogbook"
+            className={`nav-link ${
+              location.pathname === "/UAVLogbook" ? "active" : ""
+            }`}
+          >
+            UAV Logbook
+          </a>
+        </li>
+        <li className="nav-item">
+          <a
+            href="/FlightRecord"
+            className={`nav-link ${
+              location.pathname === "/FlightRecord" ? "active" : ""
+            }`}
+          >
+            Flight Record
           </a>
         </li>
       </ul>
@@ -61,4 +61,4 @@ const ProfileNav = () => {
   );
 };
 
-export default ProfileNav;
+export default DatabaseNav;

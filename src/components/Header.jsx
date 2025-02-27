@@ -31,7 +31,7 @@ function Header() {
               <Link to="/Company" className="nav-link px-3 link-info text-white">Company</Link>
             </li>
             <li>
-              <Link to="/Flightdb" className="nav-link px-3 link-info text-white">Flight Database</Link>
+              <Link to="/Checklistdb" className="nav-link px-3 link-info text-white">Flight Database</Link>
             </li>
           </ul>
 
@@ -52,9 +52,9 @@ function Header() {
               />
             </a>
             <ul className="dropdown-menu text-small">
-              <li>
+              {/* <li>
               <Link to="/Project/Addproject" className="dropdown-item">New Project</Link>
-              </li>
+              </li> */}
               {/* <li>
                 <a className="dropdown-item" href="#">
                   Settings
@@ -67,7 +67,7 @@ function Header() {
                 <hr className="dropdown-divider" />
               </li>
               <li>
-                <Link to="/" className="dropdown-item">Sign out</Link>
+                <Link to="/" className="dropdown-item">Logout</Link>
               </li>
             </ul>
           </div>

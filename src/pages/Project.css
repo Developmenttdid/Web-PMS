@@ -1,11 +1,13 @@
 .button-edit{
     background-color: #0d6efd;
     width: 100px;
+    border: none;
 }
 
 .button-delete{
     background-color: #dc3545;
     width: 100px;
+    border: none;
 }
 
 .progress-content {
@@ -40,11 +42,10 @@
 
 .table-project th,
 .table-project td {
-  width: 20%;
-  text-align: center;
-  justify-content: center;
+  width: 12%;
 }
 
-.progress-container {
+.table-project th:last-child,
+.table-project td:last-child {
   width: 20%;
 }

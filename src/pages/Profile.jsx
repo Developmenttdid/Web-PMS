@@ -1,9 +1,9 @@
 import React from "react";
+import "./Profile.css";
 
 function Profile() {
   return (
-    <div className="profile-details d-flex flex-column ms-0 p-2" style={{ width: "100%", overflow: "hidden"
-    }}>
+    <div className="profile-details ms-0 p-2">
         <h2 className="profile-container mb-4">Account Details</h2>
         <div className="col mb-3 ms-3">
             <label className="form-label">Name</label>

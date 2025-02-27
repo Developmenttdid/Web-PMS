@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import "./ChangePassword.css";
 
 function ChangePassword() {
   return (
-    <div className="profile-details d-flex flex-column ms-0 p-2" style={{ width: "100%" }}>
+    <div className="change-password ms-0 p-2">
         <h2 className="profile-container mb-4">Change Password</h2>
         <div className="col mb-3 ms-3">
             <label className="form-label">Old Password</label>
