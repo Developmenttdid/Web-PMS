@@ -1,27 +1,58 @@
-import React, { useState, useEffect } from "react";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import React from "react";
 
 const checklistData = [
-  {id: 1, date: "2025-01-02", code: "PRJ-CONTOH-01", Flightid: "D1F1", uav:"DJI-M300", Payload:"P1"},
-  {id: 2, date: "2025-01-03", code: "PRJ-CONTOH-02", Flightid: "D1F2", uav:"DJI-M300", Payload:"P2"},
+  {
+    id: 1,
+    date: "2025-01-02",
+    code: "PRJ-CONTOH-01",
+    Flightid: "D1F1",
+    uav: "DJI-M300",
+    Payload: "P1",
+  },
+  {
+    id: 2,
+    date: "2025-01-03",
+    code: "PRJ-CONTOH-02",
+    Flightid: "D1F2",
+    uav: "DJI-M300",
+    Payload: "P2",
+  },
 ];
 
 function Checklistdb() {
   return (
-    <div className="checklist-page me-5">
-      <h2 className="checklist-title ms-4 mt-3">Checklist Database</h2>
-      <table className="table-project table border text-center ms-4 me-5">
-        <thead className="table-light">
+    <div className="container-fluid">
+      <h3 className="mb-4">Checklist Database</h3>
+      <table class="table text-center">
+        <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Date</th>
-            <th scope="col">Project Code</th>
-            <th scope="col">Flight ID</th>
-            <th scope="col">UAV</th>
-            <th scope="col">Payload</th>
-            <th scope="col" colSpan="2">Action</th>
+            <th scope="col" style={{ width: "5%" }}>
+              #
+            </th>
+            <th scope="col" style={{ width: "15%" }}>
+              Date
+            </th>
+            <th scope="col" style={{ width: "20%" }}>
+              Project Code
+            </th>
+            <th scope="col" style={{ width: "15%" }}>
+              Flight ID
+            </th>
+            <th scope="col" style={{ width: "15%" }}>
+              UAV
+            </th>
+            <th scope="col" style={{ width: "15%" }}>
+              Payload
+            </th>
+            <th scope="col" style={{ width: "15%" }}>
+              Action
+            </th>
           </tr>
         </thead>
-        <tbody className="table-group-divider">
+        <tbody>
           {checklistData.map((checklist) => (
             <tr key={checklist.id}>
               <th scope="row">{checklist.id}</th>
@@ -31,8 +62,26 @@ function Checklistdb() {
               <td>{checklist.uav}</td>
               <td>{checklist.Payload}</td>
               <td>
-                <button className="button-edit px-3 py-1 text-white rounded">Preview</button>
-                <button className="button-delete px-3 py-1 text-white rounded ms-3">Download</button>
+                <div className="container-fluid">
+                  <div className="row">
+                    <div className="col">
+                      <button
+                        type="button"
+                        className="btn btn-warning btn-outline-light"
+                      >
+                        <i class="bi bi-eye"></i>
+                      </button>
+                    </div>
+                    <div className="col">
+                      <button
+                        type="button"
+                        className="btn btn-success btn-outline-light"
+                      >
+                        <i class="bi bi-download"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </td>
             </tr>
           ))}
@@ -43,3 +92,4 @@ function Checklistdb() {
 }
 
 export default Checklistdb;
+
