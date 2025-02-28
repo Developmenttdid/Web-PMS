@@ -1,26 +1,25 @@
 import React from "react";
 
 const UAVLogbookData = [
-    {id: 1, date: "2025-01-02", uavtype: "DJI-M300", uavid: "DJI-M300-01"},
-    {id: 2, date: "2025-01-03", uavtype: "DJI-M300", uavid: "DJI-M300-02"},
+  { id: 1, date: "2025-01-02", uavtype: "DJI-M300", uavid: "DJI-M300-01" },
+  { id: 2, date: "2025-01-03", uavtype: "DJI-M300", uavid: "DJI-M300-02" },
 ];
-
 
 function UAVLogbook() {
   return (
-    <div className="uav-logbook-page me-5">
-      <h2 className="checklist-title ms-4 mt-3">UAV Logbook</h2>
-      <table className="table-project table border text-center ms-4 me-5">
-        <thead className="table-light">
+    <div className="container-fluid">
+      <h3 className="mb-4">UAV Logbook</h3>
+      <table className="table text-center">
+        <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Date</th>
-            <th scope="col">UAV Type</th>
-            <th scope="col">UAV ID</th>
-            <th scope="col" colSpan="2">Action</th>
+            <th scope="col" style={{width:'5%'}}>#</th>
+            <th scope="col" styke={{width: '20%'}}>Date</th>
+            <th scope="col" style={{width: '30%'}}>UAV Type</th>
+            <th scope="col" style={{width: '30%'}}>UAV ID</th>
+            <th scope="col" style={{width: '15%'}}>Action</th>
           </tr>
         </thead>
-        <tbody className="table-group-divider">
+        <tbody>
           {UAVLogbookData.map((uavlogbook) => (
             <tr key={uavlogbook.id}>
               <th scope="row">{uavlogbook.id}</th>
@@ -28,8 +27,26 @@ function UAVLogbook() {
               <td>{uavlogbook.uavtype}</td>
               <td>{uavlogbook.uavid}</td>
               <td>
-                <button className="button-edit px-3 py-1 text-white rounded">Preview</button>
-                <button className="button-delete px-3 py-1 text-white rounded ms-3">Download</button>
+                <div className="container-fluid">
+                  <div className="row">
+                    <div className="col">
+                      <button
+                        type="button"
+                        className="btn btn-warning btn-outline-light"
+                      >
+                        <i class="bi bi-eye"></i>
+                      </button>
+                    </div>
+                    <div className="col">
+                      <button
+                        type="button"
+                        className="btn btn-success btn-outline-light"
+                      >
+                        <i class="bi bi-download"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </td>
             </tr>
           ))}
@@ -40,3 +57,4 @@ function UAVLogbook() {
 }
 
 export default UAVLogbook;
+
