@@ -5,19 +5,17 @@ import L, { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useRef } from "react";
 import "./Map.css";
-import "leaflet/dist/leaflet.css";
 import "esri-leaflet";
 import "esri-leaflet-geocoder";
 import "leaflet-search";
 import "leaflet-search/dist/leaflet-search.src.css";
 
 function Map() {
-  const mapRef = useRef(null); // Gunakan useRef untuk menyimpan referensi elemen peta
+  const mapRef = useRef(null);
 
   useEffect(() => {
     if (!mapRef.current) return;
 
-    // Data lokasi
     const data = [
       { loc: [41.57533, 13.102411], title: "aquamarine" },
       { loc: [41.57573, 13.002411], title: "black" },
@@ -44,7 +42,6 @@ function Map() {
       { loc: [41.23919, 13.032145], title: "white" }
     ];
 
-    // Inisialisasi peta
     const map = L.map(mapRef.current, {
       center: data[0].loc,
       zoom: 9
@@ -55,31 +52,40 @@ function Map() {
       iconSize: [38, 38],
     });
 
-    // Tambahkan layer tile OpenStreetMap
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
-    // Layer untuk marker
     const markersLayer = L.layerGroup().addTo(map);
 
-    // Tambahkan kontrol pencarian
     const controlSearch = new L.Control.Search({
       position: "topright",
       layer: markersLayer,
       initial: false,
       zoom: 12,
-      marker: false
+      marker: false,
+    });
+
+    controlSearch.on("search:locationfound", (e) => {
+      e.layer.openPopup();
+    });
+
+    controlSearch.on("search:collapsed", () => {
+      if (!controlSearch._markerSearch) {
+        L.popup()
+          .setLatLng(map.getCenter())
+          .setContent("Location not found")
+          .openOn(map);
+      }
     });
 
     map.addControl(controlSearch);
 
-    // Menambahkan marker ke peta
     data.forEach(({ loc, title }) => {
       const marker = L.marker(loc, { icon: customIcon, title }).bindPopup(`title: ${title}`);
       markersLayer.addLayer(marker);
     });
 
     return () => {
-      map.remove(); // Cleanup saat komponen di-unmount
+      map.remove();
     };
   }, []);
 

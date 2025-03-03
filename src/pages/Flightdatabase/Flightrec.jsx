@@ -60,11 +60,12 @@ const FlightRecordData = [
 
 function FlightRecord() {
   return (
-    <div className="flight-record-page me-5">
-      <h2 className="checklist-title ms-4 mt-3">Flight Record</h2>
-      <div className="form-table row d-flex align-items-center column-gap-1 overflow-auto p-0">
-        <table className="table-project table border text-center">
-          <thead className="table-light">
+    <div className="container-fluid mt-3" style={{ width: "98%", padding: "0px" }}>
+      <h3 className="mb-4">Flight Record</h3>
+      
+      <div className="container-fluid mx-0" style={{ overflowX: "auto", width: "100%" }}>
+        <table className="table" style={{ whiteSpace: "nowrap" }}>
+          <thead>
             <tr>
               <th scope="col">#</th>
               <th scope="col">Date</th>
@@ -93,7 +94,7 @@ function FlightRecord() {
               <th scope="col">Loss</th>
             </tr>
           </thead>
-          <tbody className="table-group-divider">
+          <tbody>
             {FlightRecordData.map((record) => (
               <tr key={record.id}>
                 <th scope="row">{record.id}</th>

@@ -1,7 +1,7 @@
 import React from "react";
 function Personnel() {
   return (
-    <div className="personnel-container">
+    <div className="personnel-container" style={{ marginLeft: "250px" }}>
         <h2> Personnel</h2>
         <h4>#Pilot Information</h4>
         <div className="form-group row d-flex align-items-center column-gap-1">

@@ -67,7 +67,7 @@ function ProjectStatus() {
     try {
       const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
       const data = await response.json();
-      setCity(data.address.city || data.address.town || data.address.village || "Unknown");
+      setCity(data.address.city);
     } catch (error) {
       console.error("Error fetching city name:", error);
       setCity("Unknown");
@@ -75,7 +75,7 @@ function ProjectStatus() {
   };
 
   return (
-    <div className="add-project">
+    <div className="add-project" style={{ marginLeft: "250px" }}>
       <h2 className="project-title">Project Status</h2>
       <div className="form-group row d-flex align-items-center column-gap-1">
         <div className="col mb-3 ms-3">

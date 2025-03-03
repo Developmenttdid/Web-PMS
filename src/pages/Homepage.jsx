@@ -13,6 +13,7 @@ import "leaflet/dist/leaflet.css";
 import React from "react";
 import { Line, Pie } from "react-chartjs-2";
 import { MapContainer, TileLayer } from "react-leaflet";
+import { HeatmapLayer } from "react-leaflet-heatmap-layer-v3";
 import "./Homepage.css";
 
 ChartJS.register(
@@ -25,6 +26,14 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
+const heatmapPoints = [
+  [51.505, -0.09, 0.5],
+  [51.51, -0.1, 0.8],
+  [51.52, -0.12, 0.6],
+  [51.515, -0.095, 0.7],
+  [51.50, -0.085, 0.9],
+];
 
 const lineData = {
   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
@@ -95,15 +104,19 @@ function Homepage() {
           className="row d-flex justify-content-center py-1"
           style={{ height: "100%" }}
         >
-          <div className="col-md-5 col-11  card-one card text-bg-light mb-3 mx-lg-3 mx-1 px-0">
-            <div className="card-header">Map Graph</div>
+          <div className="col-md-5 col-11 card text-bg-light mb-3 mx-lg-3 mx-1 px-0">
+            <div className="card-header">Heatmap</div>
             <div className="card-body">
-              <MapContainer
-                center={[51.505, -0.09]}
-                zoom={13}
-                style={{ height: "300px", width: "100%" }}
-              >
+              <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "300px", width: "100%" }}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                <HeatmapLayer
+                  fitBoundsOnLoad
+                  fitBoundsOnUpdate
+                  points={heatmapPoints}
+                  longitudeExtractor={(m) => m[1]}
+                  latitudeExtractor={(m) => m[0]}
+                  intensityExtractor={(m) => m[2]}
+                />
               </MapContainer>
             </div>
           </div>

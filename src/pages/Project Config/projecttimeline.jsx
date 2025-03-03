@@ -33,7 +33,7 @@ function ProjectTimeline() {
   }, []);
 
   return (
-    <div className="project-timeline">
+    <div className="project-timeline" style={{ marginLeft: "250px" }}>
       <h2>Project Timeline</h2>
       <h4>#Project Chart</h4>
       <div className="gantt-chart-container">

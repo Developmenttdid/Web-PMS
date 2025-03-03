@@ -6,7 +6,7 @@ const ConfigNav = () => {
 
   return (
     <div
-      className="nav-container d-flex flex-column flex-shrink-0 p-3 text-white"
+      className="nav-container d-flex flex-column flex-shrink-0 p-3 text-white position-fixed"
       style={{
         width: "250px",
         minHeight: "100vh",

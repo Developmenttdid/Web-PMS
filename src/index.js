@@ -14,7 +14,6 @@ import ProjectStatus from './pages/Project Config/projectstatus';
 import reportWebVitals from './reportWebVitals';
 import ProfileNav from './components/profilenav';
 import ChangePassword from './pages/ChangePassword';
-import DatabaseNav from './components/databasenav';
 import ProjectLogbook from './pages/Flightdatabase/Projectlog';
 import UAVLogbook from './pages/Flightdatabase/Uavlog';
 import FlightRecord from './pages/Flightdatabase/Flightrec';
@@ -23,6 +22,7 @@ import ProjectTimeline from './pages/Project Config/projecttimeline';
 import Personnel from './pages/Project Config/personnel';
 import Equipment from './pages/Project Config/equipment';
 import LegalDocument from './pages/Project Config/legaldoc';
+import ForgotPassword from './pages/forgotpassword';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -42,12 +42,10 @@ root.render(
             <Route path="/Project/LegalDocument" element={<LegalDocument />} />
           </Route>
           <Route path="/Company" element={<Company />} />
-          <Route element = {<NavdatabaseLayout />}>
-            <Route path="FlightDatabase" element={<Checklistdb />} />
-            <Route path="FlightDatabase/ProjectLogbook" element={<ProjectLogbook />} />
-            <Route path="FlightDatabase/UAVLogbook" element={<UAVLogbook />} />
-            <Route path="FlightDatabase/FlightRecord" element={<FlightRecord />} />
-          </Route>
+          <Route path="FlightDatabase" element={<Checklistdb />} />
+          <Route path="FlightDatabase/ProjectLogbook" element={<ProjectLogbook />} />
+          <Route path="FlightDatabase/UAVLogbook" element={<UAVLogbook />} />
+          <Route path="FlightDatabase/FlightRecord" element={<FlightRecord />} />
           <Route path="/Map" element={<Map />} />
           <Route path="/Project/ProjectStatus" element={<ProjectStatus />} />
           <Route element={<NavprofileLayout />}>
@@ -55,6 +53,7 @@ root.render(
             <Route path="/Profile/ChangePassword" element={<ChangePassword />} />
           </Route>
         </Route>
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
       </Routes>
     </Router>
   </React.StrictMode>
@@ -82,20 +81,9 @@ function NavprofileLayout() {
   );
 }
 
-function NavdatabaseLayout() {
-  return (
-    <div style={{ display: "flex" }}>
-      <DatabaseNav />
-      <div style={{ flex: 1, padding: "20px" }}>
-        <Outlet />
-      </div>
-    </div>
-  );
-}
-
 function NavconfigLayout() {
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex"}}>
       <ConfigNav />
       <div style={{ flex: 1, padding: "20px" }}>
         <Outlet />

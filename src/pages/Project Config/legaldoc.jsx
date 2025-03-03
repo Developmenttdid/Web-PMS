@@ -1,7 +1,7 @@
 import React from "react";
 function LegalDocument() {
   return (
-    <div className="document-container">
+    <div className="document-container" style={{ marginLeft: "250px" }}>
         <h2>Document</h2>
         <h4>#Certificate</h4>
         <div className="form-group row d-flex align-items-center column-gap-1">
