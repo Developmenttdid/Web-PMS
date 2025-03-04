@@ -11,6 +11,7 @@ function Header() {
     location.pathname === path ? "fw-bold text-primary" : "text-white";
 
   const isFlightDatabaseActive = location.pathname.startsWith("/FlightDatabase");
+  const isCompanyActive = location.pathname.startsWith("/Company");
 
   return (
     <header
@@ -25,15 +26,15 @@ function Header() {
       }}
     >
       <div className="container-fluid">
-        <div className="row d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start" >
+        <div className="row d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <div className="col-lg-3 text-lg-start text-center">
             <Link to="/Homepage">
-            <img
-              src={process.env.PUBLIC_URL + "/HSkyOps-white.png"}
-              className="img-fluid me-5 logo-image"
-              height={100}
-              width={100}
-            />
+              <img
+                src={process.env.PUBLIC_URL + "/HSkyOps-white.png"}
+                className="img-fluid me-5 logo-image"
+                height={100}
+                width={100}
+              />
             </Link>
           </div>
 
@@ -46,12 +47,12 @@ function Header() {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/Map" className={`nav-link px-3 ${getLinkClass("/Map")}`}  style={{ fontSize: '0.9rem' }}>
+                  <Link to="/Map" className={`nav-link px-3 ${getLinkClass("/Map")}`} style={{ fontSize: '0.9rem' }}>
                     Map
                   </Link>
                 </li>
                 <li>
-                  <Link to="/Project" className={`nav-link px-3 ${getLinkClass("/Project")}`}  style={{ fontSize: '0.9rem' }}>
+                  <Link to="/Project" className={`nav-link px-3 ${getLinkClass("/Project")}`} style={{ fontSize: '0.9rem' }}>
                     Projects
                   </Link>
                 </li>
@@ -61,32 +62,26 @@ function Header() {
                       <ul className="navbar-nav">
                         <li className="nav-item dropdown">
                           <button
-                            className="btn dropdown-toggle text-white"
+                            className={`btn dropdown-toggle ${isCompanyActive ? "fw-bold text-primary" : "text-white"}`}
                             style={{ marginTop: "2px", fontSize: '0.9rem' }}
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                           >
                             Company
                           </button>
-                          <ul
-                            className="dropdown-menu dropdown-menu-dark"
-                            aria-labelledby="navbarDropdownMenuLink"
-                          >
+                          <ul className="dropdown-menu dropdown-menu-dark">
                             <li>
-                              <Link to="/Company/Equipment" className="dropdown-item">
+                              <Link to="/Company/Equipment" className={`dropdown-item ${getLinkClass("/Company")}`}>
                                 Equipment
                               </Link>
                             </li>
                             <li>
-                              <Link to="/Company/Personnel" className="dropdown-item">
-                                Personel
+                              <Link to="/Company/Personnel" className={`dropdown-item ${getLinkClass("/Company")}`}>
+                                Personnel
                               </Link>
                             </li>
                             <li>
-                              <Link
-                                to="/Company/ProjectStatus"
-                                className="dropdown-item"
-                              >
+                              <Link to="/Company/ProjectStatus" className={`dropdown-item ${getLinkClass("/Company")}`}>
                                 Project Status
                               </Link>
                             </li>
@@ -94,15 +89,12 @@ function Header() {
                               <hr className="dropdown-divider" />
                             </li>
                             <li>
-                              <Link
-                                to="/Company/OperationManual"
-                                className="dropdown-item"
-                              >
+                              <Link to="/Company/OperationManual" className={`dropdown-item ${getLinkClass("/Company")}`}>
                                 Operation Manual
                               </Link>
                             </li>
                             <li>
-                              <Link to="/Company/SOP" className="dropdown-item">
+                              <Link to="/Company/SOP" className={`dropdown-item ${getLinkClass("/Company")}`}>
                                 SOP
                               </Link>
                             </li>
@@ -154,45 +146,6 @@ function Header() {
                 </li>
               </ul>
             </nav>
-          </div>
-
-          <div className="col-lg-3 d-flex justify-content-lg-end justify-content-center">
-            <div className="dropdown text-end text-white">
-              <a
-                href="#"
-                className="d-block link-body-emphasis text-decoration-none dropdown-toggle text-white"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <img
-                  src={process.env.PUBLIC_URL + "/profile1.png"}
-                  alt="Profile"
-                  width="32"
-                  height="32"
-                  className="rounded-circle border border-2 border-white"
-                />
-              </a>
-              <ul className="dropdown-menu text-small">
-                <li>
-                  <Link to="/Profile/AccountDetails" className="dropdown-item">
-                    Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/Profile/Notification" className="dropdown-item">
-                    Notification
-                  </Link>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <Link to="/" className="dropdown-item">
-                    Logout
-                  </Link>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
