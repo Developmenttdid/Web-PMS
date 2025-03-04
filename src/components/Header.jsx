@@ -1,22 +1,16 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Header.css";
 
 function Header() {
-  const location = useLocation();
-
-  const getLinkClass = (path) =>
-    location.pathname === path ? "fw-bold text-primary" : "text-white";
-
-  const isFlightDatabaseActive = location.pathname.startsWith("/FlightDatabase");
-
   return (
     <header
       className="p-3 border-bottom"
       style={{
         backgroundColor: "#0F0F56",
+        //position: "fixed",
         top: 0,
         left: "0",
         zIndex: 1000,
@@ -26,38 +20,43 @@ function Header() {
       <div className="container-fluid">
         <div className="row d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <div className="col-lg-3 text-lg-start text-center">
-            <Link to="/Homepage">
-              <img
-                src={process.env.PUBLIC_URL + "/HSkyOps-white.png"}
-                width={120}
-                height={120}
-                className="img-fluid me-5"
-                alt="Logo"
-              />
-            </Link>
+            <img
+              src={process.env.PUBLIC_URL + "/logo1.svg"}
+              width={150}
+              height={150}
+              className="img-fluid me-5"
+            />
+            <a
+              href="/"
+              className="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none"
+            ></a>
           </div>
 
           <div className="col-lg-6">
-            <nav className="navbar navbar-expand-lg">
+            <nav class="navbar navbar-expand-lg ">
               <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li>
-                  <Link to="/Homepage" className={`nav-link px-3 ${getLinkClass("/Homepage")}`}>
-                    Dashboard
+                  <Link
+                    to="/Homepage"
+                    className="nav-link px-3 link-info text-white"
+                  >
+                    Homepage
                   </Link>
                 </li>
                 <li>
-                  <Link to="/Map" className={`nav-link px-3 ${getLinkClass("/Map")}`}>
+                  <Link
+                    to="/Map"
+                    className="nav-link px-3 link-info link-offset-2 link-underline-opacity-200 link-underline-opacity-100-hover text-white"
+                  >
                     Map
                   </Link>
                 </li>
                 <li>
-                  <Link to="/Project" className={`nav-link px-3 ${getLinkClass("/Project")}`}>
+                  <Link
+                    to="/Project"
+                    className="nav-link px-3 link-info text-white"
+                  >
                     Projects
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/Company" className={`nav-link px-3 ${getLinkClass("/Company")}`}>
-                    Company
                   </Link>
                 </li>
                 <li>
@@ -66,7 +65,64 @@ function Header() {
                       <ul className="navbar-nav">
                         <li className="nav-item dropdown">
                           <button
-                            className={`btn dropdown-toggle ${isFlightDatabaseActive ? "fw-bold text-primary" : "text-white"}`}
+                            className="btn dropdown-toggle text-white"
+                            style={{ marginTop: "2px" }}
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            Company
+                          </button>
+                          <ul
+                            className="dropdown-menu dropdown-menu-dark"
+                            aria-labelledby="navbarDropdownMenuLink"
+                          >
+                            <li>
+                              <Link to="/Equipment" className="dropdown-item">
+                                Equipment
+                              </Link>
+                            </li>
+                            <li>
+                              <Link to="/Personnel" className="dropdown-item">
+                                Personel
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to="/ProjectStatus"
+                                className="dropdown-item"
+                              >
+                                Project Status
+                              </Link>
+                            </li>
+                            <li>
+                              <hr className="dropdown-divider" />
+                            </li>
+                            <li>
+                              <Link
+                                to="/OperationManual"
+                                className="dropdown-item"
+                              >
+                                Operation Manual
+                              </Link>
+                            </li>
+                            <li>
+                              <Link to="/SOP" className="dropdown-item">
+                                SOP
+                              </Link>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div className="container-fluid">
+                    <div id="navbarNavDarkDropdown">
+                      <ul className="navbar-nav">
+                        <li className="nav-item dropdown">
+                          <button
+                            className="btn dropdown-toggle text-white"
                             style={{ marginTop: "2px" }}
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
@@ -75,22 +131,28 @@ function Header() {
                           </button>
                           <ul className="dropdown-menu dropdown-menu-dark">
                             <li>
-                              <Link to="/FlightDatabase" className={`dropdown-item ${getLinkClass("/FlightDatabase")}`}>
+                              <Link to="/Checklistdb" className="dropdown-item">
                                 Checklist Database
                               </Link>
                             </li>
                             <li>
-                              <Link to="/FlightDatabase/ProjectLogbook" className={`dropdown-item ${getLinkClass("/FlightDatabase/ProjectLogbook")}`}>
+                              <Link
+                                to="/ProjectLogbook"
+                                className="dropdown-item"
+                              >
                                 Project Logbook
                               </Link>
                             </li>
                             <li>
-                              <Link to="/FlightDatabase/UAVLogbook" className={`dropdown-item ${getLinkClass("/FlightDatabase/UAVLogbook")}`}>
+                              <Link to="/UAVLogbook" className="dropdown-item">
                                 UAV Logbook
                               </Link>
                             </li>
                             <li>
-                              <Link to="/FlightDatabase/FlightRecord" className={`dropdown-item ${getLinkClass("/FlightDatabase/FlightRecord")}`}>
+                              <Link
+                                to="/FlightRecord"
+                                className="dropdown-item"
+                              >
                                 Flight Record
                               </Link>
                             </li>
@@ -114,21 +176,24 @@ function Header() {
               >
                 <img
                   src={process.env.PUBLIC_URL + "/profile1.png"}
-                  alt="Profile"
+                  alt="mdo"
                   width="32"
                   height="32"
                   className="rounded-circle border border-2 border-white"
                 />
               </a>
               <ul className="dropdown-menu text-small">
+                {/* <li>
+              <Link to="/Project/Addproject" className="dropdown-item">New Project</Link>
+              </li> */}
+                {/* <li>
+                <a className="dropdown-item" href="#">
+                  Settings
+                </a>
+              </li> */}
                 <li>
                   <Link to="/Profile/AccountDetails" className="dropdown-item">
                     Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/Profile/Notification" className="dropdown-item">
-                    Notification
                   </Link>
                 </li>
                 <li>
@@ -149,3 +214,4 @@ function Header() {
 }
 
 export default Header;
+
