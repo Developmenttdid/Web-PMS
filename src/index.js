@@ -29,8 +29,7 @@ import ProjectStatusCompany from './pages/Company/ProjectStatus';
 import OperationManualCompany from './pages/Company/OperationManual';
 import SOP from './pages/Company/SOP';
 
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Router>
@@ -39,13 +38,6 @@ root.render(
         <Route element={<HeaderLayout />}>
           <Route path="/Homepage" element={<Homepage />} />
           <Route path="/Project" element={<Project />} />
-          <Route element = {<NavconfigLayout />}>
-            <Route path="/Project/ProjectStatus" element={< ProjectStatus/>} />
-            <Route path="/Project/ProjectTimeline" element={<ProjectTimeline />} />
-            <Route path="/Project/Personnel" element={<Personnel />} />
-            <Route path="/Project/Equipment" element={<Equipment />} />
-            <Route path="/Project/LegalDocument" element={<LegalDocument />} />
-          </Route>
           <Route path="/Company" element={<Company />} />
           <Route path="FlightDatabase" element={<Checklistdb />} />
           <Route path="/ForgotPassword" element={<ForgotPassword />} />
@@ -58,10 +50,13 @@ root.render(
           <Route path="FlightDatabase/UAVLogbook" element={<UAVLogbook />} />
           <Route path="FlightDatabase/FlightRecord" element={<FlightRecord />} />
           <Route path="/Map" element={<Map />} />
-          <Route path="/Project/ProjectStatus" element={<ProjectStatus />} />
+          <Route path="/Project/Addproject" element={<Addproject />} />
           <Route element={<NavprofileLayout />}>
             <Route path="/Profile/AccountDetails" element={<Profile />} />
-            <Route path="/Profile/ChangePassword" element={<ChangePassword />} />
+            <Route
+              path="/Profile-/ChangePassword"
+              element={<ChangePassword />}
+            />
           </Route>
         </Route>
       </Routes>
@@ -91,10 +86,10 @@ function NavprofileLayout() {
   );
 }
 
-function NavconfigLayout() {
+function NavdatabaseLayout() {
   return (
-    <div style={{ display: "flex"}}>
-      <ConfigNav />
+    <div style={{ display: "flex" }}>
+      <DatabaseNav />
       <div style={{ flex: 1, padding: "20px" }}>
         <Outlet />
       </div>
