@@ -8,7 +8,7 @@ const ProfileNav = () => {
     <div
       className="nav-container d-flex flex-column flex-shrink-0 p-3 text-white"
       style={{
-        width: "300px",
+        width: "250px",
         height: "100vh",
         backgroundColor: "#f8f9fa",
         boxShadow: "2px 0 5px rgba(0,0,0,0.1)"

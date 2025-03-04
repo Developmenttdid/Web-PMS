@@ -23,6 +23,11 @@ import Personnel from './pages/Project Config/personnel';
 import Equipment from './pages/Project Config/equipment';
 import LegalDocument from './pages/Project Config/legaldoc';
 import ForgotPassword from './pages/forgotpassword';
+import EquipmentCompany from './pages/Company/Equipment';
+import PersonnelCompany from './pages/Company/Personnel';
+import ProjectStatusCompany from './pages/Company/ProjectStatus';
+import OperationManualCompany from './pages/Company/OperationManual';
+import SOP from './pages/Company/SOP';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -43,6 +48,12 @@ root.render(
           </Route>
           <Route path="/Company" element={<Company />} />
           <Route path="FlightDatabase" element={<Checklistdb />} />
+          <Route path="/ForgotPassword" element={<ForgotPassword />} />
+          <Route path="/Company/Equipment" element={<EquipmentCompany />} />
+          <Route path="/Company/Personnel" element={<PersonnelCompany />} />
+          <Route path="/Company/ProjectStatus" element={<ProjectStatusCompany />} />
+          <Route path="/Company/OperationManual" element={<OperationManualCompany />} />
+          <Route path="/Company/SOP" element={<SOP />} />
           <Route path="FlightDatabase/ProjectLogbook" element={<ProjectLogbook />} />
           <Route path="FlightDatabase/UAVLogbook" element={<UAVLogbook />} />
           <Route path="FlightDatabase/FlightRecord" element={<FlightRecord />} />
@@ -53,7 +64,6 @@ root.render(
             <Route path="/Profile/ChangePassword" element={<ChangePassword />} />
           </Route>
         </Route>
-        <Route path="/ForgotPassword" element={<ForgotPassword />} />
       </Routes>
     </Router>
   </React.StrictMode>

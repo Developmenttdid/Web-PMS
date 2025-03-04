@@ -94,6 +94,10 @@ function ProjectStatus() {
       </div>
       <div className="form-group row d-flex align-items-center column-gap-1">
         <div className="col mb-3 ms-3">
+          <label className="form-label">Upload AOI</label>
+          <input className="form-control mb-3" type="file" />
+          <label className="form-label">Area Calculation</label>
+          <input className="form-control mb-3" type="text" readOnly />
           <label className="form-label">Insert Location Coordinates</label>
           <input className="form-control mb-3" id="geoloc" type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
           <label className="form-label">City Information</label>

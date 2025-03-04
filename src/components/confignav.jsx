@@ -14,6 +14,12 @@ const ConfigNav = () => {
         boxShadow: "2px 0 5px rgba(0,0,0,0.1)"
       }}
     >
+      <h4
+        className="mt-0"
+        style={{ color: "#0F0F56", fontWeight: "bold", fontSize: "1.5rem" }}
+      >
+        Manage Project
+      </h4>
       <hr className="w-100" />
       <ul className="nav nav-pills flex-column w-100">
         <li className="nav-item">
