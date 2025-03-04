@@ -1,16 +1,22 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./Header.css";
 
 function Header() {
+  const location = useLocation();
+
+  const getLinkClass = (path) =>
+    location.pathname === path ? "fw-bold text-primary" : "text-white";
+
+  const isFlightDatabaseActive = location.pathname.startsWith("/FlightDatabase");
+
   return (
     <header
       className="p-1 border-bottom"
       style={{
         backgroundColor: "#0F0F56",
-        //position: "fixed",
         top: 0,
         left: "0",
         zIndex: 1000,
@@ -32,7 +38,7 @@ function Header() {
           </div>
 
           <div className="col-lg-6">
-            <nav class="navbar navbar-expand-lg ">
+            <nav className="navbar navbar-expand-lg">
               <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li>
                   <Link to="/Homepage" className={`nav-link px-3 ${getLinkClass("/Homepage")}`} style={{ fontSize: '0.9rem' }}>
@@ -121,28 +127,22 @@ function Header() {
                           </button>
                           <ul className="dropdown-menu dropdown-menu-dark">
                             <li>
-                              <Link to="/Checklistdb" className="dropdown-item">
+                              <Link to="/FlightDatabase" className={`dropdown-item ${getLinkClass("/FlightDatabase")}`}>
                                 Checklist Database
                               </Link>
                             </li>
                             <li>
-                              <Link
-                                to="/ProjectLogbook"
-                                className="dropdown-item"
-                              >
+                              <Link to="/FlightDatabase/ProjectLogbook" className={`dropdown-item ${getLinkClass("/FlightDatabase/ProjectLogbook")}`}>
                                 Project Logbook
                               </Link>
                             </li>
                             <li>
-                              <Link to="/UAVLogbook" className="dropdown-item">
+                              <Link to="/FlightDatabase/UAVLogbook" className={`dropdown-item ${getLinkClass("/FlightDatabase/UAVLogbook")}`}>
                                 UAV Logbook
                               </Link>
                             </li>
                             <li>
-                              <Link
-                                to="/FlightRecord"
-                                className="dropdown-item"
-                              >
+                              <Link to="/FlightDatabase/FlightRecord" className={`dropdown-item ${getLinkClass("/FlightDatabase/FlightRecord")}`}>
                                 Flight Record
                               </Link>
                             </li>
@@ -166,24 +166,21 @@ function Header() {
               >
                 <img
                   src={process.env.PUBLIC_URL + "/profile1.png"}
-                  alt="mdo"
+                  alt="Profile"
                   width="32"
                   height="32"
                   className="rounded-circle border border-2 border-white"
                 />
               </a>
               <ul className="dropdown-menu text-small">
-                {/* <li>
-              <Link to="/Project/Addproject" className="dropdown-item">New Project</Link>
-              </li> */}
-                {/* <li>
-                <a className="dropdown-item" href="#">
-                  Settings
-                </a>
-              </li> */}
                 <li>
                   <Link to="/Profile/AccountDetails" className="dropdown-item">
                     Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/Profile/Notification" className="dropdown-item">
+                    Notification
                   </Link>
                 </li>
                 <li>
@@ -204,4 +201,3 @@ function Header() {
 }
 
 export default Header;
-
