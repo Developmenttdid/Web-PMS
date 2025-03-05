@@ -133,111 +133,104 @@ function ProjectTimeline() {
     },
     {
       id: '16',
-      taskList: 'Akuisisi Data Survei Udara',
-      startDate: '',
-      endDate: '',
-      action: ''
-    },
-    {
-      id: '17',
-      taskList: 'Manajemen Data Survei Udara',
-      startDate: '',
-      endDate: '',
-      action: ''
-    },
-    {
-      id: '18',
-      taskList: 'Pengolahan Data Survei Udara',
-      startDate: '',
-      endDate: '',
-      action: ''
-    },
-    {
-      id: '19',
-      taskList: 'Pemeriksaan Data (QC)',
-      startDate: '',
-      endDate: '',
-      action: ''
-    },
-    {
-      id: '20',
-      taskList: 'Pembuatan Berita Acara Pekerjaan Lapangan (BAPL)',
-      startDate: '',
-      endDate: '',
-      action: ''
-    },
-    {
-      id: '21',
-      taskList: 'Manajemen Data Hasil Pekerjaan',
-      startDate: '',
-      endDate: '',
-      action: ''
-    },
-    {
-      id: '22',
       taskList: 'Pengolahan Data Survei Darat',
       startDate: '',
       endDate: '',
       action: ''
     },
     {
-      id: '23',
+      id: '17',
+      taskList: 'Akuisisi Data Survei Udara',
+      startDate: '',
+      endDate: '',
+      action: ''
+    },
+    {
+      id: '18',
+      taskList: 'Manajemen Data Survei Udara',
+      startDate: '',
+      endDate: '',
+      action: ''
+    },
+    {
+      id: '19',
       taskList: 'Pengolahan PPK',
       startDate: '',
       endDate: '',
       action: ''
     },
     {
-      id: '24',
+      id: '20',
+      taskList: 'Pengolahan Data Survei Udara',
+      startDate: '',
+      endDate: '',
+      action: ''
+    },
+    {
+      id: '21',
+      taskList: 'Pembuatan Berita Acara Pekerjaan Lapangan (BAPL)',
+      startDate: '',
+      endDate: '',
+      action: ''
+    },
+    {
+      id: '22',
+      taskList: 'Manajemen Data Hasil Pekerjaan',
+      startDate: '',
+      endDate: '',
+      action: ''
+    },
+    {
+      id: '23',
       taskList: 'Pemeriksaan Data (QC)',
       startDate: '',
       endDate: '',
       action: ''
     },
     {
-      id: '25',
+      id: '24',
       taskList: 'Serah Terima Data',
       startDate: '',
       endDate: '',
       action: ''
     },
     {
-      id: '26',
+      id: '25',
       taskList: 'Manajemen Data Survei Darat & Udara',
       startDate: '',
       endDate: '',
       action: ''
     },
     {
-      id: '27',
+      id: '26',
       taskList: 'Pemeriksaan Data Hasil Pekerjaan Lapangan (QC)',
       startDate: '',
       endDate: '',
       action: ''
     },
     {
-      id: '28',
+      id: '27',
       taskList: 'Pengolahan Data Survei Darat (hi res)',
       startDate: '',
       endDate: '',
       action: ''
     },
     {
-      id: '29',
+      id: '28',
       taskList: 'Pengolahan Data Survei Udara (hi res)',
       startDate: '',
       endDate: '',
       action: ''
     },
     {
-      id: '30',
+      id: '29',
       taskList: 'Uji Akurasi',
       startDate: '',
       endDate: '',
       action: ''
     },
     {
-      id: '31',
+      id: '30',
       taskList: 'Revisi Pekerjaan',
       startDate: '',
       endDate: '',
