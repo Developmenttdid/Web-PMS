@@ -64,7 +64,7 @@ function FlightRecord() {
       <h3 className="mb-4">Flight Record</h3>
       
       <div className="container-fluid mx-0" style={{ overflowX: "auto", width: "100%" }}>
-        <table className="table table-bordered" style={{ whiteSpace: "nowrap" }}>
+        <table className="table table-bordered" style={{ whiteSpace: "nowrap", borderColor: '#143893' }}>
           <thead>
             <tr>
               <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>

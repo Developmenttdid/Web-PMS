@@ -6,7 +6,7 @@ import React from "react";
 
 function ProjectStatusCompany() {
   return (
-   <></>
+    <h1>Project Status</h1>
   );
 }
 

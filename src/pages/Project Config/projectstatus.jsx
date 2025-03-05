@@ -24,6 +24,7 @@ function ProjectStatus() {
 
   useEffect(() => {
     document.body.style.overflow = "auto";
+    
     if (!mapRef.current) {
       mapRef.current = L.map("map").setView([-7.529574225950673, 111.19537353515626], 13);
 
@@ -115,8 +116,8 @@ function ProjectStatus() {
         <div className="col ms-3">
           <label className="form-label">Area Calculation</label>
           <div className="input-group mb-3">
-            <span className="input-group-text">ha</span>
             <input className="form-control" type="text" readOnly />
+            <span className="input-group-text">ha</span>
           </div>
         </div>
         <label className="form-label ms-3">Insert Location Coordinates</label>
@@ -125,30 +126,39 @@ function ProjectStatus() {
         <input className="form-control mb-3 ms-3" id="cityinfo" type="text" value={city} readOnly />
         <div id="map" className="ms-3" style={{ height: "300px", width: "100%" }}></div>
       </div>
-      <div className="form-group row d-flex align-items-center column-gap-1">
-        <div className="col mb-3 ms-3">
+      <div className="d-flex align-items-start column-gap-3 mt-3">
+        {/* Objective Section */}
+        <div className="flex-grow-1">
           <label className="form-label">Objective</label>
           <div className="form-floating">
             <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea2"></textarea>
             <label htmlFor="floatingTextarea2">Project description</label>
           </div>
         </div>
-        <div className="col mb-3 ms-3">
+
+        {/* Deliverables Section */}
+        <div className="flex-grow-1">
           <label className="form-label">Deliverables</label>
-          <Select
-            options={Deliverableoptions}
-            value={selectedOption2}
-            onChange={setSelectedOption2}
-            placeholder="Select Deliverables"
-            isSearchable={true}
-            className="w-100 mb-3"
-          />
-          <button type="button" className="button-add btn btn-primary mb-3 me-1">Add Deliverable</button>
-          <table className="table text-center table-bordered">
+          <div className="d-flex align-items-center">
+            <Select
+              options={Deliverableoptions}
+              value={selectedOption2}
+              onChange={setSelectedOption2}
+              placeholder="Select Deliverables"
+              isSearchable={true}
+              className="w-100"
+            />
+            <button type="button" className="btn btn-primary ms-2">
+              <i className="bi bi-plus"></i>
+            </button>
+          </div>
+
+          {/* Deliverables Table */}
+          <table className="table text-center table-bordered mt-3" style={{ borderColor: '#143893' }}>
             <thead>
               <tr>
-                <th scope="col" style={{width: '10%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>
-                <th scope="col" style={{width: '80%', backgroundColor: '#143893', color: '#CCE6FF'}}>Deliverable list</th>
+                <th scope="col" style={{ width: '10%', backgroundColor: '#143893', color: '#CCE6FF' }}>#</th>
+                <th scope="col" style={{ width: '80%', backgroundColor: '#143893', color: '#CCE6FF' }}>Deliverable list</th>
               </tr>
             </thead>
             <tbody>
@@ -160,6 +170,7 @@ function ProjectStatus() {
           </table>
         </div>
       </div>
+
     </div>
   );
 }

@@ -71,7 +71,7 @@ function UAVTable() {
      
     ];
     return (
-      <table className="table table-hover text-center">
+      <table className="table table-hover text-center table-bordered" style={{ borderColor: '#143893' }}>
         <thead style={{ width: "100%"}} >
           <tr>
             <th scope="col" style={{ width: "5%", backgroundColor: '#143893', color: '#CCE6FF' }}>

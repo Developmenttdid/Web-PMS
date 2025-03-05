@@ -19,10 +19,10 @@ function Personnel() {
     <div className="personnel-container" style={{ marginLeft: "250px" }}>
         <h2> Personnel</h2>
         <div className="col mb-1 mt-3">
-          <button type="button" className="button-add btn btn-primary mb-3 me-1">Add Personnel</button>
+          <button type="button" className="button-add btn btn-primary mb-3 me-1"><i className="bi bi-plus"></i></button>
         </div>
         <div className="form-group row d-flex align-items-center column-gap-1">
-            <table className="table text-center table-bordered ms-2">
+            <table className="table text-center table-bordered ms-2" style={{ borderColor: '#143893' }}>
                 <thead>
                     <tr>
                         <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>

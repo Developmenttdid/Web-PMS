@@ -6,7 +6,7 @@ function LegalDocument() {
         <h2>Document</h2>
         <h4>#Certificate</h4>
         <div className="col mb-3 ms-3">
-            <table className="table text-center table-bordered">
+            <table className="table text-center table-bordered" style={{ borderColor: '#143893' }}>
                 <thead>
                 <tr>
                     <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>
@@ -30,8 +30,8 @@ function LegalDocument() {
         </div>
         <h4>#Permission</h4>
         <div className="col mb-3 ms-3">
-            <button type="button" className="button-add btn btn-primary mb-3 me-1">Add Document</button>
-            <table className="table text-center table-bordered">
+            <button type="button" className="button-add btn btn-primary mb-3 me-1"><i className="bi bi-plus"></i></button>
+            <table className="table text-center table-bordered" style={{ borderColor: '#143893' }}>
                 <thead>
                 <tr>
                     <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>
@@ -57,8 +57,8 @@ function LegalDocument() {
         </div>
         <h4>#Other Document</h4>
         <div className="col mb-3 ms-3">
-            <button type="button" className="button-add btn btn-primary mb-3 me-1">Add Document</button>
-            <table className="table text-center table-bordered">
+            <button type="button" className="button-add btn btn-primary mb-3 me-1"><i class="bi bi-plus"></i></button>
+            <table className="table text-center table-bordered" style={{ borderColor: '#143893' }}>
                 <thead>
                 <tr>
                     <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>

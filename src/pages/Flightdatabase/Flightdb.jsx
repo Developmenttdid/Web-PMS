@@ -26,7 +26,7 @@ function Checklistdb() {
   return (
     <div className="container-fluid">
       <h3 className="mt-3 ms-2">Checklist Database</h3>
-      <table class="table text-center table-bordered">
+      <table class="table text-center table-bordered" style={{ borderColor: '#143893' }}>
         <thead>
           <tr>
             <th scope="col" style={{ width: "5%", backgroundColor: '#143893', color: '#CCE6FF' }}>

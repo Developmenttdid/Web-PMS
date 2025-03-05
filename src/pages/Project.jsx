@@ -41,16 +41,16 @@ function Project() {
             <Link to="/Project/ProjectStatus">
               <button
                 type="button"
-                className="button-add btn btn-success mb-3 me-1 mt-3"
+                className="button-add btn btn-success mb-3 me-3 mt-3"
               >
-                <i className="bi bi-plus me-1"></i>Add Project
+                <i className="bi bi-plus"></i> Add Project
               </button>
             </Link>
           </div>
         </div>
 
         <div className="container-fluid">
-          <table class="table text-center table-bordered">
+          <table class="table text-center table-bordered" style={{ borderColor: '#143893' }}>
             <thead className="px-sm-2">
               <tr>
                 <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}} >#</th>

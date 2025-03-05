@@ -31,19 +31,23 @@ function Equipment() {
     <div className="equipment-container" style={{ marginLeft: "250px" }}>
         <h2>Equipment</h2>
         <div className="col mb-3 ms-3">
-          <label className="form-label">Add Equipment</label>
-            <Select
+            <label className="form-label">Add Equipment</label>
+            <div className="d-flex align-items-center">
+                <Select
                 options={optionsEquipment}
                 value={selectedOption3}
                 onChange={setSelectedOption3}
                 placeholder="Select equipment"
                 isSearchable={true}
-                className="w-100 mb-3"
-            />
-          <button type="button" className="button-add btn btn-primary mb-3 me-1">Add Equipment</button>
+                className="w-100"
+                />
+                <button type="button" className="btn btn-primary ms-2">
+                <i className="bi bi-plus"></i>
+                </button>
+            </div>
         </div>
         <div className="form-group row d-flex align-items-center column-gap-1">
-            <table className="table text-center table-bordered ms-2">
+            <table className="table text-center table-bordered ms-2" style={{ borderColor: '#143893' }}>
                 <thead>
                 <tr>
                 <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>

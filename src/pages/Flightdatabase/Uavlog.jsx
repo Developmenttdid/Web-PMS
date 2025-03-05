@@ -9,7 +9,7 @@ function UAVLogbook() {
   return (
     <div className="container-fluid">
       <h3 className="mt-3 ms-2">UAV Logbook</h3>
-      <table className="table text-center table-bordered">
+      <table className="table text-center table-bordered" style={{ borderColor: '#143893' }}>
         <thead>
           <tr>
             <th scope="col" style={{ width: "5%", backgroundColor: '#143893', color: '#CCE6FF' }}>
