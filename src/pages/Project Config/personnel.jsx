@@ -1,5 +1,20 @@
 import React from "react";
+import Select from "react-select";
+import { useState } from "react";
+
 function Personnel() {
+    const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedOption2, setSelectedOption2] = useState(null);
+    const options = [
+        { value: "1", label: "Pilot" },
+        { value: "2", label: "Co-Pilot" },
+        { value: "3", label: "Observer" },
+    ];
+    const optionsName = [
+        { value: "1", label: "Alex" },
+        { value: "2", label: "Jane Doe" },
+        { value: "3", label: "Bob" },
+    ];
   return (
     <div className="personnel-container" style={{ marginLeft: "250px" }}>
         <h2> Personnel</h2>
@@ -19,18 +34,22 @@ function Personnel() {
                 <tbody>
                 <tr>
                     <th scope="row">1</th>
-                    <td><select className="form-select" aria-label="Project type">
-                        <option selected value="" disabled>Select personnel name</option>
-                        <option value="1">Inspection</option>
-                        <option value="2">Survey</option>
-                        <option value="3">Training</option>
-                    </select></td>
-                    <td><select className="form-select" aria-label="Project type">
-                        <option selected value="" disabled>Select personnel role</option>
-                        <option value="1">Inspection</option>
-                        <option value="2">Survey</option>
-                        <option value="3">Training</option>
-                    </select></td>
+                    <td><Select
+                        options={optionsName}
+                        value={selectedOption2}
+                        onChange={setSelectedOption2}
+                        placeholder="Select personnel name"
+                        isSearchable={true}
+                        className="w-100"
+                    /></td>
+                    <td><Select
+                        options={options}
+                        value={selectedOption}
+                        onChange={setSelectedOption}
+                        placeholder="Select personnel role"
+                        isSearchable={true}
+                        className="w-100"
+                    /></td>
                     <td><button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button></td>
                 </tr>
                 </tbody>

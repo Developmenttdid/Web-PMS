@@ -149,7 +149,7 @@ function Header() {
           </div>
 
           <div className="col-lg-3 d-flex justify-content-lg-end justify-content-center">
-            <div className="dropdown text-end text-white">
+            <div className="dropdown text-end text-white me-4">
               <a
                 href="#"
                 className="d-block link-body-emphasis text-decoration-none dropdown-toggle text-white"
