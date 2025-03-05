@@ -2,12 +2,25 @@ import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./projectstatus.css";
+import Select from "react-select";
 
 function ProjectStatus() {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const [location, setLocation] = useState("-7.529574225950673, 111.19537353515626");
   const [city, setCity] = useState("");
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption2, setSelectedOption2] = useState(null);
+  const Projectoptions = [
+    { value: "1", label: "Inspection" },
+    { value: "2", label: "Survey" },
+    { value: "3", label: "Training" },
+  ];
+  const Deliverableoptions = [
+    { value: "1", label: "Inspection" },
+    { value: "2", label: "Survey" },
+    { value: "3", label: "Training" },
+  ];
 
   useEffect(() => {
     document.body.style.overflow = "auto";
@@ -84,12 +97,14 @@ function ProjectStatus() {
         </div>
         <div className="col mb-3 ms-3">
           <label className="form-label">Project Type</label>
-          <select className="form-select" aria-label="Project type">
-            <option selected value="" disabled>Select a project type</option>
-            <option value="1">Inspection</option>
-            <option value="2">Survey</option>
-            <option value="3">Training</option>
-          </select>
+          <Select
+            options={Projectoptions}
+            value={selectedOption}
+            onChange={setSelectedOption}
+            placeholder="Select project type"
+            isSearchable={true}
+            className="w-100"
+          />
         </div>
       </div>
       <div className="form-group row d-flex align-items-center column-gap-1">
@@ -115,12 +130,14 @@ function ProjectStatus() {
         </div>
         <div className="col mb-3 ms-3">
           <label className="form-label">Deliverables</label>
-          <select className="form-select mb-3" aria-label="Project type">
-            <option selected value="" disabled>Select a deliverable</option>
-            <option value="1">Inspection</option>
-            <option value="2">Survey</option>
-            <option value="3">Training</option>
-          </select>
+          <Select
+            options={Deliverableoptions}
+            value={selectedOption2}
+            onChange={setSelectedOption2}
+            placeholder="Select Deliverables"
+            isSearchable={true}
+            className="w-100 mb-3"
+          />
           <button type="button" className="button-add btn btn-primary mb-3 me-1">Add Deliverable</button>
           <table className="table text-center table-bordered">
             <thead>
