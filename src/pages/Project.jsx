@@ -50,15 +50,15 @@ function Project() {
         </div>
 
         <div className="container-fluid">
-          <table class="table text-center">
+          <table class="table text-center table-bordered">
             <thead className="px-sm-2">
               <tr>
-                <th scope="col" style={{width: '5%'}} >#</th>
-                <th scope="col" style={{width: '15%'}} >Project Code</th>
-                <th scope="col" style={{width: '15%'}} >Location</th>
-                <th scope="col" style={{width: '15%'}} >Date</th>
-                <th scope="col" style={{width: '35%'}} >Progress</th>
-                <th scope="col" style={{width: '15%'}} >Action</th>
+                <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}} >#</th>
+                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}} >Project Code</th>
+                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}} >Location</th>
+                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}} >Date</th>
+                <th scope="col" style={{width: '35%', backgroundColor: '#143893', color: '#CCE6FF'}} >Progress</th>
+                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}} >Action</th>
               </tr>
             </thead>
             <tbody>

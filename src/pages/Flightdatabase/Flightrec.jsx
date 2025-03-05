@@ -64,34 +64,34 @@ function FlightRecord() {
       <h3 className="mb-4">Flight Record</h3>
       
       <div className="container-fluid mx-0" style={{ overflowX: "auto", width: "100%" }}>
-        <table className="table" style={{ whiteSpace: "nowrap" }}>
+        <table className="table table-bordered" style={{ whiteSpace: "nowrap" }}>
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Date</th>
-              <th scope="col">Year</th>
-              <th scope="col">Project</th>
-              <th scope="col">Activities</th>
-              <th scope="col">Flight Code</th>
-              <th scope="col">Pilot</th>
-              <th scope="col">Co-Pilot 1</th>
-              <th scope="col">Co-Pilot 2</th>
-              <th scope="col">UAV</th>
-              <th scope="col">Payload</th>
-              <th scope="col">Location</th>
-              <th scope="col">Weather</th>
-              <th scope="col">Take-off Time</th>
-              <th scope="col">Landing Time</th>
-              <th scope="col">Total Flight Time</th>
-              <th scope="col">Total Distance</th>
-              <th scope="col">Battery ID</th>
-              <th scope="col">Battery Voltage (Checker)</th>
-              <th scope="col">Battery Percentage (Checker)</th>
-              <th scope="col">Battery Voltage (MP)</th>
-              <th scope="col">Battery Percentage (MP)</th>
-              <th scope="col">Incident</th>
-              <th scope="col">Note</th>
-              <th scope="col">Loss</th>
+              <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Date</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Year</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Project</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Activities</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Flight Code</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Pilot</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Co-Pilot 1</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Co-Pilot 2</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>UAV</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Payload</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Location</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Weather</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Take-off Time</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Landing Time</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Total Flight Time</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Total Distance</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Battery ID</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Battery Voltage (Checker)</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Battery Percentage (Checker)</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Battery Voltage (MP)</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Battery Percentage (MP)</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Incident</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Note</th>
+              <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Loss</th>
             </tr>
           </thead>
           <tbody>

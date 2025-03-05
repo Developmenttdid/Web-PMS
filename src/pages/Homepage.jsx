@@ -130,10 +130,10 @@ function Homepage() {
               >
                 <thead className="table-dark">
                   <tr>
-                    <th style={{ width: "10%" }}>#</th>
-                    <th style={{ width: "30%" }}>User</th>
-                    <th style={{ width: "40%" }}>Action</th>
-                    <th style={{ width: "20%" }}>Time</th>
+                    <th style={{ width: "10%", backgroundColor: '#143893', color: '#CCE6FF' }}>#</th>
+                    <th style={{ width: "30%", backgroundColor: '#143893', color: '#CCE6FF' }}>User</th>
+                    <th style={{ width: "40%", backgroundColor: '#143893', color: '#CCE6FF' }}>Action</th>
+                    <th style={{ width: "20%", backgroundColor: '#143893', color: '#CCE6FF' }}>Time</th>
                   </tr>
                 </thead>
                 <tbody>

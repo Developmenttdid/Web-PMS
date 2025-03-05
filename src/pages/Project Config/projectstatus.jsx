@@ -108,17 +108,22 @@ function ProjectStatus() {
         </div>
       </div>
       <div className="form-group row d-flex align-items-center column-gap-1">
-        <div className="col mb-3 ms-3">
+        <div className="col ms-3">
           <label className="form-label">Upload AOI</label>
           <input className="form-control mb-3" type="file" />
-          <label className="form-label">Area Calculation</label>
-          <input className="form-control mb-3" type="text" readOnly />
-          <label className="form-label">Insert Location Coordinates</label>
-          <input className="form-control mb-3" id="geoloc" type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
-          <label className="form-label">City Information</label>
-          <input className="form-control mb-3" id="cityinfo" type="text" value={city} readOnly />
-          <div id="map" style={{ height: "300px", width: "100%" }}></div>
         </div>
+        <div className="col ms-3">
+          <label className="form-label">Area Calculation</label>
+          <div className="input-group mb-3">
+            <span className="input-group-text">ha</span>
+            <input className="form-control" type="text" readOnly />
+          </div>
+        </div>
+        <label className="form-label ms-3">Insert Location Coordinates</label>
+        <input className="form-control mb-3 ms-3" id="geoloc" type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
+        <label className="form-label ms-3">City Information</label>
+        <input className="form-control mb-3 ms-3" id="cityinfo" type="text" value={city} readOnly />
+        <div id="map" className="ms-3" style={{ height: "300px", width: "100%" }}></div>
       </div>
       <div className="form-group row d-flex align-items-center column-gap-1">
         <div className="col mb-3 ms-3">

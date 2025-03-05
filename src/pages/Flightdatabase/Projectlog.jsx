@@ -9,22 +9,22 @@ function ProjectLogbook() {
   return (
     <div className="container-fluid">
       <h3 className="mt-3 ms-2">Project Logbook</h3>
-      <table className="table text-center">
+      <table className="table text-center table-bordered">
         <thead>
           <tr>
-            <th scope="col" style={{ width: "5%" }}>
+            <th scope="col" style={{ width: "5%", backgroundColor: '#143893', color: '#CCE6FF' }}>
               #
             </th>
-            <th scope="col" style={{ width: "25%" }}>
+            <th scope="col" style={{ width: "25%", backgroundColor: '#143893', color: '#CCE6FF' }}>
               Date
             </th>
-            <th scope="col" style={{ width: "30%" }}>
+            <th scope="col" style={{ width: "30%", backgroundColor: '#143893', color: '#CCE6FF' }}>
               Project Code
             </th>
-            <th scope="col" style={{ width: "25%" }}>
+            <th scope="col" style={{ width: "25%", backgroundColor: '#143893', color: '#CCE6FF' }}>
               Location
             </th>
-            <th scope="col" style={{ width: "15%" }}>
+            <th scope="col" style={{ width: "15%", backgroundColor: '#143893', color: '#CCE6FF'}}>
               Action
             </th>
           </tr>

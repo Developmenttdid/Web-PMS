@@ -26,28 +26,28 @@ function Checklistdb() {
   return (
     <div className="container-fluid">
       <h3 className="mt-3 ms-2">Checklist Database</h3>
-      <table class="table text-center">
+      <table class="table text-center table-bordered">
         <thead>
           <tr>
-            <th scope="col" style={{ width: "5%" }}>
+            <th scope="col" style={{ width: "5%", backgroundColor: '#143893', color: '#CCE6FF' }}>
               #
             </th>
-            <th scope="col" style={{ width: "15%" }}>
+            <th scope="col" style={{ width: "15%", backgroundColor: '#143893', color: '#CCE6FF' }}>
               Date
             </th>
-            <th scope="col" style={{ width: "20%" }}>
+            <th scope="col" style={{ width: "20%", backgroundColor: '#143893', color: '#CCE6FF' }}>
               Project Code
             </th>
-            <th scope="col" style={{ width: "15%" }}>
+            <th scope="col" style={{ width: "15%", backgroundColor: '#143893', color: '#CCE6FF' }}>
               Flight ID
             </th>
-            <th scope="col" style={{ width: "15%" }}>
+            <th scope="col" style={{ width: "15%", backgroundColor: '#143893', color: '#CCE6FF' }}>
               UAV
             </th>
-            <th scope="col" style={{ width: "15%" }}>
+            <th scope="col" style={{ width: "15%", backgroundColor: '#143893', color: '#CCE6FF' }}>
               Payload
             </th>
-            <th scope="col" style={{ width: "15%" }}>
+            <th scope="col" style={{ width: "15%", backgroundColor: '#143893', color: '#CCE6FF' }}>
               Action
             </th>
           </tr>
