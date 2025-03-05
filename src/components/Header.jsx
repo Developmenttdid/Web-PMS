@@ -8,7 +8,7 @@ function Header() {
   const location = useLocation();
 
   const getLinkClass = (path) =>
-    location.pathname.startsWith(path) ? "fw-bold text-primary" : "text-white";  
+    location.pathname === path ? "fw-bold text-primary" : "text-white";   
 
   const isFlightDatabaseActive = location.pathname.startsWith("/FlightDatabase");
   const isCompanyActive = location.pathname.startsWith("/Company");
@@ -146,6 +146,45 @@ function Header() {
                 </li>
               </ul>
             </nav>
+          </div>
+
+          <div className="col-lg-3 d-flex justify-content-lg-end justify-content-center">
+            <div className="dropdown text-end text-white">
+              <a
+                href="#"
+                className="d-block link-body-emphasis text-decoration-none dropdown-toggle text-white"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  src={process.env.PUBLIC_URL + "/profile1.png"}
+                  alt="Profile"
+                  width="32"
+                  height="32"
+                  className="rounded-circle border border-2 border-white"
+                />
+              </a>
+              <ul className="dropdown-menu text-small">
+                <li>
+                  <Link to="/Profile/AccountDetails" className="dropdown-item">
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/Profile/Notification" className="dropdown-item">
+                    Notification
+                  </Link>
+                </li>
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
+                <li>
+                  <Link to="/" className="dropdown-item">
+                    Logout
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

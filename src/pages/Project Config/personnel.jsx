@@ -7,14 +7,14 @@ function Personnel() {
           <button type="button" className="button-add btn btn-primary mb-3 me-1">Add Personnel</button>
         </div>
         <div className="form-group row d-flex align-items-center column-gap-1">
-            <table className="table text-center table-bordered">
+            <table className="table text-center table-bordered ms-2">
                 <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Personnel Name</th>
-                    <th scope="col">Personnel Role</th>
-                    <th scope="col">Action</th>
-                </tr>
+                    <tr>
+                        <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>
+                        <th scope="col" style={{width: '35%', backgroundColor: '#143893', color: '#CCE6FF'}}>Personnel Name</th>
+                        <th scope="col" style={{width: '35%', backgroundColor: '#143893', color: '#CCE6FF'}}>Personnel Role</th>
+                        <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Action</th>
+                    </tr>
                 </thead>
                 <tbody>
                 <tr>
