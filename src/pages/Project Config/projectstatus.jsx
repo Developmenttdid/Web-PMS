@@ -142,8 +142,8 @@ function ProjectStatus() {
           <table className="table text-center table-bordered">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Deliverable list</th>
+                <th scope="col" style={{width: '10%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>
+                <th scope="col" style={{width: '80%', backgroundColor: '#143893', color: '#CCE6FF'}}>Deliverable list</th>
               </tr>
             </thead>
             <tbody>

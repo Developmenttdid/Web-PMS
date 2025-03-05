@@ -9,11 +9,11 @@ function LegalDocument() {
             <table className="table text-center table-bordered">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Personnel ID</th>
-                    <th scope="col">Certificate ID</th>
-                    <th scope="col">Expiration Date</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>
+                    <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Personnel ID</th>
+                    <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Certificate ID</th>
+                    <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Expiration Date</th>
+                    <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}}>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,12 +34,12 @@ function LegalDocument() {
             <table className="table text-center table-bordered">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Upload Document</th>
-                    <th scope="col">Document Name</th>
-                    <th scope="col">Document ID</th>
-                    <th scope="col">Expiration Date</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>
+                    <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Upload Document</th>
+                    <th scope="col" style={{width: '20%', backgroundColor: '#143893', color: '#CCE6FF'}}>Document Name</th>
+                    <th scope="col" style={{width: '20%', backgroundColor: '#143893', color: '#CCE6FF'}}>Document ID</th>
+                    <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}}>Expiration Date</th>
+                    <th scope="col" style={{width: '10%', backgroundColor: '#143893', color: '#CCE6FF'}}>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -61,12 +61,12 @@ function LegalDocument() {
             <table className="table text-center table-bordered">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Upload Document</th>
-                    <th scope="col">Document Name</th>
-                    <th scope="col">Document ID</th>
-                    <th scope="col">Expiration Date</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>
+                    <th scope="col" style={{width: '25%', backgroundColor: '#143893', color: '#CCE6FF'}}>Upload Document</th>
+                    <th scope="col" style={{width: '20%', backgroundColor: '#143893', color: '#CCE6FF'}}>Document Name</th>
+                    <th scope="col" style={{width: '20%', backgroundColor: '#143893', color: '#CCE6FF'}}>Document ID</th>
+                    <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}}>Expiration Date</th>
+                    <th scope="col" style={{width: '10%', backgroundColor: '#143893', color: '#CCE6FF'}}>Action</th>
                 </tr>
                 </thead>
                 <tbody>
