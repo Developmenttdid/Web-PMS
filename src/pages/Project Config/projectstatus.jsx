@@ -127,7 +127,6 @@ function ProjectStatus() {
         <div id="map" className="ms-3" style={{ height: "300px", width: "100%" }}></div>
       </div>
       <div className="d-flex align-items-start column-gap-3 mt-3">
-        {/* Objective Section */}
         <div className="flex-grow-1">
           <label className="form-label">Objective</label>
           <div className="form-floating">
@@ -135,8 +134,6 @@ function ProjectStatus() {
             <label htmlFor="floatingTextarea2">Project description</label>
           </div>
         </div>
-
-        {/* Deliverables Section */}
         <div className="flex-grow-1">
           <label className="form-label">Deliverables</label>
           <div className="d-flex align-items-center">
@@ -152,8 +149,6 @@ function ProjectStatus() {
               <i className="bi bi-plus"></i>
             </button>
           </div>
-
-          {/* Deliverables Table */}
           <table className="table text-center table-bordered mt-3" style={{ borderColor: '#143893' }}>
             <thead>
               <tr>
@@ -170,7 +165,6 @@ function ProjectStatus() {
           </table>
         </div>
       </div>
-
     </div>
   );
 }
