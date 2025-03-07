@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
+    "@tmcw/togeojson": "^6.0.1",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "browserify-zlib": "^0.2.0",
@@ -19,7 +20,9 @@
     "esri-leaflet-geocoder": "^3.1.5",
     "frappe-gantt": "^1.0.3",
     "https-browserify": "^1.0.0",
+    "jszip": "^3.10.1",
     "leaflet": "^1.9.4",
+    "leaflet-geometryutil": "^0.10.3",
     "leaflet-locationpicker": "^0.3.4",
     "leaflet-search": "^4.0.0",
     "mdb-react-ui-kit": "^9.0.0",
@@ -43,8 +46,11 @@
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "style-loader": "^4.0.0",
+    "togeojson": "^0.16.0",
     "url": "^0.11.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xml2js": "^0.6.2",
+    "xmldom": "^0.6.0"
   },
   "scripts": {
     "start": "cross-env PORT=5173 react-scripts --openssl-legacy-provider start",

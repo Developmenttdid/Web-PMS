@@ -70,34 +70,31 @@ function Header() {
                             Company
                           </button>
                           <ul className="dropdown-menu dropdown-menu-dark">
-                          <li>
-                            <Link to="/Company/Equipment" className={`dropdown-item ${getLinkClass("/Company/Equipment")}`}>
-                              Equipment
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/Company/Personnel" className={`dropdown-item ${getLinkClass("/Company/Personnel")}`}>
-                              Personnel
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/Company/ProjectStatus" className={`dropdown-item ${getLinkClass("/Company/ProjectStatus")}`}>
-                              Project Status
-                            </Link>
-                          </li>
-                          <li>
-                            <hr className="dropdown-divider" />
-                          </li>
-                          <li>
-                            <Link to="/Company/OperationManual" className={`dropdown-item ${getLinkClass("/Company/OperationManual")}`}>
-                              Operation Manual
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/Company/SOP" className={`dropdown-item ${getLinkClass("/Company/SOP")}`}>
-                              SOP
-                            </Link>
-                          </li>
+                            <li>
+                              <Link to="/Company/Equipment" className={`dropdown-item ${getLinkClass("/Company/Equipment")}`}>
+                                Equipment
+                              </Link>
+                            </li>
+                            <li>
+                              <Link to="/Company/Personnel" className={`dropdown-item ${getLinkClass("/Company/Personnel")}`}>
+                                Personnel
+                              </Link>
+                            </li>
+                            <li>
+                              <Link to="/Company/ProjectStatus" className={`dropdown-item ${getLinkClass("/Company/ProjectStatus")}`}>
+                                Project Status
+                              </Link>
+                            </li>
+                            <li>
+                              <Link to="/Company/OperationManual" className={`dropdown-item ${getLinkClass("/Company/OperationManual")}`}>
+                                Operation Manual
+                              </Link>
+                            </li>
+                            <li>
+                              <Link to="/Company/SOP" className={`dropdown-item ${getLinkClass("/Company/SOP")}`}>
+                                SOP
+                              </Link>
+                            </li>
                           </ul>
                         </li>
                       </ul>

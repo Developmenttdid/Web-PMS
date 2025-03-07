@@ -3,10 +3,14 @@ import Select from "react-select";
 import { useState } from "react";
 
 function Equipment() {
-    document.body.style.overflow = "auto";
+    document.body.style.overflowY = "auto";
+    document.body.style.overflowX = "hidden";
+    
     const [selectedOption, setSelectedOption] = useState(null);
     const [selectedOption2, setSelectedOption2] = useState(null);
     const [selectedOption3, setSelectedOption3] = useState(null);
+    const [equipmentList, setEquipmentList] = useState([]);
+
     const options = [
         { value: "1", label: "Inspection" },
         { value: "2", label: "Survey" },
@@ -26,6 +30,35 @@ function Equipment() {
         { value: "4", label: "Laptop" },
         { value: "5", label: "Other" },
     ];
+
+    const handleAddRow = () => {
+        if(selectedOption3) {
+            setEquipmentList([
+                ...equipmentList,
+                {
+                    id: Date.now(),
+                    equipment: selectedOption3, 
+                    type: null,
+                    equipmentID: null,
+                }
+            ]);
+            setSelectedOption3(null);
+        }
+    }
+
+    // function to update dropdown inside each row
+    const handleSelectChange = (id, field, selectedOption) => {
+        setEquipmentList(
+            equipmentList.map((item) =>
+                item.id === id ? {...item, [field]: selectedOption} : item
+            )
+        );
+    }
+
+    // function to delete a row
+    const handleDeleteRow = (id) => {
+        setEquipmentList(equipmentList.filter(item => item.id !== id));
+    }
     
   return (
     <div className="equipment-container" style={{ marginLeft: "250px" }}>
@@ -41,7 +74,7 @@ function Equipment() {
                 isSearchable={true}
                 className="w-100"
                 />
-                <button type="button" className="btn btn-primary ms-2">
+                <button type="button" onClick={handleAddRow} className="btn btn-primary ms-2">
                 <i className="bi bi-plus"></i>
                 </button>
             </div>
@@ -58,29 +91,34 @@ function Equipment() {
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td><input className="form-control mb-3" id="equipment" type="text" readOnly /></td>
-                    <td>
-                    <Select
-                        options={options}
-                        value={selectedOption}
-                        onChange={setSelectedOption}
-                        placeholder="Select equipment type"
-                        isSearchable={true}
-                        className="w-100"
-                    />
-                    </td>
-                    <td><Select
-                        options={optionsID}
-                        value={selectedOption2}
-                        onChange={setSelectedOption2}
-                        placeholder="Select equipment ID"
-                        isSearchable={true}
-                        className="w-100"
-                    /></td>
-                    <td><button type="button" class="btn btn-warning"><i class="bi-pencil-square"></i></button></td>
-                </tr>
+                    {equipmentList.map((item, index)=> (
+                        <tr key={item.id}>
+                        <th scope="row">{index + 1}</th>
+                        <td><input className="form-control mb-3" id="equipment" type="text" value={item.equipment?.label || ""} readOnly /></td>
+                        <td>
+                        <Select
+                            options={options}
+                            value={item.type}
+                            onChange={(selectedOption) => handleSelectChange(item.id, "type", selectedOption)}
+                            placeholder="Select equipment type"
+                            isSearchable={true}
+                            className="w-100"
+                        />
+                        </td>
+                        <td><Select
+                            options={optionsID}
+                            value={item.equipmentID}
+                            onChange={(selectedOption) => handleSelectChange(item.id, "equipmentID", selectedOption)}
+                            placeholder="Select equipment ID"
+                            isSearchable={true}
+                            className="w-100"
+                        /></td>
+                        <td>
+                            <button type="button" className="btn btn-warning"><i className="bi bi-pencil-square"></i></button>
+                            <button type="button" className="btn btn-danger ms-2" onClick={() => handleDeleteRow(item.id)}><i className="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                    ))}
                 </tbody>
             </table>
         </div>

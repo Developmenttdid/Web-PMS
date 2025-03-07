@@ -8,14 +8,13 @@ function OperationManual() {
 
   return (
     <div>
-        <div className="container-fluid mt-3">
-            <div className="row">
-                <div className="col-12">
-                    <h2 className="text-center">Operation Manual</h2>
-                </div>
-            </div>
-        </div>
-
+      <div className="container-fluid mt-3">
+          <div className="row">
+              <div className="col-12">
+                  <h2 className="text-center">Operation Manual</h2>
+              </div>
+          </div>
+      </div>
       <div className="container-fluid">
         <div className="row">
           <div className="col-4">
@@ -34,11 +33,9 @@ function OperationManual() {
           </div>
         </div>
       </div>
-
       <div className="container-fluid mt-5">
         <div className="row">
           <div className="col-12">
-            {/* Menampilkan tabel berdasarkan pilihan */}
             {selectedTable === "UAV" && <UAVTable />}
             {selectedTable === "Payload" && <PayloadTable />}
             {selectedTable === "Geodetic GPS" && <GeodeticGPSTable />}

@@ -9,6 +9,7 @@ function App() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,13 +38,28 @@ function App() {
     return formIsValid;
   };
 
-  const loginSubmit = (e) => {
+  const loginSubmit = async (e) => {
     e.preventDefault();
     if (handleValidation()) {
-      if (email === "admin@gmail.com" && password === "password") {
-        navigate("/Homepage");
-      } else {
-        setEmailError("Invalid email or password");
+      try {
+        const response = await fetch("http://103.163.184.111:3000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem("token", data.token);
+          navigate(data.redirect);
+        } else {
+          setLoginError(data.message || "Invalid email or password");
+        }
+      } catch (error) {
+        setLoginError("An error occurred. Please try again later.");
       }
     }
   };
@@ -63,9 +79,10 @@ function App() {
                   className="form-control mt-0"
                   placeholder="Enter email"
                   onChange={(event) => setEmail(event.target.value)}
-                  required 
+                  required
                   aria-describedby="email-error"
                 />
+                {emailError && <small id="email-error" className="form-text text-danger">{emailError}</small>}
               </div>
               <div className="form-group mt-3">
                 <input
@@ -73,9 +90,11 @@ function App() {
                   className="form-control mt-0"
                   placeholder="Password"
                   onChange={(event) => setPassword(event.target.value)}
-                  required 
+                  required
                 />
               </div>
+
+              {loginError && <div className="text-danger mt-2">{loginError}</div>}
 
               <div className="d-flex justify-content-left">
                 <a href="/ForgotPassword" className="forgot-button mt-1">
