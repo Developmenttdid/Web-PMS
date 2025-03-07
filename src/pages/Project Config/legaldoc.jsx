@@ -132,6 +132,7 @@ function LegalDocument() {
         </table>
       </div>
     </div>
+
   );
 }
 
