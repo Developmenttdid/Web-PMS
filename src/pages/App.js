@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "../App.css";
 import logo from "./HSkyOps.png";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useAuth } from "../utils/AuthProvider";
 
 function App() {
   const [password, setPassword] = useState("");
@@ -11,6 +13,8 @@ function App() {
   const [emailError, setEmailError] = useState("");
   const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth();
 
   useEffect(() => {
     const disableBack = () => {
@@ -40,27 +44,32 @@ function App() {
 
   const loginSubmit = async (e) => {
     e.preventDefault();
-    if (handleValidation()) {
-      try {
-        const response = await fetch("http://103.163.184.111:3000/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          localStorage.setItem("token", data.token);
-          navigate(data.redirect);
-        } else {
-          setLoginError(data.message || "Invalid email or password");
-        }
-      } catch (error) {
-        setLoginError("An error occurred. Please try again later.");
+    
+    if (!handleValidation()) return;
+  
+    try {
+      const response = await fetch("http://103.163.184.111:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        setLoginError(errorData.message || "Invalid email or password");
+        return;
       }
+  
+      const data = await response.json();
+      login(data.token); 
+      localStorage.setItem("token", data.token);
+      
+      navigate(data.redirect || "/Homepage");
+    } catch (error) {
+      console.error("Login error:", error);
+      setLoginError("An error occurred. Please try again later.");
     }
   };
 
@@ -84,14 +93,29 @@ function App() {
                 />
                 {emailError && <small id="email-error" className="form-text text-danger">{emailError}</small>}
               </div>
-              <div className="form-group mt-3">
+              <div className="form-group mt-3 position-relative">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   className="form-control mt-0"
                   placeholder="Password"
-                  onChange={(event) => setPassword(event.target.value)}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                <span
+                  className="position-absolute"
+                  style={{
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                  }}
+                  onMouseDown={() => setShowPassword(true)}
+                  onMouseUp={() => setShowPassword(false)}
+                  onMouseLeave={() => setShowPassword(false)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
 
               {loginError && <div className="text-danger mt-2">{loginError}</div>}

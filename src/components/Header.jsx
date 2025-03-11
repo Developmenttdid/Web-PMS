@@ -1,11 +1,20 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
+import { useAuth } from "../utils/AuthProvider";
 
 function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleSignOut = () => {
+    console.log("User signed out");
+    logout();
+    navigate("/");
+  };
 
   const getLinkClass = (path) =>
     location.pathname === path ? "fw-bold text-primary" : "text-white";   
@@ -176,7 +185,7 @@ function Header() {
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <Link to="/" className="dropdown-item">
+                  <Link to="/" className="dropdown-item" onClick={handleSignOut}>
                     Logout
                   </Link>
                 </li>

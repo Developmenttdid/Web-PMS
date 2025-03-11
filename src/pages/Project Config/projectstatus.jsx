@@ -5,6 +5,7 @@ import "./projectstatus.css";
 import Select from "react-select";
 import * as toGeoJSON from "togeojson";
 import "leaflet-geometryutil";
+import { csv } from "d3-fetch";
 
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
@@ -19,6 +20,13 @@ function ProjectStatus() {
   const [kmlLayer, setKmlLayer] = useState(null);
   const [isKmlChecked, setIsKmlChecked] = useState(false);
   const [isKmlAccepted, setIsKmlAccepted] = useState(false);
+  const [projectCode, setProjectCode] = useState(
+    localStorage.getItem("projectCode") || ""
+  );
+
+  useEffect(() => {
+    localStorage.setItem("projectCode", projectCode);
+  }, [projectCode]);
 
   useEffect(() => {
     initializeMap();
@@ -255,8 +263,36 @@ function ProjectStatus() {
     }
   };
 
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(() => {
+    try {
+      const storedOption = localStorage.getItem("selectedOption");
+      return storedOption ? JSON.parse(storedOption) : null;
+    } catch (error) {
+      console.error("Error parsing storedOption:", error);
+      return null;
+    }
+  });
+
+  useEffect(() => {
+    if (selectedOption) {
+      localStorage.setItem("selectedOption", JSON.stringify(selectedOption)); 
+    } else {
+      localStorage.removeItem("selectedOption"); 
+    }
+  }, [selectedOption]);
+
   const [selectedOption2, setSelectedOption2] = useState(null);
+  const [cityOptions, setCityOptions] = useState([]);
+  const [selectedOption3, setSelectedOption3] = useState(() => {
+    try {
+      const storedCity = localStorage.getItem("selectedCity");
+      return storedCity ? JSON.parse(storedCity) : null;
+    } catch (error) {
+      console.error("Error parsing selectedCity:", error);
+      return null;
+    }
+  });
+
   document.body.style.overflowY = "auto";
   document.body.style.overflowX = "hidden";
 
@@ -272,21 +308,74 @@ function ProjectStatus() {
     { value: "3", label: "Presentation" },
   ];
 
+  useEffect(() => {
+    csv("/regencies.csv")
+      .then((data) => {
+        console.log("Parsed CSV Data:", data);
+
+        // Get the correct key name (first row's keys)
+        const keys = Object.keys(data[0]);
+        console.log("CSV Column Keys:", keys);
+
+        if (keys.length < 3) {
+          console.error("CSV file does not have the expected number of columns.");
+          return;
+        }
+
+        const cityColumn = keys[2]; // Third column (City names)
+
+        const cities = data
+          .map((row) => row[cityColumn])
+          .filter((city) => city)
+          .map((city) => ({ label: city.trim(), value: city.trim() }));
+
+        console.log("Formatted Cities:", cities);
+        setCityOptions(cities);
+      })
+      .catch((error) => console.error("Error loading CSV:", error));
+  }, []);
+
+  useEffect(() => {
+    if (selectedOption3) {
+      localStorage.setItem("selectedCity", JSON.stringify(selectedOption3));
+    } else {
+      localStorage.removeItem("selectedCity");
+    }
+  }, [selectedOption3]);
+  
+
   return (
     <div className="add-project" style={{ marginLeft: "250px" }}>
       <h2 className="project-title">Project Status</h2>
       <div className="form-group row d-flex align-items-center column-gap-1">
         <div className="col mb-3 ms-3">
           <label className="form-label">Project Code</label>
-          <input type="text" className="form-control" placeholder="Type Project Code" />
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Type Project Code"
+            value={projectCode}
+            onChange={(e) => setProjectCode(e.target.value)}
+          />
         </div>
         <div className="col mb-3 ms-3">
           <label className="form-label">Project Type</label>
           <Select
             options={Projectoptions}
             value={selectedOption}
-            onChange={setSelectedOption}
+            onChange={setSelectedOption} 
             placeholder="Select project type"
+            isSearchable={true}
+            className="w-100"
+          />
+        </div>
+        <div className="col mb-3 ms-3">
+          <label className="form-label">City</label>
+          <Select
+            options={cityOptions}
+            value={selectedOption3}
+            onChange={setSelectedOption3}
+            placeholder="Select a City"
             isSearchable={true}
             className="w-100"
           />
@@ -317,13 +406,14 @@ function ProjectStatus() {
         </div>
         <label className="form-label ms-3">Insert Location Coordinates</label>
         <input
-          className="form-control ms-3"
+          className="form-control ms-4"
           type="text"
           value={location}
           onChange={handleManualCoordinates}
+          style={{ width: "98%" }}
         />
         <label className="form-label ms-3">City Information</label>
-        <input className="form-control mb-3 ms-3" id="cityinfo" type="text" value={city} readOnly />
+        <input className="form-control mb-3 ms-4"  style={{ width: "98%" }} id="cityinfo" type="text" value={city} readOnly />
         <div id="map" className="ms-3" style={{ height: "300px", width: "100%" }}></div>
       </div>
       <div className="d-flex align-items-start column-gap-3 mt-3">

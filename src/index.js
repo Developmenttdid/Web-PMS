@@ -28,45 +28,58 @@ import PersonnelCompany from './pages/Company/Personnel';
 import ProjectStatusCompany from './pages/Company/ProjectStatus';
 import OperationManualCompany from './pages/Company/OperationManual';
 import SOP from './pages/Company/SOP';
-import ProtectedRoute from './pages/ProtectedRoute';
+import PrivateRoutes from "./utils/PrivateRoutes";
+import { AuthProvider } from "./utils/AuthProvider";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+
 root.render(
   <React.StrictMode>
-    <Router>
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route element={<ProtectedRoute />}>
-        <Route element={<HeaderLayout />}>
-          <Route path="/Homepage" element={<Homepage />} />
-          <Route path="/Project" element={<Project />} />
-          <Route element={<NavconfigLayout />}>
-            <Route path="/Project/ProjectStatus" element={<ProjectStatus />} />
-            <Route path="/Project/ProjectTimeline" element={<ProjectTimeline />} />
-            <Route path="/Project/Personnel" element={<Personnel />} />
-            <Route path="/Project/Equipment" element={<Equipment />} />
-            <Route path="/Project/LegalDocument" element={<LegalDocument />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Public Route */}
+          <Route path="/" element={<App />} />
+          <Route path="/ForgotPassword" element={<ForgotPassword />} />
+
+          {/* 🔥 Wrap ALL protected routes inside PrivateRoutes */}
+          <Route element={<PrivateRoutes />}>
+            <Route element={<HeaderLayout />}>
+              <Route path="/Homepage" element={<Homepage />} />
+              <Route path="/Project" element={<Project />} />
+              <Route element={<NavconfigLayout />}>
+                <Route path="/Project/ProjectStatus" element={<ProjectStatus />} />
+                <Route path="/Project/ProjectTimeline" element={<ProjectTimeline />} />
+                <Route path="/Project/Personnel" element={<Personnel />} />
+                <Route path="/Project/Equipment" element={<Equipment />} />
+                <Route path="/Project/LegalDocument" element={<LegalDocument />} />
+              </Route>
+
+              <Route path="/Company" element={<Company />} />
+              <Route path="/FlightDatabase" element={<Checklistdb />} />
+              <Route path="/FlightDatabase/ProjectLogbook" element={<ProjectLogbook />} />
+              <Route path="/FlightDatabase/UAVLogbook" element={<UAVLogbook />} />
+              <Route path="/FlightDatabase/FlightRecord" element={<FlightRecord />} />
+              <Route path="/Map" element={<Map />} />
+
+              {/* ✅ Now NavprofileLayout is inside PrivateRoutes */}
+              <Route element={<NavprofileLayout />}>
+                <Route path="/Profile/AccountDetails" element={<Profile />} />
+                <Route path="/Profile/ChangePassword" element={<ChangePassword />} />
+              </Route>
+
+              <Route path="/Company/Equipment" element={<EquipmentCompany />} />
+              <Route path="/Company/Personnel" element={<PersonnelCompany />} />
+              <Route path="/Company/ProjectStatus" element={<ProjectStatusCompany />} />
+              <Route path="/Company/OperationManual" element={<OperationManualCompany />} />
+              <Route path="/Company/SOP" element={<SOP />} />
+            </Route>
           </Route>
-          <Route path="/Company" element={<Company />} />
-          <Route path="/FlightDatabase" element={<Checklistdb />} />
-          <Route path="/FlightDatabase/ProjectLogbook" element={<ProjectLogbook />} />
-          <Route path="/FlightDatabase/UAVLogbook" element={<UAVLogbook />} />
-          <Route path="/FlightDatabase/FlightRecord" element={<FlightRecord />} />
-          <Route path="/Map" element={<Map />} />
-          <Route element={<NavprofileLayout />}>
-            <Route path="/Profile/AccountDetails" element={<Profile />} />
-            <Route path="/Profile/ChangePassword" element={<ChangePassword />} />
-          </Route>
-          <Route path="/Company/Equipment" element={<EquipmentCompany />} />
-          <Route path="/Company/Personnel" element={<PersonnelCompany />} />
-          <Route path="/Company/ProjectStatus" element={<ProjectStatusCompany />} />
-          <Route path="/Company/OperationManual" element={<OperationManualCompany />} />
-          <Route path="/Company/SOP" element={<SOP />} />
-        </Route>
-      </Route>
-      <Route path="/ForgotPassword" element={<ForgotPassword />} />
-    </Routes>
-    </Router>
+        </Routes>
+      </Router>
+    </AuthProvider>
+
   </React.StrictMode>
 );
 
