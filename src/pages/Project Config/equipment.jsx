@@ -28,7 +28,8 @@ function Equipment() {
         { value: "2", label: "GPS" },
         { value: "3", label: "Payload" },
         { value: "4", label: "Laptop" },
-        { value: "5", label: "Other" },
+        {value: "5", label: "Battery"},
+        { value: "6", label: "Other" },
     ];
 
     const handleAddRow = () => {
