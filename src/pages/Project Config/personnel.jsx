@@ -1,44 +1,84 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
 function Personnel() {
   document.body.style.overflowY = "auto";
   document.body.style.overflowX = "hidden";
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [selectedOption2, setSelectedOption2] = useState(null);
-  const [personnelList, setPersonnelList] = useState([]);
+
+  // Function to load stored data from localStorage
+  const loadStoredData = (key) => {
+    const storedData = localStorage.getItem(key);
+    return storedData ? JSON.parse(storedData) : [];
+  };
+
+  const [personnelList, setPersonnelList] = useState(loadStoredData("personnelList"));
+  const [personnelNames, setPersonnelNames] = useState(loadStoredData("personnelNames"));
+  const [personnelRoles, setPersonnelRoles] = useState(loadStoredData("personnelRoles"));
+  const [optionsName, setOptionsName] = useState([]);
+
+  // Save personnelList, personnelNames, and personnelRoles to localStorage whenever they update
+  useEffect(() => {
+    localStorage.setItem("personnelList", JSON.stringify(personnelList));
+    localStorage.setItem("personnelNames", JSON.stringify(personnelNames));
+    localStorage.setItem("personnelRoles", JSON.stringify(personnelRoles));
+  }, [personnelList, personnelNames, personnelRoles]);
+
+  // Fetch personnel names from the provided URL
+  useEffect(() => {
+    fetch("http://103.163.184.111:3000/users")
+      .then((response) => response.json())
+      .then((data) => {
+        const formattedOptions = data.map((user) => ({
+          value: user.id,
+          label: user.name,
+        }));
+        setOptionsName(formattedOptions);
+      })
+      .catch((error) => console.error("Error fetching personnel names:", error));
+  }, []);
 
   const options = [
     { value: "1", label: "Pilot" },
     { value: "2", label: "Co-Pilot" },
     { value: "3", label: "Observer" },
   ];
-  const optionsName = [
-    { value: "1", label: "Alex" },
-    { value: "2", label: "Jane Doe" },
-    { value: "3", label: "Bob" },
-  ];
 
-  // add new row
+  // Add new row
   const handleAddRow = () => {
-    setPersonnelList([
-      ...personnelList,
-      { id: Date.now(), name: null, role: null },
-    ]);
+    const newId = Date.now();
+    setPersonnelList([...personnelList, { id: newId, name: null, role: null }]);
+    setPersonnelNames([...personnelNames, { id: newId, name: null }]);
+    setPersonnelRoles([...personnelRoles, { id: newId, role: null }]);
   };
 
-  // delete row
+  // Delete row
   const handleDeleteRow = (id) => {
     setPersonnelList(personnelList.filter((person) => person.id !== id));
+    setPersonnelNames(personnelNames.filter((person) => person.id !== id));
+    setPersonnelRoles(personnelRoles.filter((person) => person.id !== id));
   };
 
-  // update state when dropdown change
+  // Update state when dropdown changes
   const handleSelectChange = (id, type, selectedOption) => {
     setPersonnelList(
       personnelList.map((person) =>
         person.id === id ? { ...person, [type]: selectedOption } : person
       )
     );
+
+    if (type === "name") {
+      setPersonnelNames(
+        personnelNames.map((person) =>
+          person.id === id ? { ...person, name: selectedOption } : person
+        )
+      );
+    } else if (type === "role") {
+      setPersonnelRoles(
+        personnelRoles.map((person) =>
+          person.id === id ? { ...person, role: selectedOption } : person
+        )
+      );
+    }
   };
 
   return (
@@ -134,9 +174,9 @@ function Personnel() {
                   <button
                     type="button"
                     onClick={() => handleDeleteRow(person.id)}
-                    class="btn btn-danger"
+                    className="btn btn-danger"
                   >
-                    <i class="bi bi-trash"></i>
+                    <i className="bi bi-trash"></i>
                   </button>
                 </td>
               </tr>
@@ -149,4 +189,3 @@ function Personnel() {
 }
 
 export default Personnel;
-

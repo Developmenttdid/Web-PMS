@@ -383,7 +383,7 @@ function ProjectStatus() {
       </div>
       <div className="form-group row d-flex align-items-center column-gap-1">
         <div className="col ms-3">
-          <label className="form-label">Upload AOI</label>
+          <label className="form-label text-danger">Upload AOI</label>
           <div className="d-flex align-items-center">
             <input className="form-control" type="file" ref={fileInputRef} />
             <button type="button" className="btn btn-warning ms-2" onClick={handleCheckKmlLayer}>
@@ -398,13 +398,13 @@ function ProjectStatus() {
           </div>
         </div>
         <div className="col ms-3">
-          <label className="form-label">Area Calculation</label>
+          <label className="form-label text-danger">Area Calculation</label>
           <div className="input-group">
             <input className="form-control" type="text" value={area} readOnly />
             <span className="input-group-text">ha</span>
           </div>
         </div>
-        <label className="form-label ms-3">Insert Location Coordinates</label>
+        <label className="form-label ms-3 text-danger">Insert Location Coordinates</label>
         <input
           className="form-control ms-4"
           type="text"
@@ -412,20 +412,20 @@ function ProjectStatus() {
           onChange={handleManualCoordinates}
           style={{ width: "98%" }}
         />
-        <label className="form-label ms-3">City Information</label>
+        <label className="form-label ms-3 text-danger">City Information</label>
         <input className="form-control mb-3 ms-4"  style={{ width: "98%" }} id="cityinfo" type="text" value={city} readOnly />
         <div id="map" className="ms-3" style={{ height: "300px", width: "100%" }}></div>
       </div>
       <div className="d-flex align-items-start column-gap-3 mt-3">
         <div className="flex-grow-1">
-          <label className="form-label">Objective</label>
+          <label className="form-label text-danger">Objective</label>
           <div className="form-floating">
             <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea2"></textarea>
             <label htmlFor="floatingTextarea2">Project description</label>
           </div>
         </div>
         <div className="flex-grow-1">
-          <label className="form-label">Deliverables</label>
+          <label className="form-label text-danger">Deliverables</label>
           <div className="d-flex align-items-center">
             <Select
               options={Deliverableoptions}
@@ -449,7 +449,7 @@ function ProjectStatus() {
             <tbody>
               <tr>
                 <th scope="row">1</th>
-                <td>Mark</td>
+                <td></td>
               </tr>
             </tbody>
           </table>

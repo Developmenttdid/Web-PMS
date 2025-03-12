@@ -1,35 +1,35 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Project.css";
 
-const projectData = [
-  {
-    id: 1,
-    code: "PRJ-CONTOH-01",
-    location: "Bandung",
-    date: "20/02/2025",
-    progress: 70,
-  },
-  {
-    id: 2,
-    code: "PRJ-CONTOH-02",
-    location: "Jakarta",
-    date: "21/02/2025",
-    progress: 50,
-  },
-  {
-    id: 3,
-    code: "PRJ-CONTOH-03",
-    location: "Surabaya",
-    date: "22/02/2025",
-    progress: 90,
-  },
-];
-
 function Project() {
+  const [projectData, setProjectData] = useState([]);
+  const email = localStorage.getItem("email");
+
+  useEffect(() => {
+    const fetchProjectData = async () => {
+      try {
+        const response = await fetch("http://103.163.184.111:3000/projectstatus");
+        const data = await response.json();
+        const filteredData = data.filter(project => project.email === email).map(project => ({
+          id: project.id,
+          code: project.project_code,
+          location: project.city,
+          date: new Date(project.created_at).toISOString().split('T')[0], // Format date to YYYY-MM-DD
+          progress: 50, // Always set to 50 for now
+        }));
+        setProjectData(filteredData);
+      } catch (error) {
+        console.error("Error fetching project data:", error);
+      }
+    };
+
+    fetchProjectData();
+  }, [email]);
+
   return (
     <div>
       <div className="container-fluid">
@@ -50,21 +50,21 @@ function Project() {
         </div>
 
         <div className="container-fluid">
-          <table class="table text-center table-bordered" style={{ borderColor: '#143893' }}>
+          <table className="table text-center table-bordered" style={{ borderColor: '#143893' }}>
             <thead className="px-sm-2">
               <tr>
-                <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}} >#</th>
-                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}} >Project Code</th>
-                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}} >Location</th>
-                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}} >Date</th>
-                <th scope="col" style={{width: '35%', backgroundColor: '#143893', color: '#CCE6FF'}} >Progress</th>
-                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}} >Action</th>
+                <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>
+                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}}>Project Code</th>
+                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}}>Location</th>
+                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}}>Date</th>
+                <th scope="col" style={{width: '35%', backgroundColor: '#143893', color: '#CCE6FF'}}>Progress</th>
+                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}}>Action</th>
               </tr>
             </thead>
             <tbody>
-              {projectData.map((project) => (
+              {projectData.map((project, index) => (
                 <tr key={project.id}>
-                  <th scope="row">{project.id}</th>
+                  <th scope="row">{index + 1}</th>
                   <td>{project.code}</td>
                   <td>{project.location}</td>
                   <td>{project.date}</td>

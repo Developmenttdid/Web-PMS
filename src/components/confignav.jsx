@@ -1,8 +1,107 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ConfigNav = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleSubmitProject = async (event) => {
+    event.preventDefault();
+
+    // Retrieve project data
+    const selectedOption = JSON.parse(localStorage.getItem("selectedOption"));
+    const selectedCity = JSON.parse(localStorage.getItem("selectedCity"));
+
+    const projectData = {
+        project_code: localStorage.getItem("projectCode"),
+        project_type: selectedOption ? selectedOption.label : null,
+        city: selectedCity ? selectedCity.label : null,
+        email: localStorage.getItem("email")
+    };
+
+    // Retrieve personnel data
+    const personnelNames = JSON.parse(localStorage.getItem("personnelNames")) || [];
+    const personnelRoles = JSON.parse(localStorage.getItem("personnelRoles")) || [];
+
+    const projectPersonnel = personnelNames.map((person, index) => ({
+        personnel_name: person?.name?.label || "",
+        personnel_role: personnelRoles[index]?.role?.label || "",
+        email: localStorage.getItem("email"),
+        project_code: localStorage.getItem("projectCode")
+    }));
+
+    const projectEquipment = (JSON.parse(localStorage.getItem("equipmentList")) || []).map((equipment) => ({
+      equipment_name: equipment.equipment?.label || "",  
+      equipment_type: equipment.type?.label || "",       
+      equipment_id: equipment.equipmentID?.label || null,  // Allow null instead of empty string
+      email: localStorage.getItem("email"),
+      project_code: localStorage.getItem("projectCode"),
+    })).filter(eq => eq.equipment_name && eq.equipment_type); // Only filter out missing names/types
+
+  
+    console.log("📦 Processed projectEquipment:", projectEquipment);
+  
+
+    // Prevent sending an empty array
+    if (projectEquipment.length === 0) {
+        console.warn("⚠️ No equipment data found. Skipping equipment submission.");
+        alert("No equipment data found!");
+        return;
+    }
+
+    try {
+        // Check if project code exists
+        const checkResponse = await fetch(`http://103.163.184.111:3000/projectstatus/${projectData.project_code}`);
+        if (checkResponse.ok) {
+            throw new Error("Project code already exists. Please use a different project code.");
+        }
+
+        // Upload project data
+        const projectResponse = await fetch("http://103.163.184.111:3000/projectstatus", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(projectData),
+        });
+
+        if (!projectResponse.ok) throw new Error("Failed to submit project data");
+
+        // Upload personnel data
+        const personnelResponse = await fetch("http://103.163.184.111:3000/personnel", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(projectPersonnel),
+        });
+
+        if (!personnelResponse.ok) throw new Error("Failed to submit personnel data");
+
+        // Upload equipment data
+        const equipmentResponse = await fetch("http://103.163.184.111:3000/projectequipment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(projectEquipment),
+        });
+
+        if (!equipmentResponse.ok) throw new Error("Failed to submit equipment data");
+
+        console.log("✅ Equipment data successfully submitted!");
+
+        // Clear localStorage after submission
+        [
+            "permissionList", "otherDocumentList", "equipmentList", "city",
+            "projectCode", "projectObjective", "selectedOption", "selectedCity",
+            "projectTableData", "personnelList", "personnelNames", "personnelRoles",
+            "equipmentName", "equipmentType", "equipmentID"
+        ].forEach(item => localStorage.removeItem(item));
+
+        alert("Project, personnel, and equipment data submitted successfully!");
+
+        // Navigate after submission
+        navigate("/Project");
+    } catch (error) {
+        console.error("❌ Error submitting project data:", error);
+        alert(error.message);
+    }
+  };
 
   return (
     <div
@@ -73,12 +172,12 @@ const ConfigNav = () => {
           </a>
         </li>
         <li className="nav-item p-2 bg-success border border-success rounded-2 mt-5">
-          <a
-            href="/Project"
-            className="text-white text-decoration-none fw-bold align-items-center d-flex justify-content-center"
+          <button
+            className="text-white text-decoration-none fw-bold align-items-center d-flex justify-content-center w-100 bg-transparent border-0"
+            onClick={handleSubmitProject}
           >
             Submit Project
-          </a>
+          </button>
         </li>
       </ul>
     </div>

@@ -1,26 +1,71 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function LegalDocument() {
   document.body.style.overflowY = "auto";
   document.body.style.overflowX = "hidden";
 
-  const [permissionList, setPermissionList] = useState([]);
-  const [otherDocumentList, setOtherDocumentList] = useState([]);
+  const loadStoredData = (key, defaultData) => {
+    try {
+      const storedData = localStorage.getItem(key);
+      return storedData ? JSON.parse(storedData) : defaultData;
+    } catch (error) {
+      console.error("Error loading data from localStorage", error);
+      return defaultData;
+    }
+  };
+
+  const [permissionList, setPermissionList] = useState(() => loadStoredData("permissionList", []));
+  const [otherDocumentList, setOtherDocumentList] = useState(() => loadStoredData("otherDocumentList", []));
+
+  useEffect(() => {
+    localStorage.setItem("permissionList", JSON.stringify(permissionList));
+  }, [permissionList]);
+
+  useEffect(() => {
+    localStorage.setItem("otherDocumentList", JSON.stringify(otherDocumentList));
+  }, [otherDocumentList]);
 
   const handleAddPermission = () => {
-    setPermissionList([...permissionList, { id: Date.now() }]);
+    const newPermission = { id: Date.now(), documentName: "", documentID: "", expirationDate: "", file: null };
+    const updatedPermissionList = [...permissionList, newPermission];
+    setPermissionList(updatedPermissionList);
+    localStorage.setItem("permissionList", JSON.stringify(updatedPermissionList));
   };
 
   const handleOtherDocument = () => {
-    setOtherDocumentList([...otherDocumentList, { id: Date.now() }]);
+    const newOtherDocument = { id: Date.now(), documentName: "", documentID: "", expirationDate: "", file: null };
+    const updatedOtherDocumentList = [...otherDocumentList, newOtherDocument];
+    setOtherDocumentList(updatedOtherDocumentList);
+    localStorage.setItem("otherDocumentList", JSON.stringify(updatedOtherDocumentList));
   };
 
   const handleDeletePermission = (id) => {
-    setPermissionList(permissionList.filter(item => item.id !== id));
+    const updatedPermissionList = permissionList.filter(item => item.id !== id);
+    setPermissionList(updatedPermissionList);
+    localStorage.setItem("permissionList", JSON.stringify(updatedPermissionList));
   };
 
   const handleDeleteOtherDocument = (id) => {
-    setOtherDocumentList(otherDocumentList.filter(item => item.id !== id));
+    const updatedOtherDocumentList = otherDocumentList.filter(item => item.id !== id);
+    setOtherDocumentList(updatedOtherDocumentList);
+    localStorage.setItem("otherDocumentList", JSON.stringify(updatedOtherDocumentList));
+  };
+
+  const handleInputChange = (list, setList, id, field, value) => {
+    const updatedList = list.map(item => item.id === id ? { ...item, [field]: value } : item);
+    setList(updatedList);
+    localStorage.setItem(list === permissionList ? "permissionList" : "otherDocumentList", JSON.stringify(updatedList));
+  };
+
+  const handleFileChange = (list, setList, id, file) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64File = reader.result;
+      const updatedList = list.map(item => item.id === id ? { ...item, file: base64File } : item);
+      setList(updatedList);
+      localStorage.setItem(list === permissionList ? "permissionList" : "otherDocumentList", JSON.stringify(updatedList));
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -77,10 +122,43 @@ function LegalDocument() {
             {permissionList.map((item, index) => (
               <tr key={item.id}>
                 <th scope="row">{index + 1}</th>
-                <td><input className="form-control mb-3" id="equipment" type="file" readOnly /></td>
-                <td><input className="form-control mb-3" id="equipment" type="text" placeholder="Type document name" /></td>
-                <td><input className="form-control mb-3" id="equipment" type="text" placeholder="Type document ID" /></td>
-                <td><input className="form-control mb-3" id="equipment" type="date" /></td>
+                <td>
+                  <input
+                    className="form-control mb-3"
+                    id="equipment"
+                    type="file"
+                    onChange={(e) => handleFileChange(permissionList, setPermissionList, item.id, e.target.files[0])}
+                  />
+                </td>
+                <td>
+                  <input
+                    className="form-control mb-3"
+                    id="equipment"
+                    type="text"
+                    placeholder="Type document name"
+                    value={item.documentName}
+                    onChange={(e) => handleInputChange(permissionList, setPermissionList, item.id, 'documentName', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    className="form-control mb-3"
+                    id="equipment"
+                    type="text"
+                    placeholder="Type document ID"
+                    value={item.documentID}
+                    onChange={(e) => handleInputChange(permissionList, setPermissionList, item.id, 'documentID', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    className="form-control mb-3"
+                    id="equipment"
+                    type="date"
+                    value={item.expirationDate}
+                    onChange={(e) => handleInputChange(permissionList, setPermissionList, item.id, 'expirationDate', e.target.value)}
+                  />
+                </td>
                 <td>
                   <button type="button" className="btn btn-primary"><i className="bi bi-download"></i></button>
                   <button type="button" className="btn btn-warning ms-2"><i className="bi bi-eye"></i></button>
@@ -117,10 +195,43 @@ function LegalDocument() {
             {otherDocumentList.map((item, index) => (
               <tr key={item.id}>
                 <th scope="row">{index + 1}</th>
-                <td><input className="form-control mb-3" id="equipment" type="file" readOnly /></td>
-                <td><input className="form-control mb-3" id="equipment" type="text" placeholder="Type document name" /></td>
-                <td><input className="form-control mb-3" id="equipment" type="text" placeholder="Type document ID" /></td>
-                <td><input className="form-control mb-3" id="equipment" type="date" /></td>
+                <td>
+                  <input
+                    className="form-control mb-3"
+                    id="equipment"
+                    type="file"
+                    onChange={(e) => handleFileChange(otherDocumentList, setOtherDocumentList, item.id, e.target.files[0])}
+                  />
+                </td>
+                <td>
+                  <input
+                    className="form-control mb-3"
+                    id="equipment"
+                    type="text"
+                    placeholder="Type document name"
+                    value={item.documentName}
+                    onChange={(e) => handleInputChange(otherDocumentList, setOtherDocumentList, item.id, 'documentName', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    className="form-control mb-3"
+                    id="equipment"
+                    type="text"
+                    placeholder="Type document ID"
+                    value={item.documentID}
+                    onChange={(e) => handleInputChange(otherDocumentList, setOtherDocumentList, item.id, 'documentID', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    className="form-control mb-3"
+                    id="equipment"
+                    type="date"
+                    value={item.expirationDate}
+                    onChange={(e) => handleInputChange(otherDocumentList, setOtherDocumentList, item.id, 'expirationDate', e.target.value)}
+                  />
+                </td>
                 <td>
                   <button type="button" className="btn btn-primary"><i className="bi bi-download"></i></button>
                   <button type="button" className="btn btn-warning ms-2"><i className="bi bi-eye"></i></button>
@@ -132,7 +243,6 @@ function LegalDocument() {
         </table>
       </div>
     </div>
-
   );
 }
 

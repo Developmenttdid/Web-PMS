@@ -1,10 +1,16 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function Equipment() {
-  const [selectedTable, setSelectedTable] = useState("UAV");
+  const [selectedTable, setSelectedTable] = useState(() => {
+    return localStorage.getItem("selectedTable") || "UAV";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("selectedTable", selectedTable);
+  }, [selectedTable]);
 
   return (
     <div>
@@ -15,9 +21,7 @@ function Equipment() {
             <select
               className="form-select"
               value={selectedTable}
-              onChange={(e) => {
-                setSelectedTable(e.target.value);
-              }}
+              onChange={(e) => setSelectedTable(e.target.value)}
             >
               <option value="UAV">UAV</option>
               <option value="Payload">Payload</option>
@@ -31,7 +35,6 @@ function Equipment() {
       <div className="container-fluid mt-5">
         <div className="row">
           <div className="col-12">
-            {/* Menampilkan tabel berdasarkan pilihan */}
             {selectedTable === "UAV" && <UAVTable />}
             {selectedTable === "Payload" && <PayloadTable />}
             {selectedTable === "Geodetic GPS" && <GeodeticGPSTable />}
@@ -42,193 +45,162 @@ function Equipment() {
   );
 }
 
+const loadStoredData = (key, defaultData) => {
+  try {
+    const storedData = localStorage.getItem(key);
+    return storedData ? JSON.parse(storedData) : defaultData;
+  } catch (error) {
+    console.error("Error loading data from localStorage", error);
+    return defaultData;
+  }
+};
+
 function UAVTable() {
-    const UAVData = [
-      {
-        id: 1,
-        UAVtype: '',
-        UAVid: '',
-        status: 'available',
-      },
-      {
-        id: 2,
-        UAVtype: '',
-        UAVid: '',
-        status: 'not available',
-      },
-      {
-        id: 3,
-        UAVtype: '',
-        UAVid: '',
-        status: 'available',
-      },
-      {
-        id: 4,
-        UAVtype: '',
-        UAVid: '',
-        status: 'not availabke',
-      },
-     
-    ];
-    return (
+  const defaultData = [
+    { id: 1, UAVtype: "", UAVid: "", status: "available" },
+    { id: 2, UAVtype: "", UAVid: "", status: "not available" },
+  ];
+
+  const [UAVData, setUAVData] = useState(() => loadStoredData("UAVData", defaultData));
+
+  useEffect(() => {
+    localStorage.setItem("UAVData", JSON.stringify(UAVData));
+  }, [UAVData]);
+
+  const handleAddRow = () => {
+    const newRow = { id: Date.now(), UAVtype: "", UAVid: "", status: "available" };
+    setUAVData((prev) => [...prev, newRow]);
+  };
+
+  const handleInputChange = (id, field, value) => {
+    setUAVData((prev) =>
+      prev.map((data) => (data.id === id ? { ...data, [field]: value } : data))
+    );
+  };
+
+  return (
+    <div>
+      <button type="button" className="btn btn-primary mb-3" onClick={handleAddRow}>
+        Add UAV
+      </button>
       <table className="table table-hover text-center">
-        <thead style={{ width: "100%"}} >
+        <thead>
           <tr>
-            <th scope="col" style={{ width: "5%", backgroundColor: '#143893', color: '#CCE6FF' }}>
-              #
-            </th>
-            <th scope="col" style={{ width: "40%", backgroundColor: '#143893', color: '#CCE6FF' }}>
-              UAV Type
-            </th>
-            <th scope="col" style={{ width: "40%", backgroundColor: '#143893', color: '#CCE6FF' }}>
-              UAV id
-            </th>
-            <th scope="col" style={{ width: "15%", backgroundColor: '#143893', color: '#CCE6FF'}}>
-              status
-            </th>
+            <th>#</th>
+            <th>UAV Type</th>
+            <th>UAV id</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
           {UAVData.map((data) => (
-            <tr>
+            <tr key={data.id}>
               <th scope="row">{data.id}</th>
-              <td>{data.UAVtype}</td>
-              <td>{data.UAVid}</td>
               <td>
-              {data.status === 'available' ? 
-                    <button type="button" class="btn btn-success"><i class="bi bi-check2"></i></button>
-                    : <button type="button" class="btn btn-danger"><i class="bi bi-x"></i></button>
-                  }
+                <input
+                  type="text"
+                  value={data.UAVtype}
+                  onChange={(e) => handleInputChange(data.id, "UAVtype", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={data.UAVid}
+                  onChange={(e) => handleInputChange(data.id, "UAVid", e.target.value)}
+                />
+              </td>
+              <td>
+                {data.status === "available" ? (
+                  <button type="button" className="btn btn-success">
+                    <i className="bi bi-check2"></i>
+                  </button>
+                ) : (
+                  <button type="button" className="btn btn-danger">
+                    <i className="bi bi-x"></i>
+                  </button>
+                )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+function PayloadTable() {
+  const defaultData = [
+    { id: 1, payloadType: "", payloadID: "", status: "available" },
+    { id: 2, payloadType: "", payloadID: "", status: "not available" },
+  ];
+
+  const [PayloadData, setPayloadData] = useState(() => loadStoredData("PayloadData", defaultData));
+
+  useEffect(() => {
+    localStorage.setItem("PayloadData", JSON.stringify(PayloadData));
+  }, [PayloadData]);
+
+  const handleAddRow = () => {
+    const newRow = { id: Date.now(), payloadType: "", payloadID: "", status: "available" };
+    setPayloadData((prev) => [...prev, newRow]);
+  };
+
+  const handleInputChange = (id, field, value) => {
+    setPayloadData((prev) =>
+      prev.map((data) => (data.id === id ? { ...data, [field]: value } : data))
     );
-  }
-  
-  function PayloadTable() {
-      const PayloadData = [
-          {
-            id: 1,
-            payloadType: '',
-            payloadID: '',
-            status: 'available',
-          },
-          {
-            id: 2,
-            payloadType: '',
-            payloadID: '',
-            status: 'not available',
-          },
-          {
-            id: 3,
-            payloadType: '',
-            payloadID: '',
-            status: '',
-          },
-        ];
-        return (
-          <table className="table table-hover text-center">
-            <thead style={{ width: "100%"}} >
-              <tr>
-                <th scope="col" style={{ width: "5%", backgroundColor: '#143893', color: '#CCE6FF'}}>
-                  #
-                </th>
-                <th scope="col" style={{ width: "40%", backgroundColor: '#143893', color: '#CCE6FF' }}>
-                  Payload Type
-                </th>
-                <th scope="col" style={{ width: "40%", backgroundColor: '#143893', color: '#CCE6FF' }}>
-                  Payload ID
-                </th>
-                <th scope="col" style={{ width: "15%", backgroundColor: '#143893', color: '#CCE6FF'}}>
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {PayloadData.map((data) => (
-                <tr>
-                  <th scope="row">{data.id}</th>
-                  <td>{data.payloadType}</td>
-                  <td>{data.ID}</td>
-                  <td>
-                  {data.status === 'available' ? 
-                    <button type="button" class="btn btn-success"><i class="bi bi-check2"></i></button>
-                    : <button type="button" class="btn btn-danger"><i class="bi bi-x"></i></button>
-                  }
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        );
-  }
-  
-  function GeodeticGPSTable() {
-      const GeodeticGPSData = [
-          {
-            id: 1,
-            GPStype: '',
-            GPSid: '',
-            status: 'available'
-          },
-          {
-            id: 2,
-            GPStype: '',
-            GPSid: '',
-            status: 'not available'
-          },
-          {
-            id: 3,
-            GPStype: '',
-            GPSid: '',
-            status: 'not available'
-          },
-          {
-            id: 4,
-            GPStype: '',
-            GPSid: '',
-            status: 'available'
-          },
-          
-          
-        ];
-        return (
-          <table className="table table-hover text-center">
-            <thead style={{ width: "100%"}} >
-              <tr>
-                <th scope="col" style={{ width: "5%", backgroundColor: '#143893', color: '#CCE6FF'}}>
-                  #
-                </th>
-                <th scope="col" style={{ width: "40%", backgroundColor: '#143893', color: '#CCE6FF' }}>
-                  GPS Type
-                </th>
-                <th scope="col" style={{ width: "40%", backgroundColor: '#143893', color: '#CCE6FF' }}>
-                  GPS ID
-                </th>
-                <th scope="col" style={{ width: "15%", backgroundColor: '#143893', color: '#CCE6FF'}}>
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {GeodeticGPSData.map((data) => (
-                <tr>
-                  <th scope="row">{data.id}</th>
-                  <td>{data.GPStype}</td>
-                  <td>{data.GPSid}</td>
-                  <td>
-                  {data.status === 'available' ? 
-                    <button type="button" class="btn btn-success"><i class="bi bi-check2"></i></button>
-                    : <button type="button" class="btn btn-danger"><i class="bi bi-x"></i></button>
-                  }
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        );
-  }
+  };
+
+  return (
+    <div>
+      <button type="button" className="btn btn-primary mb-3" onClick={handleAddRow}>
+        Add Payload
+      </button>
+      <table className="table table-hover text-center">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Payload Type</th>
+            <th>Payload ID</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {PayloadData.map((data) => (
+            <tr key={data.id}>
+              <th scope="row">{data.id}</th>
+              <td>
+                <input
+                  type="text"
+                  value={data.payloadType}
+                  onChange={(e) => handleInputChange(data.id, "payloadType", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={data.payloadID}
+                  onChange={(e) => handleInputChange(data.id, "payloadID", e.target.value)}
+                />
+              </td>
+              <td>
+                {data.status === "available" ? (
+                  <button type="button" className="btn btn-success">
+                    <i className="bi bi-check2"></i>
+                  </button>
+                ) : (
+                  <button type="button" className="btn btn-danger">
+                    <i className="bi bi-x"></i>
+                  </button>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 export default Equipment;
