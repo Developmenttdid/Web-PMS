@@ -138,15 +138,15 @@ function Equipment() {
         </div>
       </div>
       <table className="table text-center table-bordered ms-2">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Equipment</th>
-            <th>Equipment Type</th>
-            <th>Equipment ID</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+      <thead>
+            <tr>
+              <th scope="col" style={{ width: '5%', backgroundColor: '#143893', color: '#CCE6FF' }}>#</th>
+              <th scope="col" style={{ width: '25%', backgroundColor: '#143893', color: '#CCE6FF' }}>Equipment</th>
+              <th scope="col" style={{ width: '25%', backgroundColor: '#143893', color: '#CCE6FF' }}>Equipment Type</th>
+              <th scope="col" style={{ width: '25%', backgroundColor: '#143893', color: '#CCE6FF' }}>Equipment ID</th>
+              <th scope="col" style={{ width: '25%', backgroundColor: '#143893', color: '#CCE6FF' }}>Action</th>
+            </tr>
+          </thead>
         <tbody>
           {equipmentList.map((item, index) => (
             <tr key={item.id}>
@@ -200,3 +200,4 @@ function Equipment() {
 }
 
 export default Equipment;
+
