@@ -138,7 +138,7 @@ function Equipment() {
         </div>
       </div>
       <table className="table text-center table-bordered ms-2">
-          <thead>
+      <thead>
             <tr>
               <th scope="col" style={{ width: '5%', backgroundColor: '#143893', color: '#CCE6FF' }}>#</th>
               <th scope="col" style={{ width: '25%', backgroundColor: '#143893', color: '#CCE6FF' }}>Equipment</th>
@@ -200,3 +200,4 @@ function Equipment() {
 }
 
 export default Equipment;
+
