@@ -8,6 +8,8 @@ import "./Project.css";
 function Project() {
   const [projectData, setProjectData] = useState([]);
   const email = localStorage.getItem("email");
+  document.body.style.overflowY = "auto";
+  document.body.style.overflowX = "hidden";
 
   useEffect(() => {
     const fetchProjectData = async () => {

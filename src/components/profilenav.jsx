@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const ProfileNav = () => {
   const location = useLocation();
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const name = localStorage.getItem("name");
+    setUsername(name);
+  }, []);
 
   return (
     <div
@@ -23,10 +29,10 @@ const ProfileNav = () => {
           height="150"
         />
         <h5
-          className="mt-2"
+          className="mt-4"
           style={{ color: "#0F0F56", fontWeight: "bold", fontSize: "1.5rem" }}
         >
-          Username
+          {username}
         </h5>
       </div>
       <hr className="w-100" />
