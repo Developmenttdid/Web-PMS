@@ -58,7 +58,8 @@ function Project() {
                 <th scope="col" style={{width: '5%', backgroundColor: '#143893', color: '#CCE6FF'}}>#</th>
                 <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}}>Project Code</th>
                 <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}}>Location</th>
-                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}}>Date</th>
+                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}}>Date Created</th>
+                <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: 'red'}}>Last Update</th>
                 <th scope="col" style={{width: '35%', backgroundColor: '#143893', color: '#CCE6FF'}}>Progress</th>
                 <th scope="col" style={{width: '15%', backgroundColor: '#143893', color: '#CCE6FF'}}>Action</th>
               </tr>
@@ -69,6 +70,7 @@ function Project() {
                   <th scope="row">{index + 1}</th>
                   <td>{project.code}</td>
                   <td>{project.location}</td>
+                  <td>{project.date}</td>
                   <td>{project.date}</td>
                   <td className="progress-container">
                     <div className="progress-content">

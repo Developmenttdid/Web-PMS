@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Spinner } from "react-bootstrap";
 
 function LegalDocument() {
   document.body.style.overflowY = "auto";
@@ -40,34 +42,126 @@ function LegalDocument() {
   };
 
   const handleDeletePermission = (id) => {
-    const updatedPermissionList = permissionList.filter(item => item.id !== id);
-    setPermissionList(updatedPermissionList);
-    localStorage.setItem("permissionList", JSON.stringify(updatedPermissionList));
+    const updatedList = permissionList.filter(item => item.id !== id);
+    setPermissionList(updatedList);
+    localStorage.setItem("permissionList", JSON.stringify(updatedList));
   };
-
+  
   const handleDeleteOtherDocument = (id) => {
-    const updatedOtherDocumentList = otherDocumentList.filter(item => item.id !== id);
-    setOtherDocumentList(updatedOtherDocumentList);
-    localStorage.setItem("otherDocumentList", JSON.stringify(updatedOtherDocumentList));
-  };
+    const updatedList = otherDocumentList.filter(item => item.id !== id);
+    setOtherDocumentList(updatedList);
+    localStorage.setItem("otherDocumentList", JSON.stringify(updatedList));
+  };  
 
   const handleInputChange = (list, setList, id, field, value) => {
     const updatedList = list.map(item => item.id === id ? { ...item, [field]: value } : item);
     setList(updatedList);
     localStorage.setItem(list === permissionList ? "permissionList" : "otherDocumentList", JSON.stringify(updatedList));
   };
+  
 
-  const handleFileChange = (list, setList, id, file) => {
+  const handleFileChange = (list, setList, id, event) => {
+    if (!event || !event.target || !event.target.files || event.target.files.length === 0) {
+      console.error("File input event is invalid or no file selected");
+      return;
+    }
+  
+    const file = event.target.files[0]; // Get the first file from the input
     const reader = new FileReader();
+  
     reader.onloadend = () => {
       const base64File = reader.result;
-      const updatedList = list.map(item => item.id === id ? { ...item, file: base64File } : item);
+      const updatedList = list.map(item =>
+        item.id === id ? { ...item, file: base64File } : item
+      );
       setList(updatedList);
-      localStorage.setItem(list === permissionList ? "permissionList" : "otherDocumentList", JSON.stringify(updatedList));
+      localStorage.setItem(
+        list === permissionList ? "permissionList" : "otherDocumentList",
+        JSON.stringify(updatedList)
+      );
     };
+  
     reader.readAsDataURL(file);
   };
+  
 
+  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState(() => {
+    return localStorage.getItem("uploadedFileName") || "";
+  });  
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+  const [hoverDelete, setHoverDelete] = useState(false);
+  
+
+  useEffect(() => {
+    localStorage.setItem("uploadedFileName", uploadedFileName);
+  }, [uploadedFileName]);  
+
+  const [checkedState, setCheckedState] = useState(() => {
+    return JSON.parse(localStorage.getItem("checkedState")) || {};
+  });
+  
+  useEffect(() => {
+    localStorage.setItem("checkedState", JSON.stringify(checkedState));
+  }, [checkedState]);
+  
+  const handleCheckboxChange = (id) => {
+    setCheckedState(prevState => {
+      const updatedState = { ...prevState, [id]: !prevState[id] };
+      localStorage.setItem("checkedState", JSON.stringify(updatedState));
+      return updatedState;
+    });
+  };  
+
+  const uploadFile = async () => {
+    if (!file) return;
+    setUploading(true);
+    setUploadProgress(0);
+  
+    const formData = new FormData();
+    formData.append("file", file);
+  
+    try {
+      const response = await axios.post("http://103.163.184.111:3000/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percentCompleted);
+        },
+      });
+  
+      setUploadedFileName(response.data.fileName);
+      setFile(null); // Reset file state
+      document.getElementById("fileInput").value = ""; // Reset file input
+    } catch (error) {
+      console.error("Upload failed:", error);
+    } finally {
+      setUploading(false);
+    }
+  };  
+
+  const deleteFile = async () => {
+    setDeleting(true);
+    setUploadProgress(0);
+
+    try {
+      await axios.delete(`http://103.163.184.111:3000/delete/${uploadedFileName}`, {
+        onDownloadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percentCompleted);
+        },
+      });
+
+      setUploadedFileName("");
+    } catch (error) {
+      console.error("Delete failed:", error);
+    } finally {
+      setDeleting(false);
+    }
+  };
+  
   return (
     <div className="document-container" style={{ marginLeft: "250px" }}>
       <h2>Document</h2>
@@ -123,12 +217,44 @@ function LegalDocument() {
               <tr key={item.id}>
                 <th scope="row">{index + 1}</th>
                 <td>
-                  <input
-                    className="form-control mb-3"
-                    id="equipment"
-                    type="file"
-                    onChange={(e) => handleFileChange(permissionList, setPermissionList, item.id, e.target.files[0])}
-                  />
+                  <div className="input-group">
+                    {!uploadedFileName ? (
+                      <>
+                        <input
+                          id="fileInput"
+                          className="form-control"
+                          type="file"
+                          onChange={(e) => {
+                            if (e.target.files.length > 0) {
+                              setFile(e.target.files[0]);
+                            }
+                          }}
+                        />
+                        <button className="btn btn-primary" onClick={uploadFile} disabled={!file || uploading}>
+                          {uploading ? <Spinner animation="border" size="sm" /> : <i className="bi bi-upload"></i>}
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <input className="form-control" type="text" value={uploadedFileName} readOnly />
+                        <button
+                          className={`btn ${deleting ? "btn-warning" : "btn-success"}`}
+                          onClick={deleteFile}
+                          onMouseEnter={() => setHoverDelete(true)}
+                          onMouseLeave={() => setHoverDelete(false)}
+                          disabled={deleting}
+                        >
+                          {deleting ? (
+                            <Spinner animation="border" size="sm" />
+                          ) : hoverDelete ? (
+                            <i className="bi bi-trash"></i>
+                          ) : (
+                            <i className="bi bi-check"></i>
+                          )}
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </td>
                 <td>
                   <input

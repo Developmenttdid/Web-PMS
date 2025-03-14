@@ -31,14 +31,6 @@ function App() {
 
   const handleValidation = () => {
     let formIsValid = true;
-
-    if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-      formIsValid = false;
-      setEmailError("Email Not Valid");
-    } else {
-      setEmailError("");
-    }
-
     return formIsValid;
   };
 
@@ -73,6 +65,18 @@ function App() {
 
       login(data.token);
       localStorage.setItem("token", data.token);
+
+      // Remove specified items from localStorage
+      localStorage.removeItem("city");
+      localStorage.removeItem("projectCode");
+      localStorage.removeItem("projectObjective");
+      localStorage.removeItem("selectedOption");
+      localStorage.removeItem("selectedCity");
+      localStorage.removeItem("projectTableData");
+      localStorage.removeItem("personnelList");
+      localStorage.removeItem("equipmentList");
+      localStorage.removeItem("permissionList");
+      localStorage.removeItem("uploadedFileName");
 
       navigate(data.redirect || "/Homepage");
     } catch (error) {

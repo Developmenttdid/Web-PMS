@@ -13,6 +13,7 @@ function Profile() {
         setUser(foundUser);
         if (foundUser) {
           localStorage.setItem("name", foundUser.name);
+          localStorage.setItem("department", foundUser.department);
         }
       })
       .catch((err) => console.error("Error fetching user data:", err));
@@ -33,15 +34,15 @@ function Profile() {
       </div>
       <div className="col mb-3 ms-3">
         <label className="form-label">Department</label>
-        <input type="text" className="form-control" value="Engineering" readOnly />
+        <input type="text" className="form-control" value={user.role} readOnly />
       </div>
       <div className="col mb-3 ms-3">
         <label className="form-label">Position</label>
-        <input type="text" className="form-control" value="Software Engineer" readOnly />
+        <input type="text" className="form-control" value={user.department}  readOnly />
       </div>
       <div className="col mb-3 ms-3">
         <label className="form-label">User Type</label>
-        <input type="text" className="form-control" value={user.role} readOnly />
+        <input type="text" className="form-control" value={user.position} readOnly />
       </div>
     </div>
   );
