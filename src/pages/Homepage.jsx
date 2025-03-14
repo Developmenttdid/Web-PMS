@@ -96,6 +96,9 @@ const pieOptions = {
   },
 };
 
+document.body.style.overflowY = "auto";
+document.body.style.overflowX = "hidden";
+
 function Homepage() {
   return (
     <div className="Homepage">

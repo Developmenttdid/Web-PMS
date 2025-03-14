@@ -24,6 +24,7 @@ function Equipment() {
   );
   const [optionsType, setOptionsType] = useState({});
   const [optionsID, setOptionsID] = useState({});
+  const [filteredIDOptions, setFilteredIDOptions] = useState({});
 
   useEffect(() => {
     localStorage.setItem("EquipmentName", JSON.stringify(selectedOption3));
@@ -59,23 +60,32 @@ function Equipment() {
       response.data.forEach((item) => {
         Object.entries(optionsMap).forEach(([key, value]) => {
           if (item[value.type] && item[value.id]) {
-            if (!typeOptions[key]) typeOptions[key] = [];
+            if (!typeOptions[key]) typeOptions[key] = new Set();
             if (!idOptions[key]) idOptions[key] = [];
 
-            typeOptions[key].push({
-              value: item[value.type],
-              label: item[value.type],
-            });
-            idOptions[key].push({
-              value: item[value.id],
-              label: item[value.id],
-            });
+            typeOptions[key].add(item[value.type]);
+            idOptions[key].push({ type: item[value.type], id: item[value.id] });
           }
         });
       });
 
-      setOptionsType(typeOptions);
-      setOptionsID(idOptions);
+      // Convert sets to arrays of unique options
+      const uniqueTypeOptions = {};
+      const uniqueIDOptions = {};
+
+      Object.entries(typeOptions).forEach(([key, set]) => {
+        uniqueTypeOptions[key] = Array.from(set).map((value) => ({
+          value,
+          label: value,
+        }));
+      });
+
+      Object.entries(idOptions).forEach(([key, list]) => {
+        uniqueIDOptions[key] = list;
+      });
+
+      setOptionsType(uniqueTypeOptions);
+      setOptionsID(uniqueIDOptions);
     } catch (error) {
       console.error("Error fetching data from API", error);
     }
@@ -99,6 +109,21 @@ function Equipment() {
       item.id === id ? { ...item, [field]: selectedOption } : item
     );
     setEquipmentList(updatedList);
+
+    if (field === "type") {
+      const equipment = equipmentList.find((item) => item.id === id).equipment;
+      const key = equipment.value;
+      const filteredOptions = optionsID[key].filter(
+        (option) => option.type === selectedOption.value
+      );
+      setFilteredIDOptions((prev) => ({
+        ...prev,
+        [id]: filteredOptions.map((option) => ({
+          value: option.id,
+          label: option.id,
+        })),
+      }));
+    }
   };
 
   const handleDeleteRow = (id) => {
@@ -138,15 +163,15 @@ function Equipment() {
         </div>
       </div>
       <table className="table text-center table-bordered ms-2">
-      <thead>
-            <tr>
-              <th scope="col" style={{ width: '5%', backgroundColor: '#143893', color: '#CCE6FF' }}>#</th>
-              <th scope="col" style={{ width: '25%', backgroundColor: '#143893', color: '#CCE6FF' }}>Equipment</th>
-              <th scope="col" style={{ width: '25%', backgroundColor: '#143893', color: '#CCE6FF' }}>Equipment Type</th>
-              <th scope="col" style={{ width: '25%', backgroundColor: '#143893', color: '#CCE6FF' }}>Equipment ID</th>
-              <th scope="col" style={{ width: '25%', backgroundColor: '#143893', color: '#CCE6FF' }}>Action</th>
-            </tr>
-          </thead>
+        <thead>
+          <tr>
+            <th scope="col" style={{ width: "5%", backgroundColor: "#143893", color: "#CCE6FF" }}>#</th>
+            <th scope="col" style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}>Equipment</th>
+            <th scope="col" style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}>Equipment Type</th>
+            <th scope="col" style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}>Equipment ID</th>
+            <th scope="col" style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}>Action</th>
+          </tr>
+        </thead>
         <tbody>
           {equipmentList.map((item, index) => (
             <tr key={item.id}>
@@ -173,7 +198,7 @@ function Equipment() {
               </td>
               <td>
                 <Select
-                  options={optionsID[item.equipment?.value] || []}
+                  options={filteredIDOptions[item.id] || []}
                   value={item.equipmentID}
                   onChange={(selectedOption) =>
                     handleSelectChange(item.id, "equipmentID", selectedOption)
@@ -200,4 +225,3 @@ function Equipment() {
 }
 
 export default Equipment;
-
