@@ -7,11 +7,25 @@ import "./Project.css";
 
 function Project() {
   const [projectData, setProjectData] = useState([]);
+  const [userRole, setUserRole] = useState("");
   const email = localStorage.getItem("email");
   document.body.style.overflowY = "auto";
   document.body.style.overflowX = "hidden";
 
   useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await fetch("http://103.163.184.111:3000/users");
+        const data = await response.json();
+        const user = data.find((u) => u.email === email);
+        if (user) {
+          setUserRole(user.role);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
     const fetchProjectData = async () => {
       try {
         const response = await fetch("http://103.163.184.111:3000/projectstatus");
@@ -29,6 +43,7 @@ function Project() {
       }
     };
 
+    fetchUserRole();
     fetchProjectData();
   }, [email]);
 
@@ -44,6 +59,7 @@ function Project() {
               <button
                 type="button"
                 className="button-add btn btn-success mb-3 me-3 mt-3"
+                disabled={userRole !== "Project Manager" && userRole !== "Admin"}
               >
                 <i className="bi bi-plus"></i> Add Project
               </button>
@@ -85,12 +101,6 @@ function Project() {
                   </td>
                   <td>
                     <div className="d-flex justify-content-center">
-                      <button
-                        type="button"
-                        className="btn btn-warning btn-outline-light me-3"
-                      >
-                        <i className="bi bi-pencil-square"></i>
-                      </button>
                       <button
                         type="button"
                         className="btn btn-danger btn-outline-light"

@@ -42,16 +42,16 @@ function LegalDocument() {
   };
 
   const handleDeletePermission = (id) => {
-    const updatedList = permissionList.filter(item => item.id !== id);
-    setPermissionList(updatedList);
-    localStorage.setItem("permissionList", JSON.stringify(updatedList));
+    const updatedPermissionList = permissionList.filter(item => item.id !== id);
+    setPermissionList(updatedPermissionList);
+    localStorage.setItem("permissionList", JSON.stringify(updatedPermissionList));
   };
-  
+
   const handleDeleteOtherDocument = (id) => {
-    const updatedList = otherDocumentList.filter(item => item.id !== id);
-    setOtherDocumentList(updatedList);
-    localStorage.setItem("otherDocumentList", JSON.stringify(updatedList));
-  };  
+    const updatedOtherDocumentList = otherDocumentList.filter(item => item.id !== id);
+    setOtherDocumentList(updatedOtherDocumentList);
+    localStorage.setItem("otherDocumentList", JSON.stringify(updatedOtherDocumentList));
+  };
 
   const handleInputChange = (list, setList, id, field, value) => {
     const updatedList = list.map(item => item.id === id ? { ...item, [field]: value } : item);
