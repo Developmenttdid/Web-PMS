@@ -7,13 +7,13 @@ import "./Project.css";
 
 function Project() {
   const [projectData, setProjectData] = useState([]);
-  const [position, setPosition] = useState(null); // ⬅️ State untuk posisi user
+  const [position, setPosition] = useState(null); // State for user position
   const email = localStorage.getItem("email");
 
   document.body.style.overflowY = "auto";
   document.body.style.overflowX = "hidden";
 
-  // 🟢 Fetch posisi user berdasarkan email yang login
+  // Fetch user position based on the logged-in email
   useEffect(() => {
     const fetchUserPosition = async () => {
       try {
@@ -23,9 +23,9 @@ function Project() {
         const loggedInUser = users.find((user) => user.email === email);
         if (loggedInUser) {
           setPosition(loggedInUser.position);
-          console.log("User position:", loggedInUser.position); // 🟢 Debug 1
+          console.log("User position:", loggedInUser.position); // Debugging
         } else {
-          console.warn("User tidak ditemukan di database.");
+          console.warn("User not found in the database.");
         }
       } catch (error) {
         console.error("Error fetching user position:", error);
@@ -35,21 +35,8 @@ function Project() {
     fetchUserPosition();
   }, [email]);
 
-  // 🟢 Fetch data project berdasarkan email yang login
+  // Fetch project data based on the logged-in email
   useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await fetch("http://103.163.184.111:3000/users");
-        const data = await response.json();
-        const user = data.find((u) => u.email === email);
-        if (user) {
-          setUserRole(user.role);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
     const fetchProjectData = async () => {
       try {
         const response = await fetch("http://103.163.184.111:3000/projectstatus");
@@ -70,7 +57,6 @@ function Project() {
       }
     };
 
-    fetchUserRole();
     fetchProjectData();
   }, [email]);
 
@@ -93,7 +79,7 @@ function Project() {
                 }}
                 onClick={() => {
                   if (position !== "Project Manager" && position !== "Admin") {
-                    alert("Anda tidak memiliki akses untuk menambah proyek.");
+                    alert("You do not have access to add a project.");
                   }
                 }}
               >
@@ -147,7 +133,7 @@ function Project() {
                         }}
                         onClick={() => {
                           if (position !== "Project Manager" && position !== "Admin") {
-                            alert("Anda tidak memiliki akses untuk menghapus proyek.");
+                            alert("You do not have access to delete a project.");
                           }
                         }}
                       >

@@ -127,15 +127,12 @@ const ConfigNav = () => {
     };
 
     //handle personnel
-    const personnelNames = JSON.parse(localStorage.getItem("personnelNames")) || [];
-    const personnelRoles = JSON.parse(localStorage.getItem("personnelRoles")) || [];
-
-    const projectPersonnel = personnelNames.map((person, index) => ({
-      personnel_name: person?.name?.label || "",
-      personnel_role: personnelRoles[index]?.role?.label || "",
+    const projectPersonnel = (JSON.parse(localStorage.getItem("personnelList")) || []).map((person) => ({
+      personnel_name: person.name?.label || "",
+      personnel_role: person.role?.label || "",
       email: localStorage.getItem("email"),
-      project_code: localStorage.getItem("projectCode")
-    }));
+      project_code: localStorage.getItem("projectCode"),
+    }));    
 
     // Ensure projectPersonnel is an array
     console.log("📤 Sending data:", JSON.stringify(projectPersonnel, null, 2));
