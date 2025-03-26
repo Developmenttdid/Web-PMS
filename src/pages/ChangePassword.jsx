@@ -24,10 +24,10 @@ function ChangePassword() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          email, // Kirim email ke backend
-          old_password: oldPassword, // Sesuaikan dengan API
-          new_password: newPassword, // Sesuaikan dengan API
-          confirm_new_password: confirmPassword, // Sesuaikan dengan API
+          email, 
+          old_password: oldPassword, 
+          new_password: newPassword, 
+          confirm_new_password: confirmPassword, 
         }),
       });
 
