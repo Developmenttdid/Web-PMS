@@ -52,36 +52,47 @@ function Equipment() {
         4: { type: "laptop_type", id: "laptop_id" },
         5: { type: "battery_type", id: "battery_id" },
         6: { type: "other_type", id: "other_id" },
+        7: { type: "ppe_type", id: "ppe_id" },
       };
 
-      const typeOptions = {};
-      const idOptions = {};
+      const typeOptionsTemp = {};
+      const idOptionsTemp = {};
 
       response.data.forEach((item) => {
-        Object.entries(optionsMap).forEach(([key, value]) => {
-          if (item[value.type] && item[value.id]) {
-            if (!typeOptions[key]) typeOptions[key] = new Set();
-            if (!idOptions[key]) idOptions[key] = [];
-
-            typeOptions[key].add(item[value.type]);
-            idOptions[key].push({ type: item[value.type], id: item[value.id] });
+        Object.entries(optionsMap).forEach(([key, { type, id }]) => {
+          // Jika field type ada (tidak null/undefined), masukkan ke set tipe.
+          if (item[type]) {
+            if (!typeOptionsTemp[key]) typeOptionsTemp[key] = new Set();
+            typeOptionsTemp[key].add(item[type]);
+          }
+          // Jika field id ada, masukkan ke id options
+          if (item[id]) {
+            if (!idOptionsTemp[key]) idOptionsTemp[key] = [];
+            // Kita simpan pasangan { type, id } untuk keperluan filter nanti
+            idOptionsTemp[key].push({ type: item[type], id: item[id] });
           }
         });
       });
 
-      // Convert sets to arrays of unique options
+      // Konversi set ke array opsi untuk dropdown Equipment Type
       const uniqueTypeOptions = {};
       const uniqueIDOptions = {};
 
-      Object.entries(typeOptions).forEach(([key, set]) => {
-        uniqueTypeOptions[key] = Array.from(set).map((value) => ({
-          value,
-          label: value,
+      Object.entries(typeOptionsTemp).forEach(([key, setObj]) => {
+        uniqueTypeOptions[key] = Array.from(setObj).map((val) => ({
+          value: val,
+          label: val,
         }));
       });
 
-      Object.entries(idOptions).forEach(([key, list]) => {
-        uniqueIDOptions[key] = list;
+      // Untuk Equipment ID, kita langsung ambil array yang sudah ada (tidak unik secara pasangan, namun seharusnya tidak ada duplikasi dari database)
+      Object.entries(idOptionsTemp).forEach(([key, list]) => {
+        uniqueIDOptions[key] = list.map((opt) => ({
+          value: opt.id,
+          label: opt.id,
+          // Simpan juga tipe-nya supaya bisa dipakai filter di handleSelectChange
+          type: opt.type,
+        }));
       });
 
       setOptionsType(uniqueTypeOptions);
@@ -111,16 +122,19 @@ function Equipment() {
     setEquipmentList(updatedList);
 
     if (field === "type") {
+      // Cari equipment (misalnya PPE) yang dipilih di dropdown Equipment,
+      // gunakan key equipment.value (misalnya "7" untuk PPE)
       const equipment = equipmentList.find((item) => item.id === id).equipment;
       const key = equipment.value;
+      // Filter dari optionsID, cari item dengan property type yang sesuai dengan selectedOption.value
       const filteredOptions = optionsID[key].filter(
         (option) => option.type === selectedOption.value
       );
       setFilteredIDOptions((prev) => ({
         ...prev,
         [id]: filteredOptions.map((option) => ({
-          value: option.id,
-          label: option.id,
+          value: option.value,
+          label: option.label,
         })),
       }));
     }
@@ -146,6 +160,7 @@ function Equipment() {
               { value: "4", label: "Laptop" },
               { value: "5", label: "Battery" },
               { value: "6", label: "Other" },
+              { value: "7", label: "PPE" },
             ]}
             value={selectedOption3}
             onChange={setSelectedOption3}
@@ -165,11 +180,36 @@ function Equipment() {
       <table className="table text-center table-bordered ms-2">
         <thead>
           <tr>
-            <th scope="col" style={{ width: "5%", backgroundColor: "#143893", color: "#CCE6FF" }}>#</th>
-            <th scope="col" style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}>Equipment</th>
-            <th scope="col" style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}>Equipment Type</th>
-            <th scope="col" style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}>Equipment ID</th>
-            <th scope="col" style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}>Action</th>
+            <th
+              scope="col"
+              style={{ width: "5%", backgroundColor: "#143893", color: "#CCE6FF" }}
+            >
+              #
+            </th>
+            <th
+              scope="col"
+              style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}
+            >
+              Equipment
+            </th>
+            <th
+              scope="col"
+              style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}
+            >
+              Equipment Type
+            </th>
+            <th
+              scope="col"
+              style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}
+            >
+              Equipment ID
+            </th>
+            <th
+              scope="col"
+              style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}
+            >
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -209,10 +249,7 @@ function Equipment() {
                 />
               </td>
               <td>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleDeleteRow(item.id)}
-                >
+                <button className="btn btn-danger" onClick={() => handleDeleteRow(item.id)}>
                   <i className="bi bi-trash"></i>
                 </button>
               </td>
