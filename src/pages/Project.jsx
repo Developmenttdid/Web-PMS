@@ -1,7 +1,7 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Project.css";
 
@@ -125,13 +125,52 @@ function Project() {
         <table className="table text-center table-bordered">
           <thead>
             <tr>
-              <th scope="col" style={{ width: "5%", backgroundColor: "#143893", color: "#CCE6FF" }}>#</th>
-              <th scope="col" style={{ backgroundColor: "#143893", color: "#CCE6FF" }}>Project Code</th>
-              <th scope="col" style={{ backgroundColor: "#143893", color: "#CCE6FF" }}>Location</th>
-              <th scope="col" style={{ backgroundColor: "#143893", color: "#CCE6FF" }}>Date Created</th>
-              <th scope="col" style={{ backgroundColor: "#143893", color: "#CCE6FF" }}>Last Update</th>
-              <th scope="col" style={{ backgroundColor: "#143893", color: "#CCE6FF" }}>Progress</th>
-              <th scope="col" style={{ backgroundColor: "#143893", color: "#CCE6FF" }}>Action</th>
+              <th
+                scope="col"
+                style={{
+                  width: "5%",
+                  backgroundColor: "#143893",
+                  color: "#CCE6FF",
+                }}
+              >
+                #
+              </th>
+              <th
+                scope="col"
+                style={{ backgroundColor: "#143893", color: "#CCE6FF" }}
+              >
+                Project Code
+              </th>
+              <th
+                scope="col"
+                style={{ backgroundColor: "#143893", color: "#CCE6FF" }}
+              >
+                Location
+              </th>
+              <th
+                scope="col"
+                style={{ backgroundColor: "#143893", color: "#CCE6FF" }}
+              >
+                Date Created
+              </th>
+              <th
+                scope="col"
+                style={{ backgroundColor: "#143893", color: "#CCE6FF" }}
+              >
+                Last Update
+              </th>
+              <th
+                scope="col"
+                style={{ backgroundColor: "#143893", color: "#CCE6FF" }}
+              >
+                Progress
+              </th>
+              <th
+                scope="col"
+                style={{ backgroundColor: "#143893", color: "#CCE6FF" }}
+              >
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -152,26 +191,52 @@ function Project() {
                   {project.progress}%
                 </td>
                 <td>
-                  <button
-                    type="button"
-                    className="btn btn-danger btn-outline-light"
-                    disabled={
-                      position !== "Project Manager" && position !== "Admin"
-                    }
-                    style={{
-                      opacity:
+                  <div className="d-flex justify-content-evenly">
+                    
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-outline-light"
+                      disabled={
                         position !== "Project Manager" && position !== "Admin"
-                          ? 0.5
-                          : 1,
-                      cursor:
+                      }
+                      style={{
+                        opacity:
+                          position !== "Project Manager" && position !== "Admin"
+                            ? 0.5
+                            : 1,
+                        cursor:
+                          position !== "Project Manager" && position !== "Admin"
+                            ? "not-allowed"
+                            : "pointer",
+                      }}
+                      onClick={() => handleDelete(project.code)} 
+                    >
+                      <i className="bi bi-trash3"></i>
+                    </button>
+
+              <Link to="/Project/projectstatus_db">
+                    <button
+                      type="button"
+                      className="btn btn-warning btn-outline-light"
+                      disabled={
                         position !== "Project Manager" && position !== "Admin"
-                          ? "not-allowed"
-                          : "pointer",
-                    }}
-                    onClick={() => handleDelete(project.code)} // ⬅️ Kirim project code ke fungsi delete
-                  >
-                    <i className="bi bi-trash3"></i>
-                  </button>
+                      }
+                      style={{
+                        opacity:
+                          position !== "Project Manager" && position !== "Admin"
+                            ? 0.5
+                            : 1,
+                        cursor:
+                          position !== "Project Manager" && position !== "Admin"
+                            ? "not-allowed"
+                            : "pointer",
+                      }}
+                  
+                    >
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
+                    </Link>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -183,3 +248,4 @@ function Project() {
 }
 
 export default Project;
+
