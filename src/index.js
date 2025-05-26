@@ -42,6 +42,7 @@ root.render(
           {/* Public Route */}
           <Route path="/" element={<App />} />
           <Route path="/ForgotPassword" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* 🔥 Wrap ALL protected routes inside PrivateRoutes */}
           <Route element={<PrivateRoutes />}>
