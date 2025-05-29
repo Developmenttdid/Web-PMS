@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import { csv } from "d3-fetch";
 import L from "leaflet";
+import "leaflet-geometryutil";
 import "leaflet/dist/leaflet.css";
-import "./projectstatus.css";
+import { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import * as toGeoJSON from "togeojson";
-import "leaflet-geometryutil";
-import { csv } from "d3-fetch";
+import "./projectstatus.css";
 
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
@@ -23,6 +23,8 @@ function ProjectStatus_db() {
   const [projectCode, setProjectCode] = useState(
     localStorage.getItem("projectCode") || ""
   );
+  const [isLoading, setIsLoading] = useState(true);
+  const [originalProjectCode, setOriginalProjectCode] = useState("");
 
   useEffect(() => {
     localStorage.setItem("projectCode", projectCode);
@@ -32,11 +34,80 @@ function ProjectStatus_db() {
     initializeMap();
   }, []);
 
+  // INI UNTUK NAMPILIN DATA DARI DATABASE
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const codeFromUrl = urlParams.get("project_code");
+
+    console.log("Project Code dari URL:", codeFromUrl); // Debug 1
+
+    if (codeFromUrl) {
+      // Simpan original project code ke localStorage dan state
+      localStorage.setItem("originalProjectCode", codeFromUrl);
+      setOriginalProjectCode(codeFromUrl);
+      fetchAllProjects(codeFromUrl);
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const fetchAllProjects = async (targetCode) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `http://103.163.184.111:3000/projectstatus?_=${Date.now()}`
+      ); // Tambahkan timestamp untuk hindari cache
+      console.log("Response status:", response.status); // Debug 2
+
+      if (!response.ok) throw new Error("Failed to fetch");
+
+      const allProjects = await response.json();
+      console.log("Semua project dari API:", allProjects); // Debug 3
+
+      // Cari project yang sesuai dengan exact match
+      const project = allProjects.find(
+        (p) => p.project_code === targetCode // Exact match (case sensitive)
+      );
+
+      console.log("Project yang ditemukan:", project); // Debug 4
+
+      if (project) {
+        // Set project code
+        setProjectCode(project.project_code);
+
+        // Set project type
+        const foundProjectType = Projectoptions.find(
+          (opt) =>
+            opt.label.toLowerCase() ===
+            (project.project_type || "").toLowerCase()
+        );
+        setSelectedOption(foundProjectType || null);
+
+        // Set city
+        const foundCity = {
+          label: project.city || "",
+          value: project.city || "",
+        };
+        setSelectedOption3(foundCity);
+      } else {
+        console.warn(`Project dengan code ${targetCode} tidak ditemukan`);
+        // Optional: Reset form jika project tidak ditemukan
+        setProjectCode(targetCode); // Tetap tampilkan code dari URL
+        setSelectedOption(null);
+        setSelectedOption3(null);
+      }
+    } catch (error) {
+      console.error("Error fetching project data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const initializeMap = () => {
     if (!mapRef.current) {
       mapRef.current = L.map("map").setView([0, 0], 2);
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; OpenStreetMap contributors',
+        attribution: "&copy; OpenStreetMap contributors",
       }).addTo(mapRef.current);
 
       const customIcon = L.icon({
@@ -68,9 +139,15 @@ function ProjectStatus_db() {
     markerRef.current.setLatLng([lat, lng]);
     mapRef.current.setView([lat, lng], 13);
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+      );
       const data = await response.json();
-      let cityName = data.address?.city || data.address?.town || data.address?.village || "Unknown";
+      let cityName =
+        data.address?.city ||
+        data.address?.town ||
+        data.address?.village ||
+        "Unknown";
       if (cityName.startsWith("City of ")) {
         cityName = cityName.replace("City of ", "");
       }
@@ -85,7 +162,10 @@ function ProjectStatus_db() {
     try {
       const geojson = toGeoJSON.kml(kml);
 
-      if (!geojson.features.length || !geojson.features[0].geometry?.coordinates?.[0]) {
+      if (
+        !geojson.features.length ||
+        !geojson.features[0].geometry?.coordinates?.[0]
+      ) {
         throw new Error("Invalid KML structure");
       }
 
@@ -93,13 +173,16 @@ function ProjectStatus_db() {
       const latLngs = [];
 
       if (geojson.features[0].geometry.type === "Polygon") {
-        coordinates[0].forEach(coord => latLngs.push([coord[1], coord[0]]));
+        coordinates[0].forEach((coord) => latLngs.push([coord[1], coord[0]]));
       } else if (geojson.features[0].geometry.type === "MultiPolygon") {
-        coordinates.forEach(polygon => {
-          polygon[0].forEach(coord => latLngs.push([coord[1], coord[0]]));
+        coordinates.forEach((polygon) => {
+          polygon[0].forEach((coord) => latLngs.push([coord[1], coord[0]]));
         });
       } else {
-        console.error("Invalid geometry type:", geojson.features[0].geometry.type);
+        console.error(
+          "Invalid geometry type:",
+          geojson.features[0].geometry.type
+        );
         return;
       }
 
@@ -118,7 +201,9 @@ function ProjectStatus_db() {
         console.log("LatLngs Array:", latLngsArray);
 
         if (latLngsArray.length > 0) {
-          const calculatedArea = (L.GeometryUtil.geodesicArea(latLngsArray[0]) / 10000).toFixed(2);
+          const calculatedArea = (
+            L.GeometryUtil.geodesicArea(latLngsArray[0]) / 10000
+          ).toFixed(2);
           console.log("Calculated Area:", calculatedArea);
           setArea(calculatedArea);
         } else {
@@ -160,23 +245,37 @@ function ProjectStatus_db() {
 
       reader.onload = (e) => {
         try {
-          const kml = new DOMParser().parseFromString(e.target.result, "application/xml");
+          const kml = new DOMParser().parseFromString(
+            e.target.result,
+            "application/xml"
+          );
           const geojson = toGeoJSON.kml(kml);
 
           console.log("Parsed GeoJSON:", geojson); // Debugging: See actual structure
 
-          if (!geojson.features || !Array.isArray(geojson.features) || geojson.features.length === 0) {
+          if (
+            !geojson.features ||
+            !Array.isArray(geojson.features) ||
+            geojson.features.length === 0
+          ) {
             throw new Error("Invalid KML file: No features found.");
           }
 
           let centerPoint = null;
 
           for (const feature of geojson.features) {
-            if (!feature.geometry || !feature.geometry.type || !feature.geometry.coordinates) {
+            if (
+              !feature.geometry ||
+              !feature.geometry.type ||
+              !feature.geometry.coordinates
+            ) {
               continue;
             }
 
-            if (feature.geometry.type === "Polygon" || feature.geometry.type === "LineString") {
+            if (
+              feature.geometry.type === "Polygon" ||
+              feature.geometry.type === "LineString"
+            ) {
               if (
                 Array.isArray(feature.geometry.coordinates) &&
                 feature.geometry.coordinates.length > 0 &&
@@ -194,7 +293,10 @@ function ProjectStatus_db() {
                 Array.isArray(feature.geometry.coordinates) &&
                 feature.geometry.coordinates.length === 2
               ) {
-                centerPoint = [feature.geometry.coordinates[1], feature.geometry.coordinates[0]];
+                centerPoint = [
+                  feature.geometry.coordinates[1],
+                  feature.geometry.coordinates[0],
+                ];
               }
             }
 
@@ -202,16 +304,26 @@ function ProjectStatus_db() {
           }
 
           // STRICT VALIDATION: Reject if centerPoint is still null, undefined, or invalid
-          if (!centerPoint || centerPoint.includes(undefined) || centerPoint.includes(null)) {
-            throw new Error("Cannot determine center point. Invalid or incomplete KML data.");
+          if (
+            !centerPoint ||
+            centerPoint.includes(undefined) ||
+            centerPoint.includes(null)
+          ) {
+            throw new Error(
+              "Cannot determine center point. Invalid or incomplete KML data."
+            );
           }
 
-          alert(`KML file is accepted. Center point: ${centerPoint[0]}, ${centerPoint[1]}`);
+          alert(
+            `KML file is accepted. Center point: ${centerPoint[0]}, ${centerPoint[1]}`
+          );
           setIsKmlChecked(true);
           setIsKmlAccepted(true);
         } catch (error) {
           console.error("Error parsing KML:", error);
-          alert("KML file is unsupported or contains invalid data. Please check the file.");
+          alert(
+            "KML file is unsupported or contains invalid data. Please check the file."
+          );
           setIsKmlChecked(true);
           setIsKmlAccepted(false);
         }
@@ -227,10 +339,15 @@ function ProjectStatus_db() {
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
-          const kml = new DOMParser().parseFromString(e.target.result, "application/xml");
+          const kml = new DOMParser().parseFromString(
+            e.target.result,
+            "application/xml"
+          );
           validateAndLoadKml(kml);
         } catch (error) {
-          alert("Error processing KML file. Please ensure it is a valid KML file.");
+          alert(
+            "Error processing KML file. Please ensure it is a valid KML file."
+          );
         }
       };
       reader.readAsText(file);
@@ -250,16 +367,24 @@ function ProjectStatus_db() {
       markerRef.current.setLatLng([lat, lng]);
       mapRef.current.setView([lat, lng], 13);
 
-      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+      );
       const data = await response.json();
-      let cityName = data.address?.city || data.address?.town || data.address?.village || "Unknown";
+      let cityName =
+        data.address?.city ||
+        data.address?.town ||
+        data.address?.village ||
+        "Unknown";
       if (cityName.startsWith("City of ")) {
         cityName = cityName.replace("City of ", "");
       }
       setCity(cityName);
     } catch (error) {
       console.error("Error processing manual coordinates:", error);
-      alert("Error processing manual coordinates. Please ensure they are in the correct format.");
+      alert(
+        "Error processing manual coordinates. Please ensure they are in the correct format."
+      );
     }
   };
 
@@ -275,9 +400,9 @@ function ProjectStatus_db() {
 
   useEffect(() => {
     if (selectedOption) {
-      localStorage.setItem("selectedOption", JSON.stringify(selectedOption)); 
+      localStorage.setItem("selectedOption", JSON.stringify(selectedOption));
     } else {
-      localStorage.removeItem("selectedOption"); 
+      localStorage.removeItem("selectedOption");
     }
   }, [selectedOption]);
 
@@ -300,6 +425,7 @@ function ProjectStatus_db() {
     { value: "1", label: "Inspection" },
     { value: "2", label: "Survey" },
     { value: "3", label: "Training" },
+    { value: "4", label: "Hardware Selling" },
   ];
 
   const Deliverableoptions = [
@@ -318,7 +444,9 @@ function ProjectStatus_db() {
         console.log("CSV Column Keys:", keys);
 
         if (keys.length < 3) {
-          console.error("CSV file does not have the expected number of columns.");
+          console.error(
+            "CSV file does not have the expected number of columns."
+          );
           return;
         }
 
@@ -342,7 +470,29 @@ function ProjectStatus_db() {
       localStorage.removeItem("selectedCity");
     }
   }, [selectedOption3]);
-  
+
+  // Simpan projectCode ke localStorage setiap kali berubah
+  useEffect(() => {
+    localStorage.setItem("projectCode", projectCode);
+  }, [projectCode]);
+
+  // Simpan selectedOption (project type) ke localStorage setiap kali berubah
+  useEffect(() => {
+    if (selectedOption) {
+      localStorage.setItem("selectedOption", JSON.stringify(selectedOption));
+    } else {
+      localStorage.removeItem("selectedOption");
+    }
+  }, [selectedOption]);
+
+  // Simpan selectedOption3 (city) ke localStorage setiap kali berubah
+  useEffect(() => {
+    if (selectedOption3) {
+      localStorage.setItem("selectedCity", JSON.stringify(selectedOption3));
+    } else {
+      localStorage.removeItem("selectedCity");
+    }
+  }, [selectedOption3]);
 
   return (
     <div className="add-project" style={{ marginLeft: "250px" }}>
@@ -363,7 +513,7 @@ function ProjectStatus_db() {
           <Select
             options={Projectoptions}
             value={selectedOption}
-            onChange={setSelectedOption} 
+            onChange={setSelectedOption}
             placeholder="Select project type"
             isSearchable={true}
             className="w-100"
@@ -386,13 +536,27 @@ function ProjectStatus_db() {
           <label className="form-label text-danger">Upload AOI</label>
           <div className="d-flex align-items-center">
             <input className="form-control" type="file" ref={fileInputRef} />
-            <button type="button" className="btn btn-warning ms-2" onClick={handleCheckKmlLayer}>
+            <button
+              type="button"
+              className="btn btn-warning ms-2"
+              onClick={handleCheckKmlLayer}
+            >
               <i className="bi bi-eye"></i>
             </button>
-            <button type="button" className="btn btn-primary ms-2" onClick={handleAddKmlLayer} disabled={!isKmlChecked || !isKmlAccepted}>
+            <button
+              type="button"
+              className="btn btn-primary ms-2"
+              onClick={handleAddKmlLayer}
+              disabled={!isKmlChecked || !isKmlAccepted}
+            >
               <i className="bi bi-plus"></i>
             </button>
-            <button type="button" className="btn btn-danger ms-2" onClick={handleDeleteKmlLayer} disabled={!isKmlChecked || !isKmlAccepted}>
+            <button
+              type="button"
+              className="btn btn-danger ms-2"
+              onClick={handleDeleteKmlLayer}
+              disabled={!isKmlChecked || !isKmlAccepted}
+            >
               <i className="bi bi-trash"></i>
             </button>
           </div>
@@ -404,7 +568,9 @@ function ProjectStatus_db() {
             <span className="input-group-text">ha</span>
           </div>
         </div>
-        <label className="form-label ms-3 text-danger">Insert Location Coordinates</label>
+        <label className="form-label ms-3 text-danger">
+          Insert Location Coordinates
+        </label>
         <input
           className="form-control ms-4"
           type="text"
@@ -413,14 +579,29 @@ function ProjectStatus_db() {
           style={{ width: "98%" }}
         />
         <label className="form-label ms-3 text-danger">City Information</label>
-        <input className="form-control mb-3 ms-4"  style={{ width: "98%" }} id="cityinfo" type="text" value={city} readOnly />
-        <div id="map" className="ms-3" style={{ height: "300px", width: "100%" }}></div>
+        <input
+          className="form-control mb-3 ms-4"
+          style={{ width: "98%" }}
+          id="cityinfo"
+          type="text"
+          value={city}
+          readOnly
+        />
+        <div
+          id="map"
+          className="ms-3"
+          style={{ height: "300px", width: "100%" }}
+        ></div>
       </div>
       <div className="d-flex align-items-start column-gap-3 mt-3">
         <div className="flex-grow-1">
           <label className="form-label text-danger">Objective</label>
           <div className="form-floating">
-            <textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea2"></textarea>
+            <textarea
+              className="form-control"
+              placeholder="Leave a comment here"
+              id="floatingTextarea2"
+            ></textarea>
             <label htmlFor="floatingTextarea2">Project description</label>
           </div>
         </div>
@@ -439,11 +620,32 @@ function ProjectStatus_db() {
               <i className="bi bi-plus"></i>
             </button>
           </div>
-          <table className="table text-center table-bordered mt-3" style={{ borderColor: '#143893' }}>
+          <table
+            className="table text-center table-bordered mt-3"
+            style={{ borderColor: "#143893" }}
+          >
             <thead>
               <tr>
-                <th scope="col" style={{ width: '10%', backgroundColor: '#143893', color: '#CCE6FF' }}>#</th>
-                <th scope="col" style={{ width: '80%', backgroundColor: '#143893', color: '#CCE6FF' }}>Deliverable list</th>
+                <th
+                  scope="col"
+                  style={{
+                    width: "10%",
+                    backgroundColor: "#143893",
+                    color: "#CCE6FF",
+                  }}
+                >
+                  #
+                </th>
+                <th
+                  scope="col"
+                  style={{
+                    width: "80%",
+                    backgroundColor: "#143893",
+                    color: "#CCE6FF",
+                  }}
+                >
+                  Deliverable list
+                </th>
               </tr>
             </thead>
             <tbody>
