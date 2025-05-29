@@ -41,6 +41,7 @@ function Personnel() {
     { value: "1", label: "Pilot" },
     { value: "2", label: "Co-Pilot" },
     { value: "3", label: "Observer" },
+     { value: "Trainer", label: "Trainer" },
   ];
 
   // Add new row
