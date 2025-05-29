@@ -116,17 +116,17 @@ function Equipment_db() {
   };
 
   const handleSelectChange = (id, field, selectedOption) => {
-    const updatedList = equipmentList.map((item) =>
-      item.id === id ? { ...item, [field]: selectedOption } : item
-    );
-    setEquipmentList(updatedList);
+  const updatedList = equipmentList.map((item) =>
+    item.id === id ? { ...item, [field]: selectedOption } : item
+  );
+  setEquipmentList(updatedList);
 
-    if (field === "type") {
-      // Cari equipment (misalnya PPE) yang dipilih di dropdown Equipment,
-      // gunakan key equipment.value (misalnya "7" untuk PPE)
-      const equipment = equipmentList.find((item) => item.id === id).equipment;
-      const key = equipment.value;
-      // Filter dari optionsID, cari item dengan property type yang sesuai dengan selectedOption.value
+  if (field === "type") {
+    const equipment = equipmentList.find((item) => item.id === id).equipment;
+    const key = equipment.value;
+    
+    // Check if optionsID[key] exists before filtering
+    if (optionsID[key]) {
       const filteredOptions = optionsID[key].filter(
         (option) => option.type === selectedOption.value
       );
@@ -137,12 +137,117 @@ function Equipment_db() {
           label: option.label,
         })),
       }));
+    } else {
+      // For PPE or other items without IDs, set empty array
+      setFilteredIDOptions((prev) => ({
+        ...prev,
+        [id]: [],
+      }));
+    }
+  }
+};
+
+  // const handleDeleteRow = (id) => {
+  //   setEquipmentList(equipmentList.filter((item) => item.id !== id));
+  // };
+
+  const handleDeleteRow = async (id) => {
+    if (!window.confirm('Apakah Anda yakin ingin menghapus equipment ini?')) {
+    return;
+  }
+  try {
+    // Cari item yang akan dihapus
+    const itemToDelete = equipmentList.find(item => item.id === id);
+    
+    // Jika item memiliki realId (sudah ada di database), hapus dari database
+    if (itemToDelete?.realId) {
+      const response = await axios.delete(
+        `http://103.163.184.111:3000/project_equipment/${itemToDelete.realId}`
+      );
+      
+      if (response.status !== 200) {
+        throw new Error('Failed to delete from database');
+      }
+      console.log('Equipment deleted from database:', itemToDelete.realId);
+    }
+    
+    // Hapus dari state/localStorage
+    setEquipmentList(equipmentList.filter((item) => item.id !== id));
+    
+  } catch (error) {
+    console.error('Error deleting equipment:', error);
+    alert(`Gagal menghapus equipment: ${error.message}`);
+  }
+};
+
+useEffect(() => {
+  const fetchProjectEquipment = async () => {
+    try {
+      const storedProjectCode = localStorage.getItem("originalProjectCode");
+      const localData = localStorage.getItem("equipmentList");
+      console.log("equipment list local storage: ", localData);
+      // Jika localStorage sudah punya data, jangan timpa
+      if (localData && JSON.parse(localData).length > 0) {
+        console.log("Using equipmentList from localStorage");
+        return;
+      }
+
+      if (!storedProjectCode) {
+        console.warn("originalProjectCode not found in localStorage");
+        return;
+      }
+
+      const response = await axios.get("http://103.163.184.111:3000/project_equipment");
+      const filteredData = response.data.filter(
+        (item) => item.project_code === storedProjectCode
+      );
+
+      const equipmentMap = {
+        UAV: "1",
+        GPS: "2",
+        Payload: "3",
+        Laptop: "4",
+        Battery: "5",
+        Other: "6",
+        PPE: "7",
+      };
+
+
+      const mappedData = filteredData.map((item) => {
+  const equipmentValue = equipmentMap[item.equipment_name] || null;
+  return {
+    id: Date.now() + Math.random(), // internal id
+    realId: item.id, // ini penting untuk PUT
+    equipment: equipmentValue
+      ? { value: equipmentValue, label: item.equipment_name }
+      : null,
+    type: item.equipment_type
+      ? { value: item.equipment_type, label: item.equipment_type }
+      : null,
+    equipmentID: item.equipment_id
+      ? { value: item.equipment_id, label: item.equipment_id }
+      : null,
+  };
+});
+
+
+      setEquipmentList(mappedData);
+      console.log("Equipment list dr equipment page: ", equipmentList);
+    } catch (error) {
+      console.error("Error fetching project equipment", error);
     }
   };
 
-  const handleDeleteRow = (id) => {
-    setEquipmentList(equipmentList.filter((item) => item.id !== id));
-  };
+  fetchProjectEquipment();
+}, []);
+
+
+useEffect(() => {
+  localStorage.setItem("equipmentList", JSON.stringify(equipmentList));
+  console.log("Equipment list dr equipment page - 2: ", equipmentList);
+}, [equipmentList]);
+
+
 
   return (
     <div className="equipment-container" style={{ marginLeft: "250px" }}>
