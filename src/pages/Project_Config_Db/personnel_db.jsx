@@ -1,90 +1,217 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
+import axios from "axios";
 
 function Personnel_db() {
   document.body.style.overflowY = "auto";
   document.body.style.overflowX = "hidden";
 
-  // Function to load stored data from localStorage
-  const loadStoredData = (key) => {
-    const storedData = localStorage.getItem(key);
-    return storedData ? JSON.parse(storedData) : [];
+  const projectCode = localStorage.getItem("originalProjectCode") || "";
+  const personnelKey = `personnelList_${projectCode}`;
+
+  // Initialize state with localStorage data or empty array
+  const [personnelList, setPersonnelList] = useState(() => {
+    const saved = localStorage.getItem(personnelKey);
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [optionsName, setOptionsName] = useState([]);
+  const [existingPersonnel, setExistingPersonnel] = useState([]);
+
+  // Save to localStorage whenever personnelList changes
+  useEffect(() => {
+    localStorage.setItem(personnelKey, JSON.stringify(personnelList));
+    localStorage.setItem("personnelList", JSON.stringify(personnelList));
+  }, [personnelList, personnelKey]);
+
+  // Helper function to merge backend data with localStorage data
+  const mergePersonnelData = (backendData, localData, nameOptions) => {
+    // Create a map of backend personnel by name for quick lookup
+    const backendMap = new Map();
+    backendData.forEach(person => {
+      backendMap.set(person.personnel_name, {
+        id: person.id,
+        name: { value: person.personnel_name, label: person.personnel_name },
+        role: { value: person.personnel_role, label: person.personnel_role }
+      });
+    });
+
+    // Create a map of local personnel by name
+    const localMap = new Map();
+    localData.forEach(person => {
+      if (person.name) {
+        localMap.set(person.name.label, person);
+      }
+    });
+
+    // Merge the data - prioritize local changes over backend data
+    const merged = [];
+    backendData.forEach(person => {
+      const localPerson = localMap.get(person.personnel_name);
+      if (localPerson) {
+        merged.push(localPerson);
+        localMap.delete(person.personnel_name);
+      } else {
+        merged.push({
+          id: person.id,
+          name: nameOptions.find(opt => opt.label === person.personnel_name) ||
+            { value: person.personnel_name, label: person.personnel_name },
+          role: { value: person.personnel_role, label: person.personnel_role }
+        });
+      }
+    });
+    // Add any remaining local personnel that weren't in backend (newly added)
+    localMap.forEach(person => {
+      merged.push(person);
+    });
+    return merged;
   };
 
-  const [personnelList, setPersonnelList] = useState(loadStoredData("personnelList"));
-  const [personnelNames, setPersonnelNames] = useState(loadStoredData("personnelNames"));
-  const [personnelRoles, setPersonnelRoles] = useState(loadStoredData("personnelRoles"));
-  const [optionsName, setOptionsName] = useState([]);
-
-  // Save personnelList, personnelNames, and personnelRoles to localStorage whenever they update
+  // Fetch personnel names, then fetch personnel data
   useEffect(() => {
-    localStorage.setItem("personnelList", JSON.stringify(personnelList));
-    localStorage.setItem("personnelNames", JSON.stringify(personnelNames));
-    localStorage.setItem("personnelRoles", JSON.stringify(personnelRoles));
-  }, [personnelList, personnelNames, personnelRoles]);
+    const fetchAll = async () => {
+      await fetchPersonnelNames();
+      if (projectCode) {
+        await fetchExistingPersonnel(projectCode);
+      }
+    };
+    fetchAll();
+    // eslint-disable-next-line
+  }, [projectCode]);
 
-  // Fetch personnel names from the provided URL
-  useEffect(() => {
-    fetch("http://103.163.184.111:3000/users")
-      .then((response) => response.json())
-      .then((data) => {
-        const formattedOptions = data.map((user) => ({
+  // Fetch personnel from backend
+  const fetchExistingPersonnel = async (projectCode) => {
+    try {
+      const response = await fetch(`http://103.163.184.111:3000/personnel?project_code=${projectCode}`);
+      if (response.ok) {
+        const data = await response.json();
+        setExistingPersonnel(data);
+
+        // Merge data from backend with localStorage data
+        const mergedPersonnel = mergePersonnelData(data, personnelList, optionsName);
+
+        setPersonnelList(mergedPersonnel);
+        localStorage.setItem(personnelKey, JSON.stringify(mergedPersonnel));
+        localStorage.setItem("personnelList", JSON.stringify(mergedPersonnel));
+        localStorage.setItem("existingPersonnel", JSON.stringify(data));
+      }
+    } catch (error) {
+      console.error("Error fetching existing personnel:", error);
+    }
+  };
+
+  const options = [
+    { value: "Pilot", label: "Pilot" },
+    { value: "Co-Pilot", label: "Co-Pilot" },
+    { value: "Observer", label: "Observer" },
+    { value: "Trainer", label: "Trainer" },
+  ];
+
+  const fetchPersonnelNames = async () => {
+    try {
+      const response = await fetch("http://103.163.184.111:3000/users");
+      if (response.ok) {
+        const data = await response.json();
+        const formattedOptions = data.map(user => ({
           value: user.id,
           label: user.name,
         }));
         setOptionsName(formattedOptions);
-      })
-      .catch((error) => console.error("Error fetching personnel names:", error));
-  }, []);
-
-  const options = [
-    { value: "1", label: "Pilot" },
-    { value: "2", label: "Co-Pilot" },
-    { value: "3", label: "Observer" },
-  ];
-
-  // Add new row
-  const handleAddRow = () => {
-    const newId = Date.now();
-    setPersonnelList([...personnelList, { id: newId, name: null, role: null }]);
-    setPersonnelNames([...personnelNames, { id: newId, name: null }]);
-    setPersonnelRoles([...personnelRoles, { id: newId, role: null }]);
-  };
-
-  // Delete row
-  const handleDeleteRow = (id) => {
-    setPersonnelList(personnelList.filter((person) => person.id !== id));
-    setPersonnelNames(personnelNames.filter((person) => person.id !== id));
-    setPersonnelRoles(personnelRoles.filter((person) => person.id !== id));
-  };
-
-  // Update state when dropdown changes
-  const handleSelectChange = (id, type, selectedOption) => {
-    setPersonnelList(
-      personnelList.map((person) =>
-        person.id === id ? { ...person, [type]: selectedOption } : person
-      )
-    );
-
-    if (type === "name") {
-      setPersonnelNames(
-        personnelNames.map((person) =>
-          person.id === id ? { ...person, name: selectedOption } : person
-        )
-      );
-    } else if (type === "role") {
-      setPersonnelRoles(
-        personnelRoles.map((person) =>
-          person.id === id ? { ...person, role: selectedOption } : person
-        )
-      );
+      }
+    } catch (error) {
+      console.error("Error fetching personnel names:", error);
     }
+  };
+
+  // Tambah row baru dengan id unik sementara
+  const handleAddRow = () => {
+    const tempId = `temp-${Date.now()}-${Math.random()}`;
+    const newList = [...personnelList, { id: tempId, name: null, role: null }];
+    setPersonnelList(newList);
+  };
+
+  // Hapus row
+  // const handleDeleteRow = (id) => {
+  //   const newList = personnelList.filter(person => person.id !== id);
+  //   setPersonnelList(newList);
+  // };
+
+//    const handleDeleteRow = async (id) => {
+//     if (!window.confirm('Apakah Anda yakin ingin menghapus manusia ini?')) {
+//     return;
+//   }
+//   try {
+//     // Cari item yang akan dihapus
+//     const itemToDelete = personnelList.find(item => item.id === id);
+    
+//     // Jika item memiliki realId (sudah ada di database), hapus dari database
+//     if (itemToDelete?.realId) {
+//       const response = await axios.delete(
+//         `http://103.163.184.111:3000/personnel/${itemToDelete.realId}`
+//       );
+      
+//       if (response.status !== 200) {
+//         throw new Error('Failed to delete from database');
+//       }
+//       console.log('Personnel deleted from database:', itemToDelete.realId);
+//     }
+    
+//     // Hapus dari state/localStorage
+//     setPersonnelList(personnelList.filter((item) => item.id !== id));
+    
+//   } catch (error) {
+//     console.error('Error deleting personnel:', error);
+//     alert(`Gagal menghapus personnel: ${error.message}`);
+//   }
+// };
+
+const handleDeleteRow = async (id) => {
+  if (!window.confirm('Apakah Anda yakin ingin menghapus personnel ini?')) {
+    return;
+  }
+  
+  try {
+    // Cari item yang akan dihapus
+    const itemToDelete = personnelList.find(item => item.id === id);
+    
+    // Jika item memiliki id yang bukan temporary (sudah ada di database)
+    if (itemToDelete && !itemToDelete.id.toString().startsWith('temp-')) {
+      const response = await axios.delete(
+        `http://103.163.184.111:3000/personnel/${itemToDelete.id}`
+      );
+      
+      if (response.status !== 200) {
+        throw new Error('Failed to delete from database');
+      }
+      console.log('Personnel deleted from database:', response.data);
+    }
+    
+    // Hapus dari state dan localStorage
+    const updatedList = personnelList.filter((item) => item.id !== id);
+    setPersonnelList(updatedList);
+    
+    // Update localStorage
+    localStorage.setItem(personnelKey, JSON.stringify(updatedList));
+    localStorage.setItem("personnelList", JSON.stringify(updatedList));
+    
+  } catch (error) {
+    console.error('Error deleting personnel:', error);
+    alert(`Gagal menghapus personnel: ${error.response?.data?.message || error.message}`);
+  }
+};
+
+  // Edit select
+  const handleSelectChange = (id, type, selectedOption) => {
+    const newList = personnelList.map(person =>
+      person.id === id ? { ...person, [type]: selectedOption } : person
+    );
+    setPersonnelList(newList);
   };
 
   return (
     <div className="personnel-container" style={{ marginLeft: "250px" }}>
-      <h2> Personnel</h2>
-      <div className="col mb-1 mt-3">
+      <h2>Personnel</h2>
+      <div className="mb-3">
         <button
           type="button"
           onClick={handleAddRow}
@@ -100,51 +227,15 @@ function Personnel_db() {
         >
           <thead>
             <tr>
-              <th
-                scope="col"
-                style={{
-                  width: "5%",
-                  backgroundColor: "#143893",
-                  color: "#CCE6FF",
-                }}
-              >
-                #
-              </th>
-              <th
-                scope="col"
-                style={{
-                  width: "35%",
-                  backgroundColor: "#143893",
-                  color: "#CCE6FF",
-                }}
-              >
-                Personnel Name
-              </th>
-              <th
-                scope="col"
-                style={{
-                  width: "35%",
-                  backgroundColor: "#143893",
-                  color: "#CCE6FF",
-                }}
-              >
-                Personnel Role
-              </th>
-              <th
-                scope="col"
-                style={{
-                  width: "25%",
-                  backgroundColor: "#143893",
-                  color: "#CCE6FF",
-                }}
-              >
-                Action
-              </th>
+              <th scope="col" style={{ width: "5%", backgroundColor: "#143893", color: "#CCE6FF" }}>#</th>
+              <th scope="col" style={{ width: "35%", backgroundColor: "#143893", color: "#CCE6FF" }}>Personnel Name</th>
+              <th scope="col" style={{ width: "35%", backgroundColor: "#143893", color: "#CCE6FF" }}>Personnel Role</th>
+              <th scope="col" style={{ width: "25%", backgroundColor: "#143893", color: "#CCE6FF" }}>Action</th>
             </tr>
           </thead>
           <tbody>
             {personnelList.map((person, index) => (
-              <tr key={person.id}>
+              <tr key={person.id ?? `new-${index}`}>
                 <th scope="row">{index + 1}</th>
                 <td>
                   <Select
