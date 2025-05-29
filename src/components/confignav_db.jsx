@@ -1,4 +1,4 @@
-import React from "react";
+// confignav_db awal, yg update projectstatus ud bs, yg equipment on progress
 import { useLocation, useNavigate } from "react-router-dom";
 
 const ConfigNav_db = () => {
@@ -7,243 +7,241 @@ const ConfigNav_db = () => {
 
   const handleSubmitProject = async (event) => {
     event.preventDefault();
-    const selectedOption = JSON.parse(localStorage.getItem("selectedOption"));
-    const selectedCity = JSON.parse(localStorage.getItem("selectedCity"));
-    //handle project status
-    const projectData = {
-      project_code: localStorage.getItem("projectCode"),
-      project_type: selectedOption ? selectedOption.label : null,
-      city: selectedCity ? selectedCity.label : null,
-      email: localStorage.getItem("email")
-    };
 
-    //handle project timeline start
-    const projectTableData = JSON.parse(localStorage.getItem("projectTableData")) || [];
-    const timelineDataStart = {
-      email: localStorage.getItem("email"),
-      project_code: localStorage.getItem("projectCode"),
-      studi_literatur: projectTableData.find(task => task.taskList === 'Studi Literatur')?.startDate || null,
-      pembuatan_rencana_kerja: projectTableData.find(task => task.taskList === 'Pembuatan Rencana Kerja')?.startDate || null,
-      kick_off_meeting: projectTableData.find(task => task.taskList === 'Kick off Meeting (KOM)')?.startDate || null,
-      pre_mob: projectTableData.find(task => task.taskList === 'Pre-mob')?.startDate || null,
-      pengurusan_safety_assessment_airnav_pusat: projectTableData.find(task => task.taskList === 'Pengurusan Safety Assessment Airnav Pusat')?.startDate || null,
-      pengurusan_safety_assessment_airnav_lokal: projectTableData.find(task => task.taskList === 'Pengurusan Safety Assessment Airnav Lokal')?.startDate || null,
-      pengurusan_izin_operasi_dnp: projectTableData.find(task => task.taskList === 'Pengurusan Izin Operasi - DNP')?.startDate || null,
-      pengurusan_security_clearance: projectTableData.find(task => task.taskList === 'Pengurusan Security Clearance')?.startDate || null,
-      pengurusan_izin_terbang_lanud_lokal: projectTableData.find(task => task.taskList === 'Pengurusan Izin Terbang - Lanud Lokal')?.startDate || null,
-      pengurusan_notam_airnav_lokal: projectTableData.find(task => task.taskList === 'Pengurusan NOTAM - Airnav Lokal')?.startDate || null,
-      perizinan_setempat: projectTableData.find(task => task.taskList === 'Perizinan Setempat')?.startDate || null,
-      survei_pendahuluan: projectTableData.find(task => task.taskList === 'Survei Pendahuluan')?.startDate || null,
-      pemasangan_primark: projectTableData.find(task => task.taskList === 'Pemasangan Primark')?.startDate || null,
-      pengamatan_gps: projectTableData.find(task => task.taskList === 'Pengamatan GPS')?.startDate || null,
-      manajemen_data_survei_darat: projectTableData.find(task => task.taskList === 'Manajemen Data Survei Darat')?.startDate || null,
-      pengolahan_data_survei_darat: projectTableData.find(task => task.taskList === 'Pengolahan Data Survei Darat')?.startDate || null,
-      akuisisi_data_survei_udara: projectTableData.find(task => task.taskList === 'Akuisisi Data Survei Udara')?.startDate || null,
-      manajemen_data_survei_udara: projectTableData.find(task => task.taskList === 'Manajemen Data Survei Udara')?.startDate || null,
-      pengolahan_ppk: projectTableData.find(task => task.taskList === 'Pengolahan PPK')?.startDate || null,
-      pengolahan_data_survei_udara: projectTableData.find(task => task.taskList === 'Pengolahan Data Survei Udara')?.startDate || null,
-      pembuatan_bapl: projectTableData.find(task => task.taskList === 'Pembuatan BAPL')?.startDate || null,
-      manajemen_data_hasil_pekerjaan: projectTableData.find(task => task.taskList === 'Manajemen Data Hasil Pekerjaan')?.startDate || null,
-      quality_control_hasil: projectTableData.find(task => task.taskList === 'Quality Control')?.startDate || null,
-      serah_terima_data: projectTableData.find(task => task.taskList === 'Serah Terima Data')?.startDate || null,
-      manajemen_data_survei_darat_dan_udara: projectTableData.find(task => task.taskList === 'Manajemen Data Survei Darat & Udara')?.startDate || null,
-      quality_control_survey: projectTableData.find(task => task.taskList === 'Quality Control')?.startDate || null,
-      pengolahan_data_survei_darat_hi_res: projectTableData.find(task => task.taskList === 'Pengolahan Data Survei Darat (hi res)')?.startDate || null,
-      pengolahan_data_survei_udara_hi_res: projectTableData.find(task => task.taskList === 'Pengolahan Data Survei Udara (hi res)')?.startDate || null,
-      uji_akurasi: projectTableData.find(task => task.taskList === 'Uji Akurasi')?.startDate || null,
-      revisi_pekerjaan: projectTableData.find(task => task.taskList === 'Revisi Pekerjaan')?.startDate || null
-    };
+    // Get all data from localStorage
+  const projectCode = localStorage.getItem("projectCode");
+  const selectedOption = JSON.parse(localStorage.getItem("selectedOption"));
+  const selectedCity = JSON.parse(localStorage.getItem("selectedCity"));
+  const originalProjectCode = localStorage.getItem("originalProjectCode");
+  const email = localStorage.getItem("email");
+  const equipmentList = JSON.parse(localStorage.getItem("equipmentList")) || [];
 
-    //handle project timeline end
-    const timelineDataEnd = {
-      email: localStorage.getItem("email"),
-      project_code: localStorage.getItem("projectCode"),
-      studi_literatur: projectTableData.find(task => task.taskList === 'Studi Literatur')?.endDate || null,
-      pembuatan_rencana_kerja: projectTableData.find(task => task.taskList === 'Pembuatan Rencana Kerja')?.endDate || null,
-      kick_off_meeting: projectTableData.find(task => task.taskList === 'Kick off Meeting (KOM)')?.endDate || null,
-      pre_mob: projectTableData.find(task => task.taskList === 'Pre-mob')?.endDate || null,
-      pengurusan_safety_assessment_airnav_pusat: projectTableData.find(task => task.taskList === 'Pengurusan Safety Assessment Airnav Pusat')?.endDate || null,
-      pengurusan_safety_assessment_airnav_lokal: projectTableData.find(task => task.taskList === 'Pengurusan Safety Assessment Airnav Lokal')?.endDate || null,
-      pengurusan_izin_operasi_dnp: projectTableData.find(task => task.taskList === 'Pengurusan Izin Operasi - DNP')?.endDate || null,
-      pengurusan_security_clearance: projectTableData.find(task => task.taskList === 'Pengurusan Security Clearance')?.endDate || null,
-      pengurusan_izin_terbang_lanud_lokal: projectTableData.find(task => task.taskList === 'Pengurusan Izin Terbang - Lanud Lokal')?.endDate || null,
-      pengurusan_notam_airnav_lokal: projectTableData.find(task => task.taskList === 'Pengurusan NOTAM - Airnav Lokal')?.endDate || null,
-      perizinan_setempat: projectTableData.find(task => task.taskList === 'Perizinan Setempat')?.endDate || null,
-      survei_pendahuluan: projectTableData.find(task => task.taskList === 'Survei Pendahuluan')?.endDate || null,
-      pemasangan_primark: projectTableData.find(task => task.taskList === 'Pemasangan Primark')?.endDate || null,
-      pengamatan_gps: projectTableData.find(task => task.taskList === 'Pengamatan GPS')?.endDate || null,
-      manajemen_data_survei_darat: projectTableData.find(task => task.taskList === 'Manajemen Data Survei Darat')?.endDate || null,
-      pengolahan_data_survei_darat: projectTableData.find(task => task.taskList === 'Pengolahan Data Survei Darat')?.endDate || null,
-      akuisisi_data_survei_udara: projectTableData.find(task => task.taskList === 'Akuisisi Data Survei Udara')?.endDate || null,
-      manajemen_data_survei_udara: projectTableData.find(task => task.taskList === 'Manajemen Data Survei Udara')?.endDate || null,
-      pengolahan_ppk: projectTableData.find(task => task.taskList === 'Pengolahan PPK')?.endDate || null,
-      pengolahan_data_survei_udara: projectTableData.find(task => task.taskList === 'Pengolahan Data Survei Udara')?.endDate || null,
-      pembuatan_bapl: projectTableData.find(task => task.taskList === 'Pembuatan BAPL')?.endDate || null,
-      manajemen_data_hasil_pekerjaan: projectTableData.find(task => task.taskList === 'Manajemen Data Hasil Pekerjaan')?.endDate || null,
-      quality_control_hasil: projectTableData.find(task => task.taskList === 'Quality Control')?.endDate || null,
-      serah_terima_data: projectTableData.find(task => task.taskList === 'Serah Terima Data')?.endDate || null,
-      manajemen_data_survei_darat_dan_udara: projectTableData.find(task => task.taskList === 'Manajemen Data Survei Darat & Udara')?.endDate || null,
-      quality_control_survey: projectTableData.find(task => task.taskList === 'Quality Control')?.endDate || null,
-      pengolahan_data_survei_darat_hi_res: projectTableData.find(task => task.taskList === 'Pengolahan Data Survei Darat (hi res)')?.endDate || null,
-      pengolahan_data_survei_udara_hi_res: projectTableData.find(task => task.taskList === 'Pengolahan Data Survei Udara (hi res)')?.endDate || null,
-      uji_akurasi: projectTableData.find(task => task.taskList === 'Uji Akurasi')?.endDate || null,
-      revisi_pekerjaan: projectTableData.find(task => task.taskList === 'Revisi Pekerjaan')?.endDate || null
-    };
+  // Personnel data with project-specific key
+    const personnelKey = `personnelList_${localStorage.getItem("projectCode")}`;
+    const personnelList = JSON.parse(localStorage.getItem(personnelKey)) || [];
+    const existingPersonnel = JSON.parse(localStorage.getItem("existingPersonnel")) || [];
 
-    //handle project timeline percent
-    const timelineDataPercent = {
-      email: localStorage.getItem("email"),
-      project_code: localStorage.getItem("projectCode"),
-      studi_literatur: projectTableData.find(task => task.taskList === 'Studi Literatur')?.percentComplete || null,
-      pembuatan_rencana_kerja: projectTableData.find(task => task.taskList === 'Pembuatan Rencana Kerja')?.percentComplete || null,
-      kick_off_meeting: projectTableData.find(task => task.taskList === 'Kick off Meeting (KOM)')?.percentComplete || null,
-      pre_mob: projectTableData.find(task => task.taskList === 'Pre-mob')?.percentComplete || null,
-      pengurusan_safety_assessment_airnav_pusat: projectTableData.find(task => task.taskList === 'Pengurusan Safety Assessment Airnav Pusat')?.percentComplete || null,
-      pengurusan_safety_assessment_airnav_lokal: projectTableData.find(task => task.taskList === 'Pengurusan Safety Assessment Airnav Lokal')?.percentComplete || null,
-      pengurusan_izin_operasi_dnp: projectTableData.find(task => task.taskList === 'Pengurusan Izin Operasi - DNP')?.percentComplete || null,
-      pengurusan_security_clearance: projectTableData.find(task => task.taskList === 'Pengurusan Security Clearance')?.percentComplete || null,
-      pengurusan_izin_terbang_lanud_lokal: projectTableData.find(task => task.taskList === 'Pengurusan Izin Terbang - Lanud Lokal')?.percentComplete || null,
-      pengurusan_notam_airnav_lokal: projectTableData.find(task => task.taskList === 'Pengurusan NOTAM - Airnav Lokal')?.percentComplete || null,
-      perizinan_setempat: projectTableData.find(task => task.taskList === 'Perizinan Setempat')?.percentComplete || null,
-      survei_pendahuluan: projectTableData.find(task => task.taskList === 'Survei Pendahuluan')?.percentComplete || null,
-      pemasangan_primark: projectTableData.find(task => task.taskList === 'Pemasangan Primark')?.percentComplete || null,
-      pengamatan_gps: projectTableData.find(task => task.taskList === 'Pengamatan GPS')?.percentComplete || null,
-      manajemen_data_survei_darat: projectTableData.find(task => task.taskList === 'Manajemen Data Survei Darat')?.percentComplete || null,
-      pengolahan_data_survei_darat: projectTableData.find(task => task.taskList === 'Pengolahan Data Survei Darat')?.percentComplete || null,
-      akuisisi_data_survei_udara: projectTableData.find(task => task.taskList === 'Akuisisi Data Survei Udara')?.percentComplete || null,
-      manajemen_data_survei_udara: projectTableData.find(task => task.taskList === 'Manajemen Data Survei Udara')?.percentComplete || null,
-      pengolahan_ppk: projectTableData.find(task => task.taskList === 'Pengolahan PPK')?.percentComplete || null,
-      pengolahan_data_survei_udara: projectTableData.find(task => task.taskList === 'Pengolahan Data Survei Udara')?.percentComplete || null,
-      pembuatan_bapl: projectTableData.find(task => task.taskList === 'Pembuatan BAPL')?.percentComplete || null,
-      manajemen_data_hasil_pekerjaan: projectTableData.find(task => task.taskList === 'Manajemen Data Hasil Pekerjaan')?.percentComplete || null,
-      quality_control_hasil: projectTableData.find(task => task.taskList === 'Quality Control')?.percentComplete || null,
-      serah_terima_data: projectTableData.find(task => task.taskList === 'Serah Terima Data')?.percentComplete || null,
-      manajemen_data_survei_darat_dan_udara: projectTableData.find(task => task.taskList === 'Manajemen Data Survei Darat & Udara')?.percentComplete || null,
-      quality_control_survey: projectTableData.find(task => task.taskList === 'Quality Control')?.percentComplete || null,
-      pengolahan_data_survei_darat_hi_res: projectTableData.find(task => task.taskList === 'Pengolahan Data Survei Darat (hi res)')?.percentComplete || null,
-      pengolahan_data_survei_udara_hi_res: projectTableData.find(task => task.taskList === 'Pengolahan Data Survei Udara (hi res)')?.percentComplete || null,
-      uji_akurasi: projectTableData.find(task => task.taskList === 'Uji Akurasi')?.percentComplete || null,
-      revisi_pekerjaan: projectTableData.find(task => task.taskList === 'Revisi Pekerjaan')?.percentComplete || null,
-    };
+  // Debug logs
+  console.log("Project data:", {
+    projectCode,
+    selectedOption: selectedOption?.label,
+    selectedCity: selectedCity?.label,
+    originalProjectCode,
+    email
+  });
+  console.log("Equipment list:", equipmentList);
 
-    //handle personnel
-    const projectPersonnel = (JSON.parse(localStorage.getItem("personnelList")) || []).map((person) => ({
-      personnel_name: person.name?.label || "",
-      personnel_role: person.role?.label || "",
-      email: localStorage.getItem("email"),
-      project_code: localStorage.getItem("projectCode"),
-    }));    
+  // Validate required data
+  if (!projectCode || !originalProjectCode) {
+    alert("No project data to save!");
+    return;
+  }
 
-    // Ensure projectPersonnel is an array
-    console.log("📤 Sending data:", JSON.stringify(projectPersonnel, null, 2));
-
-    //handle equipment
-    const projectEquipment = (JSON.parse(localStorage.getItem("equipmentList")) || []).map((equipment) => ({
-      equipment_name: equipment.equipment?.label || "",  
-      equipment_type: equipment.type?.label || "",       
-      equipment_id: equipment.equipmentID?.label || null, 
-      email: localStorage.getItem("email"),
-      project_code: localStorage.getItem("projectCode"),
-    })).filter(eq => eq.equipment_name && eq.equipment_type);
+  try {
+    // 1. First update project status
+    const projectStatusResponse = await fetch(`http://103.163.184.111:3000/projectstatus`);
+    if (!projectStatusResponse.ok) throw new Error("Failed to fetch projects");
     
-    console.log("📤 Sending equipment data:", JSON.stringify({ project_equipment: projectEquipment }, null, 2));
-
-
-    try {
-      //handle project status
-      const projectResponse = await fetch("http://103.163.184.111:3000/projectstatus", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(projectData),
-      });
-
-      if (!projectResponse.ok) {
-        throw new Error("Failed to submit project data");
+    const allProjects = await projectStatusResponse.json();
+    const projectToUpdate = allProjects.find(p => p.project_code === originalProjectCode);
+    
+    if (!projectToUpdate) throw new Error(`Project ${originalProjectCode} not found`);
+    
+    const updateProjectResponse = await fetch(
+      `http://103.163.184.111:3000/projectstatus/${projectToUpdate.id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          project_code: projectCode,
+          project_type: selectedOption?.label || "",
+          city: selectedCity?.label || "",
+          email: email
+        })
       }
+    );
 
-      //handle project timeline start
-      const timelineStartResponse = await fetch("http://103.163.184.111:3000/project_timeline_start", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(timelineDataStart),
-      });
-
-      if (!timelineStartResponse.ok) {
-        throw new Error("Failed to submit timeline start data");
-      }
-
-      //handle project timeline end
-      const timelineEndResponse = await fetch("http://103.163.184.111:3000/project_timeline_end", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(timelineDataEnd),
-      });
-
-      if (!timelineEndResponse.ok) {
-        throw new Error("Failed to submit timeline end data");
-      }
-
-      //handle project timeline percent
-      const timelinePercentResponse = await fetch("http://103.163.184.111:3000/project_timeline_percent", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(timelineDataPercent),
-      });
-
-      if (!timelinePercentResponse.ok) {
-        throw new Error("Failed to submit timeline percentage data");
-      }
-
-      //handle personnel
-      const personnelResponse = await fetch("http://103.163.184.111:3000/personnel", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ personnel: projectPersonnel }),
-      });
-      
-      if (!personnelResponse.ok) {
-        throw new Error("Failed to submit personnel data");
-      }
-
-      //handle equipment
-      const equipmentResponse = await fetch("http://103.163.184.111:3000/project_equipment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ project_equipment: projectEquipment }), // Fix: Wrap in an object
-      });
-
-      if (!equipmentResponse.ok) {
-        throw new Error("Failed to submit equipment data");
-      }
-
-      localStorage.removeItem("city");
-      localStorage.removeItem("projectCode");
-      localStorage.removeItem("projectObjective");
-      localStorage.removeItem("selectedOption");
-      localStorage.removeItem("selectedCity");
-      localStorage.removeItem("projectTableData");
-      localStorage.removeItem("personnelList");
-      localStorage.removeItem("equipmentList");
-
-      alert("Project data submitted and data cleared!");
-
-      navigate("/Project");
-    } catch (error) {
-      console.error("Error submitting project data:", error);
-      alert(error.message);
+    if (!updateProjectResponse.ok) {
+      const error = await updateProjectResponse.json();
+      throw new Error(error.message || "Failed to update project status");
     }
+
+    console.log("Project status updated successfully");
+
+    // 2. Then update equipment
+    const equipmentEndpoint = "http://103.163.184.111:3000/project_equipment";
+    
+    for (const item of equipmentList) {
+      const payload = {
+        project_code: projectCode,
+        equipment_name: item.equipment?.label || "",
+        equipment_type: item.type?.value || "",
+        equipment_id: item.equipmentID?.value || "",
+        email: email
+      };
+
+      if (item.realId) {
+        // Update existing equipment
+        const response = await fetch(`${equipmentEndpoint}/${item.realId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        
+        if (!response.ok) {
+          const error = await response.json();
+          console.error(`Failed to update equipment ${item.realId}:`, error);
+        }
+      } else {
+        // Add new equipment
+        const response = await fetch(equipmentEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ project_equipment: [payload] })
+        });
+        
+        if (!response.ok) {
+          const error = await response.json();
+          console.error("Failed to add equipment:", error);
+        }
+      }
+    }
+
+    //3. update personnel
+     // 3. Handle personnel updates
+      const personnelUpdates = {
+        toCreate: [],
+        toUpdate: [],
+        toDelete: []
+      };
+
+      // Identify personnel to delete (existing but not in current list)
+      existingPersonnel.forEach(ep => {
+        if (!personnelList.some(p => p.id === ep.id)) {
+          personnelUpdates.toDelete.push(ep.id);
+        }
+      });
+
+      // Prepare create/update data
+      personnelList.forEach(person => {
+        const personnelData = {
+          personnel_name: person.name?.label || person.name || "",
+          personnel_role: person.role?.label || person.role || "",
+          email: email,
+          project_code: projectCode,
+        };
+
+        // Update: id dari database
+        if (person.id && existingPersonnel.some(ep => ep.id === person.id)) {
+          personnelUpdates.toUpdate.push({
+            ...personnelData,
+            id: person.id
+          });
+        }
+        // Create: tidak punya id atau id temp
+        else if (
+          (!person.id || (typeof person.id === "string" && person.id.startsWith("temp-"))) &&
+          (person.name || person.name?.label) && 
+          (person.role || person.role?.label)
+        ) {
+          personnelUpdates.toCreate.push(personnelData);
+        }
+      });
+
+      // Delete personnel
+      if (personnelUpdates.toDelete.length > 0) {
+        await Promise.all(personnelUpdates.toDelete.map(id =>
+          fetch(`http://103.163.184.111:3000/personnel/${id}`, {
+            method: "DELETE"
+          })
+        ));
+      }
+
+      // Create new personnel
+      if (personnelUpdates.toCreate.length > 0) {
+        await fetch("http://103.163.184.111:3000/personnel", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ personnel: personnelUpdates.toCreate }),
+        });
+      }
+
+      // Update existing personnel
+      if (personnelUpdates.toUpdate.length > 0) {
+        await Promise.all(personnelUpdates.toUpdate.map(person =>
+          fetch(`http://103.163.184.111:3000/personnel/${person.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(person),
+          })
+        ));
+      }
+
+    // const personnelEndpoint = "http://103.163.184.111:3000/personnel";
+
+    //   for (const item of personnelList) {
+    //     const payload = {
+    //       project_code: projectCode,
+    //       personnel_name: item.name?.label || item.name || "", // Handle both object and string
+    //       personnel_role: item.role?.label || item.role || "", // Handle both object and string
+    //       email: email
+    //     };
+
+    //     if  (item.realId) {
+    //        // update existing personnel
+    //       const updateId = item.id || item.realId; // Gunakan id atau realId jika ada
+    //       if (!updateId) {
+    //         console.error("No ID found for personnel update:", item);
+    //         continue;
+    //       }
+          
+    //       const response = await fetch(`${personnelEndpoint}/${updateId}`, {
+    //         method: "PUT",
+    //         headers: { "Content-Type": "application/json" },
+    //         body: JSON.stringify(payload)
+    //       });
+          
+    //       if (!response.ok) {
+    //         const error = await response.json();
+    //         console.error(`Failed to update personnel ${updateId}:`, error);
+    //       }
+    //     } else {
+         
+    //     // post new personnel
+    //       const response = await fetch(personnelEndpoint, {
+    //         method: "POST",
+    //         headers: { "Content-Type": "application/json" },
+    //         body: JSON.stringify({ personnel: [payload] })
+    //       });
+          
+    //       if (!response.ok) {
+    //         const error = await response.json();
+    //         console.error("Failed to add personnel:", error);
+    //       }
+    //     }
+    //   }
+
+    console.log("All equipment processed successfully");
+
+    // 3. Clean up and show success
+    localStorage.removeItem("projectCode");
+    localStorage.removeItem("selectedOption");
+    localStorage.removeItem("selectedCity");
+    localStorage.removeItem("originalProjectCode");
+    localStorage.removeItem("equipmentList");
+    localStorage.removeItem("sessionActive");
+          localStorage.removeItem(personnelKey);
+      localStorage.removeItem("existingPersonnel");
+
+    alert("Project data saved successfully!");
+    window.location.reload();
+
+  } catch (error) {
+    console.error("Error saving project:", error);
+    alert(`Failed to save project: ${error.message}`);
+  }
+
+
   };
 
   return (
@@ -253,7 +251,7 @@ const ConfigNav_db = () => {
         width: "250px",
         minHeight: "100vh",
         backgroundColor: "#f8f9fa",
-        boxShadow: "2px 0 5px rgba(0,0,0,0.1)"
+        boxShadow: "2px 0 5px rgba(0,0,0,0.1)",
       }}
     >
       <h4
@@ -278,7 +276,9 @@ const ConfigNav_db = () => {
           <a
             href="/Project/ProjectTimeline_db"
             className={`nav-link ${
-              location.pathname === "/Project/ProjectTimeline_db" ? "active" : ""
+              location.pathname === "/Project/ProjectTimeline_db"
+                ? "active"
+                : ""
             }`}
           >
             Project Timeline
