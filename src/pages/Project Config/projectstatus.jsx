@@ -300,6 +300,7 @@ function ProjectStatus() {
     { value: "1", label: "Inspection" },
     { value: "2", label: "Survey" },
     { value: "3", label: "Training" },
+     { value: "4", label: "Hardware Selling" },
   ];
 
   const Deliverableoptions = [
