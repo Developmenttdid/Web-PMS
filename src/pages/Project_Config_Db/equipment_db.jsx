@@ -367,3 +367,4 @@ useEffect(() => {
 }
 
 export default Equipment_db;
+
