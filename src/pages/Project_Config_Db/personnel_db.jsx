@@ -31,6 +31,7 @@ function Personnel_db() {
     backendData.forEach(person => {
       backendMap.set(person.personnel_name, {
         id: person.id,
+        realId: person.id,
         name: { value: person.personnel_name, label: person.personnel_name },
         role: { value: person.personnel_role, label: person.personnel_role }
       });
