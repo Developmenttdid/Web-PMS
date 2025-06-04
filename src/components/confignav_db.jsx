@@ -16,10 +16,12 @@ const ConfigNav_db = () => {
   const email = localStorage.getItem("email");
   const equipmentList = JSON.parse(localStorage.getItem("equipmentList")) || [];
 
-  // Personnel data with project-specific key
+   // Personnel data with project-specific key
     const personnelKey = `personnelList_${localStorage.getItem("projectCode")}`;
     const personnelList = JSON.parse(localStorage.getItem(personnelKey)) || [];
     const existingPersonnel = JSON.parse(localStorage.getItem("existingPersonnel")) || [];
+
+
 
   // Debug logs
   console.log("Project data:", {
@@ -27,7 +29,7 @@ const ConfigNav_db = () => {
     selectedOption: selectedOption?.label,
     selectedCity: selectedCity?.label,
     originalProjectCode,
-    email
+    email 
   });
   console.log("Equipment list:", equipmentList);
 
@@ -69,6 +71,24 @@ const ConfigNav_db = () => {
     console.log("Project status updated successfully");
 
     // 2. Then update equipment
+    // Fetch all equipment, filter by originalProjectCode, update project_code if needed
+    const equipmentFetchResponse = await fetch("http://103.163.184.111:3000/project_equipment");
+    if (!equipmentFetchResponse.ok) throw new Error("Failed to fetch equipment");
+
+    const allEquipment = await equipmentFetchResponse.json();
+    const equipmentToUpdate = allEquipment.filter(eq => eq.project_code === originalProjectCode);
+
+    // Update project_code for all equipment with originalProjectCode
+    await Promise.all(
+      equipmentToUpdate.map(eq =>
+        fetch(`http://103.163.184.111:3000/project_equipment/${eq.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...eq, project_code: projectCode })
+        })
+      )
+    );
+
     const equipmentEndpoint = "http://103.163.184.111:3000/project_equipment";
     
     for (const item of equipmentList) {
@@ -107,119 +127,338 @@ const ConfigNav_db = () => {
       }
     }
 
-    //3. update personnel
-     // 3. Handle personnel updates
-      const personnelUpdates = {
-        toCreate: [],
-        toUpdate: [],
-        toDelete: []
-      };
+// 3. Update Personnel - Hybrid Approach
+// try {
+//   // 1. Fetch semua personnel dari database
+//   const personnelResponse = await fetch(`http://103.163.184.111:3000/personnel`);
+//   if (!personnelResponse.ok) throw new Error("Gagal fetch personnel");
+  
+//   const allPersonnel = await personnelResponse.json();
+  
+//   // 2. Filter personnel berdasarkan originalProjectCode (untuk migrasi project_code)
+//   const personnelToMigrate = allPersonnel.filter(p => p.project_code === originalProjectCode);
+  
+//   // 3. Logika update lama (untuk edit data)
+//   // const personnelKey = `personnelList_${projectCode}`;
+//   // const personnelList = JSON.parse(localStorage.getItem(personnelKey)) || [];
+//   // Selalu ambil dari original projectCode, karena itu yang tersimpan di localStorage sebelum disubmit
+// const personnelKeyOriginal = `personnelList_${originalProjectCode}`;
+// const personnelList = JSON.parse(localStorage.getItem(personnelKeyOriginal)) || [];
 
-      // Identify personnel to delete (existing but not in current list)
-      existingPersonnel.forEach(ep => {
-        if (!personnelList.some(p => p.id === ep.id)) {
-          personnelUpdates.toDelete.push(ep.id);
-        }
+//   const existingPersonnel = JSON.parse(localStorage.getItem("existingPersonnel")) || [];
+
+//   const personnelUpdates = {
+//     toCreate: [],
+//     toUpdate: [],
+//     toDelete: []
+//   };
+
+//   // Identifikasi personnel yang dihapus
+//   // existingPersonnel.forEach(ep => {
+//   //   if (!personnelList.some(p => p.realId === ep.id)) {
+//   //     personnelUpdates.toDelete.push(ep.id);
+//   //   }
+//   // });
+//   if (originalProjectCode === projectCode) {
+//   // Hanya jalankan logika delete jika project_code tidak berubah
+//   existingPersonnel.forEach(ep => {
+//     if (!personnelList.some(p => p.realId === ep.id)) {
+//       personnelUpdates.toDelete.push(ep.id);
+//     }
+//   });
+// }
+
+
+//   // Siapkan data untuk create/update
+//   personnelList.forEach(person => {
+//     const personnelData = {
+//       personnel_name: person.name?.label || person.name || "",
+//       personnel_role: person.role?.label || person.role || "",
+//       email: email,
+//       project_code: projectCode // Gunakan projectCode baru
+//     };
+
+//     if (person.realId) {
+//       // Update existing personnel
+//       personnelUpdates.toUpdate.push({
+//         ...personnelData,
+//         id: person.realId
+//       });
+//     } else if ((person.name || person.name?.label) && (person.role || person.role?.label)) {
+//       // Create new personnel
+//       personnelUpdates.toCreate.push(personnelData);
+//     }
+//   });
+
+//   // 4. Gabungkan dengan data yang perlu dimigrasi (update project_code saja)
+//   personnelToMigrate.forEach(person => {
+//     if (!personnelUpdates.toUpdate.some(p => p.id === person.id)) {
+//       personnelUpdates.toUpdate.push({
+//         ...person,
+//         project_code: projectCode // Hanya update project_code
+//       });
+//     }
+//   });
+
+//   // 5. Eksekusi operasi database
+//   // Delete
+//   await Promise.all(personnelUpdates.toDelete.map(id => 
+//     fetch(`http://103.163.184.111:3000/personnel/${id}`, { method: "DELETE" })
+//   ));
+
+//   // Update (termasuk migrasi project_code)
+//   await Promise.all(personnelUpdates.toUpdate.map(person =>
+//     fetch(`http://103.163.184.111:3000/personnel/${person.id}`, {
+//       method: "PUT",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(person)
+//     })
+//   ));
+
+//   // Create
+//   if (personnelUpdates.toCreate.length > 0) {
+//     await fetch("http://103.163.184.111:3000/personnel", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ personnel: personnelUpdates.toCreate })
+//     });
+//   }
+
+//   console.log("Personnel updated successfully!");
+// } catch (error) {
+//   console.error("Error updating personnel:", error);
+//   throw error;
+// }
+
+// // 3. Update Personnel - Hybrid Approach
+// try {
+//   // 1. Fetch all personnel dari DB
+//   const personnelResponse = await fetch(`http://103.163.184.111:3000/personnel`);
+//   if (!personnelResponse.ok) throw new Error("Gagal fetch personnel");
+//   const allPersonnel = await personnelResponse.json();
+
+//   // 2. Filter personnel dari DB yang punya originalProjectCode
+//   const personnelFromDB = allPersonnel.filter(p => p.project_code === originalProjectCode);
+
+//   // 3. Ambil personnelList dari localStorage dengan KEY LAMA (originalProjectCode)
+//   const personnelKeyOld = `personnelList_${originalProjectCode}`;
+//   const personnelList = JSON.parse(localStorage.getItem(personnelKeyOld)) || [];
+
+//   // 4. Ambil existing personnel dari localStorage (bisa dipakai untuk logika delete)
+//   const existingPersonnel = JSON.parse(localStorage.getItem("existingPersonnel")) || [];
+
+//   const personnelUpdates = {
+//     toCreate: [],
+//     toUpdate: [],
+//     toDelete: []
+//   };
+
+//   // 5. Tentukan apakah projectCode berubah
+//   const isProjectCodeChanged = projectCode !== originalProjectCode;
+
+//   // 6. Logika DELETE → hanya dijalankan jika projectCode tidak berubah
+//   if (!isProjectCodeChanged) {
+//     existingPersonnel.forEach(ep => {
+//       if (!personnelList.some(p => p.realId === ep.id)) {
+//         personnelUpdates.toDelete.push(ep.id);
+//       }
+//     });
+//   }
+
+//   // 7. Logika INSERT / UPDATE dari localStorage (personnelList)
+// personnelList.forEach(person => {
+//   const personnelData = {
+//     personnel_name: person.name?.label || person.name || "",
+//     personnel_role: person.role?.label || person.role || "",
+//     email: email,
+//     project_code: projectCode // Gunakan projectCode baru
+//   };
+
+//   if (person.realId) {
+//     // Cek apakah ID ini memang valid (masih ada di DB)
+//     const matchInDB = allPersonnel.find(p => p.id === person.realId);
+//     if (matchInDB) {
+//       // ID valid, update datanya dan update project_code
+//       personnelUpdates.toUpdate.push({
+//         ...personnelData,
+//         id: person.realId
+//       });
+//     } else {
+//       // ID tidak valid, treat as new data
+//       personnelUpdates.toCreate.push(personnelData);
+//     }
+//   } else if (personnelData.personnel_name && personnelData.personnel_role) {
+//     // Create new personnel
+//     personnelUpdates.toCreate.push(personnelData);
+//   }
+// });
+
+// // 8. Migrasi personnel project lama ke project baru (jika belum tercover di atas)
+// if (isProjectCodeChanged) {
+//   personnelFromDB.forEach(person => {
+//     const alreadyHandled = personnelUpdates.toUpdate.some(p => p.id === person.id)
+//       || personnelUpdates.toCreate.some(p =>
+//           p.personnel_name === person.personnel_name &&
+//           p.personnel_role === person.personnel_role
+//       );
+
+//     if (!alreadyHandled) {
+//       personnelUpdates.toUpdate.push({
+//         ...person,
+//         project_code: projectCode
+//       });
+//     }
+//   });
+// }
+
+
+//   // 9. Eksekusi DELETE (jika ada)
+//   await Promise.all(personnelUpdates.toDelete.map(id =>
+//     fetch(`http://103.163.184.111:3000/personnel/${id}`, { method: "DELETE" })
+//   ));
+
+//   // 10. Eksekusi UPDATE
+//   await Promise.all(personnelUpdates.toUpdate.map(person =>
+//     fetch(`http://103.163.184.111:3000/personnel/${person.id}`, {
+//       method: "PUT",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(person)
+//     })
+//   ));
+
+//   // 11. Eksekusi CREATE (jika ada)
+//   if (personnelUpdates.toCreate.length > 0) {
+//     await fetch("http://103.163.184.111:3000/personnel", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ personnel: personnelUpdates.toCreate })
+//     });
+//   }
+
+//   console.log("Personnel updated successfully!");
+// } catch (error) {
+//   console.error("Error updating personnel:", error);
+//   throw error;
+// }
+
+// 3. Update Personnel - Stable Logic for Rename + Modify
+try {
+  const personnelResponse = await fetch(`http://103.163.184.111:3000/personnel`);
+  if (!personnelResponse.ok) throw new Error("Gagal fetch personnel");
+  const allPersonnel = await personnelResponse.json();
+
+  const personnelFromDB = allPersonnel.filter(p => p.project_code === originalProjectCode);
+  const personnelList = JSON.parse(localStorage.getItem(`personnelList_${originalProjectCode}`)) || [];
+  const existingPersonnel = JSON.parse(localStorage.getItem("existingPersonnel")) || [];
+
+  const toUpdate = [];
+  const toCreate = [];
+  const toDelete = [];
+
+  const isProjectCodeChanged = projectCode !== originalProjectCode;
+
+  // Buat mapping id → DB record
+  const dbMap = {};
+  personnelFromDB.forEach(p => {
+    dbMap[p.id] = p;
+  });
+
+  // Tangani update/create dari form (localStorage)
+  for (const person of personnelList) {
+    const name = person.name?.label || person.name || "";
+    const role = person.role?.label || person.role || "";
+
+    const payload = {
+      personnel_name: name,
+      personnel_role: role,
+      email: email,
+      project_code: projectCode
+    };
+
+
+    //const realId = person.realId || person.id; // ← fallback ke person.id
+    const realId = person.realId || (!String(person.id).startsWith("temp-") ? person.id : null);
+
+     console.log("Person:", person);
+console.log("realId:", realId);
+
+    if (realId) {
+      // Update data lama
+      toUpdate.push({ ...payload, id: realId });
+    } else if (name && role) {
+      // Tambah data baru
+      toCreate.push(payload);
+    }
+  }
+
+  // Jika project code berubah, pastikan sisa personnel lama juga ikut dipindah project_code-nya
+  // if (isProjectCodeChanged) {
+  //   for (const dbPerson of personnelFromDB) {
+  //     const alreadyHandled = toUpdate.some(p => p.id === dbPerson.id);
+  //     if (!alreadyHandled) {
+  //       toUpdate.push({
+  //         ...dbPerson,
+  //         project_code: projectCode
+  //       });
+  //     }
+  //   }
+  if (isProjectCodeChanged) {
+  const handledIds = toUpdate.map(p => p.id);
+  for (const dbPerson of personnelFromDB) {
+    if (!handledIds.includes(dbPerson.id)) {
+      toUpdate.push({
+        ...dbPerson,
+        project_code: projectCode
       });
-
-      // Prepare create/update data
-      personnelList.forEach(person => {
-        const personnelData = {
-          personnel_name: person.name?.label || person.name || "",
-          personnel_role: person.role?.label || person.role || "",
-          email: email,
-          project_code: projectCode,
-        };
-
-        // Update: id dari database
-        if (person.id && existingPersonnel.some(ep => ep.id === person.id)) {
-          personnelUpdates.toUpdate.push({
-            ...personnelData,
-            id: person.id
-          });
-        }
-        // Create: tidak punya id atau id temp
-        else if (
-          (!person.id || (typeof person.id === "string" && person.id.startsWith("temp-"))) &&
-          (person.name || person.name?.label) && 
-          (person.role || person.role?.label)
-        ) {
-          personnelUpdates.toCreate.push(personnelData);
-        }
-      });
-
-      // Delete personnel
-      if (personnelUpdates.toDelete.length > 0) {
-        await Promise.all(personnelUpdates.toDelete.map(id =>
-          fetch(`http://103.163.184.111:3000/personnel/${id}`, {
-            method: "DELETE"
-          })
-        ));
-      }
-
-      // Create new personnel
-      if (personnelUpdates.toCreate.length > 0) {
-        await fetch("http://103.163.184.111:3000/personnel", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ personnel: personnelUpdates.toCreate }),
-        });
-      }
-
-      // Update existing personnel
-      if (personnelUpdates.toUpdate.length > 0) {
-        await Promise.all(personnelUpdates.toUpdate.map(person =>
-          fetch(`http://103.163.184.111:3000/personnel/${person.id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(person),
-          })
-        ));
-      }
-
-    // const personnelEndpoint = "http://103.163.184.111:3000/personnel";
-
-    //   for (const item of personnelList) {
-    //     const payload = {
-    //       project_code: projectCode,
-    //       personnel_name: item.name?.label || item.name || "", // Handle both object and string
-    //       personnel_role: item.role?.label || item.role || "", // Handle both object and string
-    //       email: email
-    //     };
-
-    //     if  (item.realId) {
-    //        // update existing personnel
-    //       const updateId = item.id || item.realId; // Gunakan id atau realId jika ada
-    //       if (!updateId) {
-    //         console.error("No ID found for personnel update:", item);
-    //         continue;
-    //       }
-          
-    //       const response = await fetch(`${personnelEndpoint}/${updateId}`, {
-    //         method: "PUT",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify(payload)
-    //       });
-          
-    //       if (!response.ok) {
-    //         const error = await response.json();
-    //         console.error(`Failed to update personnel ${updateId}:`, error);
-    //       }
-    //     } else {
-         
-    //     // post new personnel
-    //       const response = await fetch(personnelEndpoint, {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({ personnel: [payload] })
-    //       });
-          
-    //       if (!response.ok) {
-    //         const error = await response.json();
-    //         console.error("Failed to add personnel:", error);
-    //       }
-    //     }
+    }
+  }
+  } else {
+    // Jika projectCode tidak berubah, boleh hapus yang tidak ada lagi di form
+    // for (const ep of existingPersonnel) {
+    //   if (!personnelList.some(p => p.realId === ep.id)) {
+    //     toDelete.push(ep.id);
     //   }
+    // }
+    for (const ep of existingPersonnel) {
+  if (!personnelList.some(p => {
+    const realId = p.realId || (!String(p.id).startsWith("temp-") ? p.id : null);
+    return realId === ep.id;
+  })) {
+    toDelete.push(ep.id);
+  }
+}
+
+  }
+
+  // DELETE
+  await Promise.all(toDelete.map(id =>
+    fetch(`http://103.163.184.111:3000/personnel/${id}`, { method: "DELETE" })
+  ));
+
+  // UPDATE
+  await Promise.all(toUpdate.map(p =>
+    fetch(`http://103.163.184.111:3000/personnel/${p.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(p)
+    })
+  ));
+
+  // CREATE
+  if (toCreate.length > 0) {
+    await fetch("http://103.163.184.111:3000/personnel", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ personnel: toCreate })
+    });
+  }
+
+  console.log("Personnel updated successfully!");
+} catch (error) {
+  console.error("Error updating personnel:", error);
+  throw error;
+}
+
 
     console.log("All equipment processed successfully");
 
@@ -232,9 +471,13 @@ const ConfigNav_db = () => {
     localStorage.removeItem("sessionActive");
           localStorage.removeItem(personnelKey);
       localStorage.removeItem("existingPersonnel");
+      localStorage.removeItem(`personnelList_${projectCode}`);
+localStorage.removeItem(`personnelList_${originalProjectCode}`);
+
 
     alert("Project data saved successfully!");
-    window.location.reload();
+    //window.location.reload();
+    navigate("../Project"); 
 
   } catch (error) {
     console.error("Error saving project:", error);
@@ -328,3 +571,4 @@ const ConfigNav_db = () => {
 };
 
 export default ConfigNav_db;
+
